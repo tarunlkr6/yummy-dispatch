@@ -2,9 +2,10 @@
   "name": "yummy-dispatch",
   "version": "1.0.0",
   "description": "mern stack food application with scan features",
+  "type": "module",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon backend/src/server.js"
   },
   "keywords": [
     "mern-stack",
@@ -12,5 +13,18 @@
     "web-app"
   ],
   "author": "Phoebe",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7"
+  }
 }
