@@ -11,7 +11,7 @@ const port = process.env.PORT || 8000
 connectDB()
     .then(() => {
         app.listen(port, () => {
-            console.log(`\nServer is running on port ${port}`)
+            console.log(`\nServer is running in ${process.env.NODE_ENV} mode on port ${port}`)
         })
     })
     .catch((err) => {
