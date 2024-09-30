@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import { ApiError } from "../utils/ApiError.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 
-export const verifyJWT = asyncHandler(async (req, _, next) => {
+const verifyJWT = asyncHandler(async (req, _, next) => {
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
 
     if (!token) {
@@ -25,3 +25,16 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 
     }
 })
+
+const authRole = asyncHandler(async (req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+        next()
+    } else {
+        throw new ApiError(401, "Permission denied, contact admin")
+    }
+})
+
+export {
+    verifyJWT,
+    authRole,
+}
