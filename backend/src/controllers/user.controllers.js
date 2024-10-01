@@ -25,7 +25,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { fullName, email, password } = req.body
+    const { fullName, email, password, isAdmin } = req.body
 
     if (
         [fullName, email, password].some((field) => field?.trim() === "")
@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
         fullName,
         email,
         password,
+        isAdmin,
     })
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
