@@ -4,6 +4,18 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
+const getRestaurant = asyncHandler(async (req, res) => {
+    const restaurant = await Restaurant.find()
+
+    if (!restaurant) {
+        throw new ApiError(500, "Error while fetching restaurant.")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, restaurant, "Restaurant fetched successfully."))
+})
+
 const registerRestaurant = asyncHandler(async (req, res) => {
 
     const existedRestaurant = await Restaurant.findOne({ user: req.user._id })
@@ -54,4 +66,5 @@ const registerRestaurant = asyncHandler(async (req, res) => {
 
 export {
     registerRestaurant,
+    getRestaurant,
 }

@@ -12,10 +12,10 @@ const menuSchema = new Schema({
     },
     image: [{
         publicId: {
-            Type: String,
+            type: String,
         },
         url: {
-            Type: String,
+            type: String,
         },
     }],
     price: {
@@ -27,7 +27,7 @@ const menuSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['starters', 'rice', 'breads', 'drinks,', 'desserts', 'mainCourse'],
+        enum: ['starters', 'rice', 'breads', 'drinks', 'desserts', 'mainCourse'],
         required: true,
     },
     isVeg: {
