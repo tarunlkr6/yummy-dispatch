@@ -9,7 +9,7 @@ const router = Router()
 router.route("/register").post(verifyJWT, authRole, upload.fields([{ name: 'avatar', maxCount: 1, }]), registerRestaurant)
 router.route("/all").get(getRestaurant)
 router.route("/:id/menu").get(getMenuItem)
-router.route("/:id/add").post(verifyJWT, upload.fields([{
+router.route("/:id/add").post(verifyJWT, authRole, upload.fields([{
     name: 'image',
     maxCount: 3,
 }]), createMenuItem)
