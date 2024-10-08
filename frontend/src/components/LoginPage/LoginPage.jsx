@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import logImage from '/login.jpg';
+import logImage from '/logimage.jpg';
 import { FcGoogle } from "react-icons/fc";
 import { assets } from '../../assets/assets';
 
 const LoginPage = ({ setShowLogin }) => {
-  const [currState, setCurrState] = useState("Sign U");
+  const [currState, setCurrState] = useState("Sign Up");
 
   let [formData,setFormData] = useState({
     name: "",
@@ -50,10 +50,19 @@ const LoginPage = ({ setShowLogin }) => {
 
         {/* Left side with image */}
         <div className='relative w-full md:w-1/2 h-[300px] md:h-auto flex flex-col'>
-          <div className='absolute top-[20%] left-[10%] flex flex-col image_container z-10'>
-            <h1 className='text-3xl md:text-4xl text-white font-bold my-8'>Discover food here</h1>
-            <p className='text-lg md:text-xl text-white'>Start for free</p>
-          </div>
+        {
+        currState === "Sign Up" 
+          ? <div className='absolute top-[20%] left-[10%] flex flex-col image_container z-10'>
+            <h1 className='text-3xl md:text-4xl text-white font-bold my-8'>Sign Up for a Seamless Dining Experience</h1>
+            <p className='text-lg md:text-xl text-white'>Join Scan & Dine &rarr;</p>
+            </div>
+          :
+            <div className='absolute top-[20%] left-[10%] flex flex-col image_container z-10'>
+            <h1 className='text-3xl md:text-4xl text-white font-bold my-8'>Welcome Back to Scan & Dine!</h1>
+            <p className='text-lg md:text-xl text-white'>Ready to Savor?</p>
+            </div>
+        }
+          
           <img className='w-full h-full object-cover' src={logImage} alt="Login Background" />
         </div>
 
@@ -90,7 +99,7 @@ const LoginPage = ({ setShowLogin }) => {
                 htmlFor='userName' 
                 type="email"
                 placeholder='Email'
-                className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
+                className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none '
                 value={formData.userName}
                 onChange={handleInputChange}
                 required
@@ -119,11 +128,11 @@ const LoginPage = ({ setShowLogin }) => {
 
               <div className='w-full flex flex-col my-4'>
                 {currState === "Sign Up" ?
-                <button className='w-full font-semibold text-white my-2 bg-[#060606] rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                <button className='w-full font-semibold text-black my-2 bg-[#ea580c] hover:bg-[#f97316] rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
                   Register
                 </button>
                 :
-                <button className='w-full font-semibold text-[#060606] my-2 bg-white border border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                <button className='w-full font-semibold text-[#060606] my-2 bg-white border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
                   Login
                 </button>
                 }
@@ -134,10 +143,11 @@ const LoginPage = ({ setShowLogin }) => {
                 <p className='text-lg absolute top-1/2 transform -translate-y-1/2 text-black/80 bg-[#f5f5f5] px-2'>Or</p>
               </div>
 
-              <div className='w-full font-semibold text-[#060606] my-2 bg-white border border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                <FcGoogle className='h-6 mr-2' size={24}/>
+              <div className='w-full font-semibold text-[#060606] my-2 bg-white border border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer hover:bg-black/85 hover:text-white transition-colors duration-300'>
+                <FcGoogle className='h-6 mr-2' size={24} />
                 Sign In With Google
               </div>
+
             </form>
           </div>
           {currState === "Login" ? 
