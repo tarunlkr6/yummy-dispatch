@@ -1,0 +1,24 @@
+@media (max-width: 768px) {
+  .login-popup {
+    padding: 16px;
+  }
+
+  .login-popup-container {
+    width: 90%;
+    height: auto;
+    max-width: 400px; /* Make the popup smaller */
+    border-radius: 10px; /* Slightly rounded corners */
+  }
+
+  /* Ensuring the image and content are adjusted */
+  .login-popup img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Specific adjustments for the close button on mobile */
+  .login-popup img.close-icon {
+    width: 24px; /* Adjust the size of the close icon */
+    height: 24px;
+  }
+}
