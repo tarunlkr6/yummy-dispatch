@@ -1,5 +1,4 @@
-
-.footer{
+.footer {
     color: #d9d9d9;
     background-color: #232323;
     display: flex;
@@ -7,16 +6,16 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px 8vw;
-    padding-top: 80px;
+    padding-top: 50px;
     margin-top: 100px;
 }
 
-.footer-content-left .app-logo{
+.footer-content-left .app-logo {
     width: 150px;
     height: 150px;
 }
 
-.footer-content{
+.footer-content {
     width: 100%;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -25,7 +24,7 @@
 
 .footer-content-left, 
 .footer-content-right, 
-.footer-content-center{
+.footer-content-center {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -34,23 +33,28 @@
 
 .footer-content-left li, 
 .footer-content-right li, 
-.footer-content-center li{
+.footer-content-center li {
     margin-bottom: 10px;
     list-style: none;
     cursor: pointer;
 }
 
 .footer-content-right h2, 
-.footer-content-center h2{
+.footer-content-center h2 {
     color: white;
 }
 
-.footer-social-icons img{
-    width: 40px;
-    margin-right: 15px;
+.footer-social-icons {
+    display: flex; 
+    gap: 15px;    
 }
 
-.footer hr{
+.footer-social-icons img {
+    width: 40px;
+    cursor: pointer;
+}
+
+.footer hr {
     width: 100%;
     height: 2px;
     margin: 20px 0;
@@ -58,59 +62,13 @@
     border: none;
 }
 
-/*
-#footer {
-    color: #d9d9d9;
-    gap: 20px;
-    padding: 20px 8vw;
-    padding-top: 80px;
-    display: flex;
-    flex-flow: row wrap;
-    padding: 30px 30px 20px 30px;
-    align-self: flex-start;
-    justify-content: space-between;
-    background-color: #232323;
-    margin-top: 100px;
-}
-
-#footer .footer-logo {
-    height: 150px;
-    width: 150px;
-}
-
-#footer p,
-#footer a {
-    text-decoration: none;
-    color: rgb(109, 109, 109);
-}
-
-#footer a:hover {
-    color: tomato;
-}
-
-#footer .about a {
-    display: block;
-    padding: 8px 0;
-}
-
-#footer .myaccount a {
-    display: block;
-    padding: 8px 0;
-}
-
-#footer .download img {
-    border-radius: 7px;
-
-}
-    */
-
-@media (max-width:1050px){
-    .footer-content{
+@media (max-width: 1050px) {
+    .footer-content {
         display: flex;
         flex-direction: column;
         gap: 35px;
     }
-    .footer-copyright{
+    .footer-copyright {
         text-align: center;
     }
 }
