@@ -1,6 +1,7 @@
 import React from 'react'
 import './Footer.css'
 import { assets } from '../../assets/assets'
+import { FaInstagram,FaXTwitter,FaLinkedin } from "react-icons/fa6";
 
 
 function Footer() {
@@ -11,9 +12,9 @@ function Footer() {
             <img className="app-logo" src={assets.app} alt="" />
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet impedit dolore sed, consectetur, cumque reiciendis, eum accusamus veniam architecto possimus voluptatem! Veniam provident iste necessitatibus sequi praesentium ipsa vero autem?</p>
             <div className="footer-social-icons">
-                <img src={assets.facebook_icon} alt="" />
-                <img src={assets.twitter_icon} alt="" />
-                <img src={assets.linkedin_icon} alt="" />
+                <FaInstagram size={30}/>
+                <FaXTwitter size={30}/>
+                <FaLinkedin size={30}/>
             </div>
         </div>
         <div className="footer-content-center">
