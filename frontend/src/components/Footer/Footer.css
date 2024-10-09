@@ -39,6 +39,12 @@
     cursor: pointer;
 }
 
+.footer-content-left li, 
+.footer-content-right li, 
+.footer-content-center li:hover{
+    color: tomato;
+}
+
 .footer-content-right h2, 
 .footer-content-center h2 {
     color: white;
@@ -49,9 +55,11 @@
     gap: 15px;    
 }
 
-.footer-social-icons img {
-    width: 40px;
+.footer-social-icons svg {
     cursor: pointer;
+}
+.footer-social-icons svg:hover {
+    color: tomato;
 }
 
 .footer hr {
