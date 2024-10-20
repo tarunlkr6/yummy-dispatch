@@ -12,6 +12,14 @@ import menu_6 from './menu_6.png'
 import menu_7 from './menu_7.png'
 import menu_8 from './menu_8.png'
 
+import offer_card_1 from './offer_card_1.png'
+import offer_card_2 from './offer_card_2.png'
+import offer_card_3 from './offer_card_3.png'
+import offer_card_4 from './offer_card_4.png'
+import offer_card_5 from './offer_card_5.png'
+import offer_card_6 from './offer_card_6.png'
+import offer_card_7 from './offer_card_7.png'
+
 import food_1 from './food_1.png'
 import food_2 from './food_2.png'
 import food_3 from './food_3.png'
@@ -82,6 +90,16 @@ export const assets = {
     logout_icon,
     bag_icon,
     parcel_icon
+}
+
+export const offer_list = {
+    offer_card_1,
+    offer_card_2,
+    offer_card_3,
+    offer_card_4,
+    offer_card_5,
+    offer_card_6,
+    offer_card_7,
 }
 
 export const menu_list = [
