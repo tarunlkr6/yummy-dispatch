@@ -1,0 +1,61 @@
+/* offerSlider.css */
+.container {
+  width: 100%;
+  padding: 20px;/* Add some padding around the swiper */
+}
+
+.mySwiper {
+  /* Ensure the swiper takes full width */
+  width: 100%;
+  height: 300px; /* Set a fixed height for the swiper */
+  position: relative; 
+}
+
+.offer-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Make sure the card takes the full height of the swiper */
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%; /* Make the image take the full width */
+  height: 100%; /* Make the image take the full height */
+  object-fit: cover; /* Ensure the image covers the card area */
+  border-radius: 10px; /* Optional: add some rounding to the corners */
+}
+
+.swiper-pagination {
+  position: absolute; /* Position the pagination absolutely */
+  bottom: 10px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%); /* Center it horizontally */
+  z-index: 10; /* Ensure it appears above other elements */
+}
+
+.swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.7); /* Example: white with transparency */
+  opacity: 1; /* Ensure visibility */
+  width: 12px; /* Adjust size */
+  height: 12px; /* Adjust size */
+  margin: 0 4px; /* Space between bullets */
+}
+
+.swiper-pagination-bullet-active {
+  background: #007aff; /* Change color for active bullet */
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mySwiper {
+      height: 200px; /* Adjust height for smaller screens */
+  }
+}
