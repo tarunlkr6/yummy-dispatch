@@ -5,7 +5,7 @@ import Home from './pages/Home/Home'
 import Cart from './pages/Cart/Cart'
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
 import Footer from './components/Footer/Footer'
-import LoginPage from './components/LoginPage/LoginPage'
+import Login from './components/Loginc/LoginPage'
 
 const App = () => {
 
@@ -13,12 +13,11 @@ const App = () => {
 
   return (
     <>
-    {showLogin ? <LoginPage setShowLogin={setShowLogin}/>:<></>}
+    {showLogin ? <Login setShowLogin={setShowLogin}/>:<></>}
         <div className='app'>
           <Navbar setShowLogin = {setShowLogin}/>
           <Routes>
             <Route path='/' element={<Home/>} exact/>
-            {/* <Route path='/login' element={<LoginPage/>}/> */}
             <Route path='/cart' element={<Cart/>} />
             <Route path='/order' element={<PlaceOrder/>} />
           </Routes>
