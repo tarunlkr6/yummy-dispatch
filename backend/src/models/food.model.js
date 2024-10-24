@@ -17,7 +17,7 @@ const reviewSchema = new Schema(
 const foodSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: 'User',
   },
   name: { 
