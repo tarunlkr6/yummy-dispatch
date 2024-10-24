@@ -9,7 +9,7 @@
 
 body{
     min-height: 100vh;
-    color: inherit;
+    background-color: #fcfcfc;
 }
 
 a{
@@ -17,8 +17,12 @@ a{
     color: inherit;
 }
 
-body{
+hr{
     border: none;
     height: 1px;
     background-color: #a9a9a9;
+}
+
+.app-content{
+    display: flex;
 }
