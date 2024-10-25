@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import logImage from '/logimage.jpg';
 import { FcGoogle } from "react-icons/fc";
 import { assets } from '../../assets/assets';
+import { StoreContext } from '../../context/StoreContext';
+import axios from 'axios';
 
 const LoginPage = ({ setShowLogin }) => {
-  const [currState, setCurrState] = useState("Sign Up");
+  const { url, setToken } = useContext(StoreContext)
 
-  let [formData,setFormData] = useState({
-    name: "",
-    userName: "",
+
+  const [currState, setCurrState] = useState("Login");
+
+  let [data,setData] = useState({
+    fullName: "",
+    email: "",
     password: ""
   });
 
@@ -17,7 +22,7 @@ const LoginPage = ({ setShowLogin }) => {
     let fieldName = event.target.name;
     let newValue = event.target.value;
 
-    setFormData((currentData)=>{
+    setData((currentData)=>{
       return{
         ...currentData,
         [fieldName] : newValue
@@ -26,15 +31,32 @@ const LoginPage = ({ setShowLogin }) => {
     
   };
 
-  let handleSubmit = (event) => {
-    console.log(formData);
+  const onLogin = async(event) =>{
     event.preventDefault();
+    let newUrl = url;
+    if(currState === 'Login'){
+      newUrl += '/api/v1/users/login'
+    }else{
+      newUrl += '/api/v1/users/register'
+    }
 
-    setFormData({
-      name: "",
-      userName: "",
+    const response  = await axios.post(newUrl,data)
+    console.log(response)
+
+    if(response.data.success) {
+
+      setToken(response.data.data.accessToken)
+      localStorage.setItem('Token',response.data.data.accessToken)
+      setShowLogin(false)
+    }else{
+      alert(response.data.message)
+    }
+    setData({
+      fullName: "",
+      email: "",
       password: ""
     })
+
   }
 
   return (
@@ -81,37 +103,34 @@ const LoginPage = ({ setShowLogin }) => {
             </div>
 
             <form 
-            onSubmit={handleSubmit}
+            onSubmit={onLogin}
             className='w-full flex flex-col'>
               {currState === "Login" ? <></> : 
               <input
-              htmlFor='name'
               type="text"
               placeholder='Enter your full name'
               className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
-              value={formData.name}
+              value={data.fullName}
               onChange={handleInputChange}
               required
-              name='name'
+              name='fullName'
             />
               }
               <input
-                htmlFor='userName' 
                 type="email"
                 placeholder='Email'
                 className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none '
-                value={formData.userName}
+                value={data.email}
                 onChange={handleInputChange}
                 required
-                name='userName'
+                name='email'
               />
 
               <input
-                htmlFor='password' 
                 type="password"
                 placeholder='Password'
                 className='w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none'
-                value={formData.password}
+                value={data.password}
                 onChange={handleInputChange}
                 required
                 name='password'
@@ -132,7 +151,7 @@ const LoginPage = ({ setShowLogin }) => {
                   Register
                 </button>
                 :
-                <button className='w-full font-semibold text-[#060606] my-2 bg-white border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
+                <button type='submit' className='w-full font-semibold text-[#060606] my-2 bg-white border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
                   Login
                 </button>
                 }

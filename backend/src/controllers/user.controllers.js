@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.models.js"
 import jwt from "jsonwebtoken"
+import validator from 'validator'
 
 const options = {
     httpOnly: true,
@@ -24,6 +25,7 @@ const generateAccessAndRefreshToken = async (userId) => {
     }
 }
 
+//register User
 const registerUser = asyncHandler(async (req, res) => {
     const { fullName, email, password, isAdmin } = req.body
 
@@ -31,10 +33,16 @@ const registerUser = asyncHandler(async (req, res) => {
         [fullName, email, password].some((field) => field?.trim() === "")
     ) { throw new ApiError(400, "All fields are required") }
 
+    //Checking User already exists
     const existedUser = await User.findOne({ email })
 
     if (existedUser) {
-        throw new ApiError(409, "User with same email already exists")
+        throw new ApiError({ success: false, message: "User with same email already exists" })
+    }
+
+    //validating email format & strong password
+    if(!validator.isEmail(email)){
+        return res.json({success: false, message: "Please enter a valid email"})
     }
 
     const user = await User.create({
@@ -47,12 +55,13 @@ const registerUser = asyncHandler(async (req, res) => {
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
     if (!createdUser) {
-        throw new ApiError(500, "Something went wrong while registering user")
+        throw new ApiError({success: false, message:"Something went wrong while registering user"})
     }
 
-    return res.status(201).json(new ApiResponse(201, createdUser, "User registerd successfully."))
+    return res.status(201).json(new ApiResponse(201, createdUser, { success: true, message:"User registerd successfully."}))
 })
 
+//login User
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
