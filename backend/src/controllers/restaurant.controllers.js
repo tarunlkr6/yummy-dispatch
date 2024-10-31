@@ -25,7 +25,7 @@ const registerRestaurant = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User restaurant already exists")
     }
 
-    const { name, email, phoneNumber, openingTime, closingTime, address, city, state, zipCode } = req.body
+    const { name, description, ownerName, email, phoneNumber, openingTime, closingTime, address, city, state, zipCode } = req.body
 
     if (
         [name, email, phoneNumber, openingTime, closingTime, address, city, state, zipCode].some((field) => field?.trim() === "")
@@ -42,6 +42,8 @@ const registerRestaurant = asyncHandler(async (req, res) => {
     const restaurant = await Restaurant.create({
         user: req.user._id,
         name,
+        description,
+        ownerName,
         email: email.toLowerCase(),
         phoneNumber,
         openingTime,

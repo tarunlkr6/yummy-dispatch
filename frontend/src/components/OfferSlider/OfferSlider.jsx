@@ -1,24 +1,26 @@
 import React, { useContext } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { offer_list } from '../../assets/assets';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay'; // Import autoplay styles
-import { Autoplay } from 'swiper/modules'
+import { Autoplay } from 'swiper/modules';
+// import './offerSlider.css'; // Import your CSS
 
 // Import required modules
 import { Navigation, Pagination } from 'swiper/modules';
 
 function OfferSlider() { 
-    const { offer_list } = useContext(StoreContext);
+    // const { offer_list } = useContext(StoreContext);
 
     return (
         <div className='container mb-10'>
             <Swiper
-                slidesPerView={3} // Corrected to use 3 slides
+                slidesPerView={3} // Show slides at a time
                 spaceBetween={30}
                 loop={true}
                 pagination={{
@@ -33,33 +35,27 @@ function OfferSlider() {
                     disableOnInteraction: false,
                 }}
             >
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_1} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_2} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_3} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_4} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_5} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_6} />
-                    </SwiperSlide>
-
-                    <SwiperSlide className="offer-card"> 
-                        <img src={offer_list.offer_card_7} />
-                    </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_1} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_2} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_3} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_4} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_5} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_6} />
+                </SwiperSlide>
+                <SwiperSlide className="offer-card"> 
+                    <img src={offer_list.offer_card_7} />
+                </SwiperSlide>
             </Swiper>
         </div>
     );

@@ -1,20 +1,43 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
-import { StoreContext } from "../../context/StoreContext";
+import { useSelector,useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../slices/usersApiSlice";
+import {logout} from "../../slices/authSlice"
+
 
 const Navbar = ({ setShowLogin }) => {
 
   const navigate = useNavigate()
-  const [menu, setMenu] = useState("Home");
-  const { getTotalCartAmount,token, setToken } = useContext(StoreContext);
+  const dispatch = useDispatch()
 
-  const logout = () => {
-    localStorage.removeItem("Token");
-    setToken("");
-    navigate("/");
-  };
+  
+  const [menu, setMenu] = useState("Home");
+  const { userInfo } = useSelector((state)=> state.auth)
+
+  const [logoutApiCall] = useLogoutMutation()
+
+
+  const handleLogout = async () => {
+    try {
+      const res = await logoutApiCall().unwrap();
+      console.log(res); // Check the response status and data
+      dispatch(logout());
+      setShowLogin(false);
+      navigate('/');
+    } catch (error) {
+      if (error.originalStatus === 401) {
+        console.error("Unauthorized: Check if token is being sent correctly.");
+      } else {
+        console.error("Logout error:", error);
+      }
+    }
+  };  
+
+  const getTotalCartAmount = ()=>{
+    console.log("Total Cart Amount");
+  }
 
   return (
     <div className="navbar">
@@ -52,28 +75,28 @@ const Navbar = ({ setShowLogin }) => {
         </a>
       </ul>
       <div className="navbar-right">
-        <img src={assets.search_icon} alt="" />
+      <i className="fa-solid fa-magnifying-glass fa-lg"></i>
         <div className="navbar-search-icon">
           <Link to="/cart">
-            <img src={assets.basket_icon} alt="" />
+            <i className="fa-solid fa-basket-shopping fa-lg"></i>
           </Link>
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}>
             <p className="display-cart-quantity"></p>
           </div>
         </div>
-        {!token ? (
+        {! userInfo ? (
           <button onClick={() => setShowLogin(true)}>sign in</button>
         ) : (
           <div className="navbar-profile">
-            <img src={assets.profile_icon} alt="profile-icon" />
+            <i className="fa-solid fa-user fa-lg"></i>
             <ul className="nav-profile-dropdown">
               <li>
-                <img src={assets.bag_icon} alt="" />
+              <i className="fa-solid fa-bag-shopping"></i>
                 <p>Orders</p>
               </li>
               <hr className="hr-line" />
-              <li onClick={logout}>
-                <img src={assets.logout_icon} alt="" />
+              <li onClick={handleLogout}>
+              <i className="fa-solid fa-right-from-bracket"></i>
                 <p>Logout</p>
               </li>
             </ul>

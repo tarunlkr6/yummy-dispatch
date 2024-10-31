@@ -7,7 +7,7 @@ import validator from 'validator'
 
 const options = {
     httpOnly: true,
-    secure: true
+    secure: true,
 }
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -27,7 +27,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
 //register User
 const registerUser = asyncHandler(async (req, res) => {
-    const { fullName, email, password, isAdmin } = req.body
+    const { fullName, email, password, isAdmin} = req.body
 
     if (
         [fullName, email, password].some((field) => field?.trim() === "")
@@ -40,16 +40,11 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError({ success: false, message: "User with same email already exists" })
     }
 
-    //validating email format & strong password
-    if(!validator.isEmail(email)){
-        return res.json({success: false, message: "Please enter a valid email"})
-    }
-
     const user = await User.create({
         fullName,
         email,
         password,
-        isAdmin,
+        isAdmin
     })
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
@@ -94,6 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const logoutUser = asyncHandler(async (req, res) => {
+    
     await User.findByIdAndUpdate(req.user._id, {
         $set: {
             refreshToken: null,

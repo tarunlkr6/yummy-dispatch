@@ -6,25 +6,29 @@ import Cart from './pages/Cart/Cart'
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
 import Footer from './components/Footer/Footer'
 import Login from './components/Loginc/LoginPage'
+import Partner from './components/Partner/Partner'
+import RestaurantTemplate from './components/Restaurant/Explore_restaurant_page/RestaurantTemplate'
+import { ThemeProvider } from "@material-tailwind/react"
+import { materialTheme } from './configs/theme.js'
 
 const App = () => {
-
   const [showLogin, setShowLogin] = useState(false)
 
   return (
-    <>
-    {showLogin ? <Login setShowLogin={setShowLogin}/>:<></>}
-        <div className='app'>
-          <Navbar setShowLogin = {setShowLogin}/>
-          <Routes>
-            <Route path='/' element={<Home/>} exact/>
-            <Route path='/cart' element={<Cart/>} />
-            <Route path='/order' element={<PlaceOrder/>} />
-          </Routes>
-        </div>
-        <Footer/>
-    </>
-    
+    <ThemeProvider value={materialTheme}>
+      {showLogin ? <Login setShowLogin={setShowLogin}/> : null}
+      <div className='app'>
+        <Navbar setShowLogin={setShowLogin}/>
+        <Routes>
+          <Route path='/' element={<Home/>} exact/>
+          <Route path='/cart' element={<Cart/>} />
+          <Route path='/order' element={<PlaceOrder/>} />
+          <Route path='/partner' element={<Partner/>} />
+          <Route path='/explore' element={<RestaurantTemplate/>}/>
+        </Routes>
+      </div>
+      <Footer/>
+    </ThemeProvider>
   )
 }
 

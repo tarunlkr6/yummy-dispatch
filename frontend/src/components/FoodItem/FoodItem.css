@@ -49,14 +49,25 @@
     position: relative;
 }
 
-.food-item-img-container .add{
+.food-item-img-container .add {
     width: 35px;
+    height: 35px; /* Set height to make it circular */
     position: absolute;
     bottom: 15px;
     right: 15px;
     cursor: pointer;
-    border-radius: 15px;
+    border-radius: 50%; /* Make it a perfect circle */
+    background-color: #fff; /* Choose a background color to make it more visible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.food-item-img-container .add i {
+    color: #ff4500; /* Change color of the plus icon */
+    font-size: 16px; /* Set icon size */
+}
+
 
 .food-item-counter{
     position: absolute;

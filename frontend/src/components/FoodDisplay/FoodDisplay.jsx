@@ -1,25 +1,51 @@
-import React, { useContext } from 'react'
-import './FoodDisplay.css'
-import { StoreContext } from '../../context/StoreContext'
-import FoodItem from '../FoodItem/FoodItem'
+// FoodDisplay.jsx
+import React from "react";
+import "./FoodDisplay.css";
+import FoodItem from "../FoodItem/FoodItem";
+import { useGetFoodListQuery } from "../../slices/foodlistSlice";
 
-const FoodDisplay = ({category}) => {
+const FoodDisplay = ({ category }) => {
+  const { data, isLoading, error } = useGetFoodListQuery();
 
-    const {food_list} = useContext(StoreContext)
+  // Extract the food_list from the API response data
+  const food_list = data ? data.data : [];
+
+  if (food_list.length === 0) {
+    return <div>No food items available.</div>;
+  }
 
   return (
-    <div className='food-display' id='food-display'>
-        <h2>Top Dishes near you</h2>  
-        <div className="food-display-list">
-            {food_list.map((item,index)=>{
-                if(category==="All" || category===item.category){
-                    return <FoodItem key={index} id={item._id} name={item.name} description={item.description} price={item.price} image={item.image} />
+    <>
+      {isLoading ? (
+        <p>Loading</p>
+      ) : error ? (
+        <div>{error?.data?.message || error.error}</div>
+      ) : (
+        <>
+          <div className="food-display" id="food-display">
+            <h2>Top Dishes near you</h2>
+            <div className="food-display-list">
+              {food_list.map((item, index) => {
+                if (category === "All" || category === item.category) {
+                  return (
+                    <FoodItem
+                      key={index}
+                      id={item._id}
+                      name={item.name}
+                      description={item.description}
+                      price={item.price}
+                      image={item.image}
+                    />
+                  );
                 }
-                
-            })}
-        </div>    
-    </div>
-  )
-}
+                return null;
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
 
-export default FoodDisplay
+export default FoodDisplay;
