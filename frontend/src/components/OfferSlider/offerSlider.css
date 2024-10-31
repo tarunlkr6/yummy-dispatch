@@ -1,12 +1,15 @@
 /* offerSlider.css */
 .container {
   width: 100%;
-  padding: 20px;/* Add some padding around the swiper */
+  padding: 20px; /* Add some padding around the swiper */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically if needed */
 }
 
 .mySwiper {
-  /* Ensure the swiper takes full width */
-  width: 100%;
+  width: 100%; /* Ensure the swiper takes full width */
+  max-width: 1200px; /* Set a maximum width for larger screens */
   height: 300px; /* Set a fixed height for the swiper */
   position: relative; 
 }
@@ -51,7 +54,6 @@
 .swiper-pagination-bullet-active {
   background: #007aff; /* Change color for active bullet */
 }
-
 
 /* Responsive design */
 @media (max-width: 768px) {

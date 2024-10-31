@@ -4,9 +4,23 @@ import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+  // const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
   
   const navigate = useNavigate();
+
+  const cartItems = ['apple', 'banana', 'orange'];
+
+  const food_list = ['apple', 'banana', 'orange'];
+
+  const removeFromCart = (itemId) => {
+    // Implement logic to remove item from cart
+    console.log(itemId)
+  }
+
+  const getTotalCartAmount = () => {
+  console.log('ammount : 0')
+  }
+
 
 
   return (

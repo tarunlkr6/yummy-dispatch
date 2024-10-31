@@ -1,32 +1,32 @@
-import React from 'react'
-import {Routes, Route} from 'react-router-dom'
-import Navbar from './components/Navbar/Navbar'
-import Sidebar from './components/Sidebar/Sidebar'
-import Add from './pages/Add/Add'
-import List from './pages/List/List'
-import Orders from './pages/Orders/Orders'
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Home from './pages/Home/Home'
+import RestaurantRegistration from "./components/Registrer/RestaurantRegistration";
+import RestaurantLogin from "./components/Login/RestaurantLogin";
+import Dashboard from "./components/Sidebar/Dashboard";;
 
-function App() {
-  const url = 'http://localhost:8080'
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
+  // Set authentication status after login
+  const handleLogin = () => setIsAuthenticated(true);
 
   return (
-    <>
-      <Navbar/>
-      <hr/>
-      <ToastContainer/>
-      <div className="app-content">
-        <Sidebar/>
-        <Routes>
-          <Route path='/add' element={<Add url={url}/>}/>
-          <Route path='/list' element={<List url={url}/>}/>
-          <Route path='/orders' element={<Orders url={url}/>}/>
-        </Routes>
-      </div>
-    </>
-  )
-}
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<RestaurantRegistration />} />
+        <Route path="/login" element={<RestaurantLogin onLogin={handleLogin} />} />
 
-export default App
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard/*"
+          element={
+            isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
+          }
+        />
+      </Routes>
+  );
+};
+
+export default App;

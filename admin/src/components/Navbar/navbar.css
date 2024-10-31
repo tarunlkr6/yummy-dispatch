@@ -1,14 +1,27 @@
-.navbar{
+/* navbar.css */
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 4%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* Define fixed height */
+    background-color: rgba(97, 97, 97, 0.8);
+    z-index: 1000;
 }
 
-.navbar .logo{
-    width: min(10%, 80px);
+.navbar .logo {
+    max-width: 80px;
+    width: auto;
 }
 
-.navbar .profile{
-    width: 50px;
+.navbar .profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
 }

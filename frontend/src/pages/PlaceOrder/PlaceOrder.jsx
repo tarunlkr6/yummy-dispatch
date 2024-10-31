@@ -6,7 +6,10 @@ import 'boxicons'
 
 const PlaceOrder = () => {
 
-  const { getTotalCartAmount } = useContext(StoreContext)
+  // const { getTotalCartAmount } = useContext(StoreContext)
+  const getTotalCartAmount = ()=>{
+    console.log('0')
+  }
 
   return (
     <form className='place-order'>
