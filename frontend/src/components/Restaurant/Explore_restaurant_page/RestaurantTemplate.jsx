@@ -396,41 +396,7 @@ export default function RestaurantTemplate() {
             </CardBody>
           </Card>
         </Section>
-
-        <Section id="contact" title="Contact Us">
-          <Card>
-            <CardBody>
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Typography variant="h6">Name</Typography>
-                    <Input type="text" placeholder="Your Name" className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10" labelProps={{
-                      className: "hidden",
-                    }} containerProps={{ className: "min-w-[100px]" }}/>
-                  </div>
-                  <div>
-                    <Typography variant="h6">Email</Typography>
-                    <Input type="email" placeholder="your@email.com" className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10" labelProps={{
-                      className: "hidden",
-                    }} containerProps={{ className: "min-w-[100px]" }}/>
-                  </div>
-                </div>
-                <div>
-                  <Typography variant="h6">Message</Typography>
-                  <Textarea placeholder="Your message here..." className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"/>
-                </div>
-                <Button type="submit" color="blue" size="lg" ripple={true} className="px-6">Send Message</Button>
-              </form>
-            </CardBody>
-          </Card>
-        </Section>
       </main>
-
-      <footer className="bg-gray-800 text-white py-8 mt-20">
-        <div className="container mx-auto px-6 text-center">
-          <Typography>&copy; 2023 Our Restaurant. All rights reserved.</Typography>
-        </div>
-      </footer>
 
       <Dialog open={isBookingOpen} handler={setIsBookingOpen} size="md">
         <DialogHeader>

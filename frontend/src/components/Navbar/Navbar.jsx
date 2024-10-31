@@ -5,20 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../slices/usersApiSlice";
 import {logout} from "../../slices/authSlice"
-
-
 const Navbar = ({ setShowLogin }) => {
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  
   const [menu, setMenu] = useState("Home");
   const { userInfo } = useSelector((state)=> state.auth)
-
   const [logoutApiCall] = useLogoutMutation()
-
-
   const handleLogout = async () => {
     try {
       const res = await logoutApiCall().unwrap();
@@ -54,10 +46,10 @@ const Navbar = ({ setShowLogin }) => {
         </Link>
         <a
           href="#explore-menu"
-          onClick={() => setMenu("menu")}
-          className={menu === "menu" ? "active" : ""}
+          onClick={() => setMenu("Explore Restaurant")}
+          className={menu === "Explore Restaurant" ? "active" : ""}
         >
-          menu
+          Explore Restaurant
         </a>
         <a
           href="#app-download"
@@ -76,6 +68,8 @@ const Navbar = ({ setShowLogin }) => {
       </ul>
       <div className="navbar-right">
       <i className="fa-solid fa-magnifying-glass fa-lg"></i>
+      <i className="fa-solid fa-qrcode fa-lg"></i>
+      <i className="fa-solid fa-bell fa-lg"></i>
         <div className="navbar-search-icon">
           <Link to="/cart">
             <i className="fa-solid fa-basket-shopping fa-lg"></i>
@@ -89,6 +83,7 @@ const Navbar = ({ setShowLogin }) => {
         ) : (
           <div className="navbar-profile">
             <i className="fa-solid fa-user fa-lg"></i>
+            
             <ul className="nav-profile-dropdown">
               <li>
               <i className="fa-solid fa-bag-shopping"></i>
