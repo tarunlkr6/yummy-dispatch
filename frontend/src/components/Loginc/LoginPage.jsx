@@ -23,10 +23,6 @@ const LoginPage = ({ setShowLogin }) => {
 
   const [currState, setCurrState] = useState("Login");
 
-  // const {search } = useLocation();
-  // const sp = URLSearchParams(search)
-  // const redirect = sp.get('redirect')|| '/';
-
   useEffect(() => {
     if (userinfo) {
       navigate("/");
@@ -172,16 +168,6 @@ const LoginPage = ({ setShowLogin }) => {
                 name="password"
               />
 
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
-                value={data.confirmPassword}
-                onChange={handleInputChange}
-                required
-                name="confirmPassword"
-              />
-
               <div className="w-full flex items-center justify-between">
                 <div className="w-full flex items-center">
                   <input type="checkbox" className="w-4 h-4 mr-2" />
@@ -203,7 +189,7 @@ const LoginPage = ({ setShowLogin }) => {
                     {registerLoading && (
                       <Spinner className="h-16 w-16 text-gray-900/50" />
                     )}
-                    <button className="w-full font-semibold text-black my-2 bg-[#ea580c] hover:bg-[#f97316] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
+                    <button className="w-full font-semibold text-white my-2 bg-[#0a0a0a] hover:bg-[#f97316] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
                       Register
                     </button>
                   </>
@@ -214,7 +200,7 @@ const LoginPage = ({ setShowLogin }) => {
                     )}
                     <button
                       type="submit"
-                      className="w-full font-semibold text-[#060606] my-2 bg-white border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer"
+                      className="w-full font-semibold text-white my-2 bg-[#0a0a0a] border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer"
                     >
                       Login
                     </button>
