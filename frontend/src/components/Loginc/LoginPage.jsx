@@ -22,6 +22,7 @@ const LoginPage = ({ setShowLogin }) => {
   const { userinfo } = useSelector((state) => state.auth);
 
   const [currState, setCurrState] = useState("Login");
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   useEffect(() => {
     if (userinfo) {
@@ -60,12 +61,17 @@ const LoginPage = ({ setShowLogin }) => {
         toast.error(error?.data?.message || error);
       }
     } else {
-      try {
-        const res = await register(data).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate("/");
-      } catch (error) {
-        toast.error(error?.data?.message || error);
+      if (data.password !== confirmPassword) {
+        toast.error('Password do not match');
+        return;
+      } else {
+        try {
+          const res = await register(data).unwrap();
+          dispatch(setCredentials({ ...res }));
+          navigate("/");
+        } catch (error) {
+          toast.error(error?.data?.message || error);
+        }
       }
     }
     setData({
@@ -164,9 +170,18 @@ const LoginPage = ({ setShowLogin }) => {
                 className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
                 value={data.password}
                 onChange={handleInputChange}
-                required
                 name="password"
               />
+              {currState !== 'Login' && (<input
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
+                value={data.confirmPassword}
+                onChange={(e)=> setConfirmPassword(e.target.value)}
+                required
+                name="password"
+              />)}
+
 
               <div className="w-full flex items-center justify-between">
                 <div className="w-full flex items-center">

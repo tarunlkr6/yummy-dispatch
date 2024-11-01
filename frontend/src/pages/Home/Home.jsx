@@ -15,8 +15,8 @@ const Home = () => {
       <Header />
       <OfferSlider />
       {/* Uncomment the lines below if you need to use these components */}
-      {/* <ExploreMenu category={category} setCategory={setCategory} /> */}
-      {/* <FoodDisplay category={category} /> */}
+      {/* <ExploreMenu category={category} setCategory={setCategory} />
+      <FoodDisplay category={category} />  */}
       <RestaurantCard />
       <AppDownload />
     </div>

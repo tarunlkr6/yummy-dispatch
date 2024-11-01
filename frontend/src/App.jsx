@@ -10,12 +10,14 @@ import Partner from './components/Partner/Partner'
 import RestaurantTemplate from './components/Restaurant/Explore_restaurant_page/RestaurantTemplate'
 import { ThemeProvider } from "@material-tailwind/react"
 import { materialTheme } from './configs/theme.js'
+import { ToastContainer } from 'react-toastify'
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false)
 
   return (
     <ThemeProvider value={materialTheme}>
+      <ToastContainer/>
       {showLogin ? <Login setShowLogin={setShowLogin}/> : null}
       <div className='app'>
         <Navbar setShowLogin={setShowLogin}/>
@@ -24,7 +26,7 @@ const App = () => {
           <Route path='/cart' element={<Cart/>} />
           <Route path='/order' element={<PlaceOrder/>} />
           <Route path='/partner' element={<Partner/>} />
-          <Route path='/explore' element={<RestaurantTemplate/>}/>
+          <Route path='/restaurant/:id' element={<RestaurantTemplate/>}/>
         </Routes>
       </div>
       <Footer/>

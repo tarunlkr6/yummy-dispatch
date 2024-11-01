@@ -10,7 +10,13 @@ const restaurantApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5, // Keep the data in cache for 5 seconds
         }),
+        getRestaurantDetails: builder.query({
+            query: (restaurantId)=>({
+                url: `${RESTAURANT_URL}/${restaurantId}`,
+            }),
+            keepUnusedDataFor: 5,
+        })
     }),
 })
 
-export const { useGetRestaurantQuery } = restaurantApiSlice;
+export const { useGetRestaurantQuery, useGetRestaurantDetailsQuery } = restaurantApiSlice;

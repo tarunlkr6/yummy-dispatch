@@ -16,6 +16,20 @@ const getRestaurant = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, restaurant, "Restaurant fetched successfully."))
 })
 
+// Fetch the restaurant by Id
+const getRestaurantById = asyncHandler(async (req, res) => {
+
+    const restaurant = await Restaurant.findById(req.params.id)
+
+    if (!restaurant) {
+        throw new ApiError(500, "Error:Unable to find the restaurant.")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, restaurant, "Restaurant fetched successfully."))
+})
+
 const registerRestaurant = asyncHandler(async (req, res) => {
 
     const existedRestaurant = await Restaurant.findOne({ user: req.user._id })
@@ -69,4 +83,5 @@ const registerRestaurant = asyncHandler(async (req, res) => {
 export {
     registerRestaurant,
     getRestaurant,
+    getRestaurantById,
 }
