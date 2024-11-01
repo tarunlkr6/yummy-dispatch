@@ -1,5 +1,22 @@
 import mongoose, { Schema } from "mongoose"
 
+const menuItemReviewSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true,
+    },
+    review: {
+        type: String,
+    },
+}, { timestamps: true })
+
 const menuSchema = new Schema({
     restaurantId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +47,7 @@ const menuSchema = new Schema({
         enum: ['starters', 'rice', 'breads', 'drinks', 'desserts', 'mainCourse'],
         required: true,
     },
+    reviews: [menuItemReviewSchema],
     isVeg: {
         type: Boolean,
         required: true,

@@ -6,7 +6,8 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
 
 const getMenuItem = asyncHandler(async (req, res) => {
-    const menu = await Menu.find({ restaurantId: req.params.id })
+    const { resid } = req.params
+    const menu = await Menu.find({ restaurantId: resid })
 
     if (!menu) {
         throw new ApiError(500, "Error while fetching menu")
@@ -42,7 +43,7 @@ const createMenuItem = asyncHandler(async (req, res) => {
     }
 
     const menuItem = await Menu.create({
-        restaurantId: req.params.id,
+        restaurantId: req.params.resid,
         itemName,
         price,
         image: imageArray,
@@ -64,13 +65,14 @@ const createMenuItem = asyncHandler(async (req, res) => {
 })
 
 const updateMenuItem = asyncHandler(async (req, res) => {
+    const { resid, itemid } = req.params
     const { price, description, isAvailable } = req.body
 
-    if (!price || !description || !isAvailable) {
+    if (!price && !description && !isAvailable) {
         throw new ApiError(400, "All fields are required")
     }
 
-    const menuItem = await Menu.findByIdAndUpdate(req.params.id, {
+    const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
         $set: {
             price,
             description,
@@ -86,18 +88,18 @@ const updateMenuItem = asyncHandler(async (req, res) => {
 })
 
 const deleteMenuItem = asyncHandler(async (req, res) => {
-    const menuItem = await Menu.findById(req.params.id)
+    const { resid, itemid } = req.params
+    const menuItem = await Menu.findByIdAndDelete({ restaurnatId: resid, _id: itemid })
 
     if (!menuItem) {
         throw new ApiError(400, "Item not found")
     }
 
-    await menuItem.remove()
-
     return res
         .status(200)
         .json(new ApiResponse(200, {}, "Menu item deleted successfully"))
 })
+
 export {
     getMenuItem,
     createMenuItem,
