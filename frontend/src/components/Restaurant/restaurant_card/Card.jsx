@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-function RestaurantCard({ name, description, avatar, isOpen, openingTime, closingTime }) {
+function RestaurantCard({ _id, name, description, avatar, isOpen, openingTime, closingTime }) {
   return (
     <Card className="w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
       <CardHeader floated={false} className="h-48">
@@ -37,7 +37,7 @@ function RestaurantCard({ name, description, avatar, isOpen, openingTime, closin
         </Typography>
       </CardBody>
       <CardFooter className="pt-0 flex justify-between">
-        <Link to="/explore" className="w-[48%]">
+        <Link to={`/restaurant/${_id}`} className="w-[48%]">
           <Button fullWidth>View</Button>
         </Link>
         <Link to="#" className="w-[48%]">
