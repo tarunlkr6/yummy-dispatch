@@ -3,17 +3,28 @@ import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
+import { ApiFeatures } from "../utils/ApiFeatures.js"
 
 const getRestaurant = asyncHandler(async (req, res) => {
-    const restaurant = await Restaurant.find()
+    const resultPerPage = 5
 
-    if (!restaurant) {
-        throw new ApiError(500, "Error while fetching restaurant.")
+    const apiFeatures = new ApiFeatures(Restaurant.find(), req.query)
+        .search()
+        .filter()
+        .filterByOpenStatus()
+        .pagination(resultPerPage)
+
+    const restaurants = await apiFeatures.query
+
+    const restaurantCount = restaurants.length
+
+    if (!restaurants || restaurantCount === 0) {
+        throw new ApiError(404, "No restaurants found")
     }
 
     return res
         .status(200)
-        .json(new ApiResponse(200, restaurant, "Restaurant fetched successfully."))
+        .json(new ApiResponse(200, { restaurants, restaurantCount, resultPerPage }, "Restaurant fetched successfully."))
 })
 
 // Fetch the restaurant by Id
