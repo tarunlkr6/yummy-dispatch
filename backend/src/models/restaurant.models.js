@@ -1,5 +1,29 @@
 import mongoose, { Schema } from "mongoose";
 
+// review schema
+const restaurantReviewSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  comment: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true })
+
+// restaurant schema
 const restaurantSchema = new Schema(
   {
     user: {
@@ -92,6 +116,7 @@ const restaurantSchema = new Schema(
       required: false,
       trim: true,
     },
+    restaurantReviews: [restaurantReviewSchema],
   },
   { timestamps: true }
 );
