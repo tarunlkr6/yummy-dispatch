@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart"))
-  : { cartItems: [] };
+  : { cartItems: [], OrderDetails: [], paymentMethod: 'PayPal' };
 
 const addDecimals = () => {
   return (Math.round(num * 100) / 100).toFixed(2);
@@ -55,7 +55,17 @@ const cartSlice = createSlice({
     removeFromCart: (state, action) => {
         const itemToRemove = action.payload;
       const updatedCartItems = state.cartItems.filter((item) => item._id!== itemToRemove._id);
+    },
+    clearAllCart: (state, action) => {
+      state.cartItems = [];
+      state.itemsPrice = 0;
+      state.shippingPrice = 0;
+      state.serviceCharge = 0;
+      state.taxPrice = 0;
+      state.totalPrice = 0;
+      localStorage.removeItem('cart');
     }
+
   },
 });
 
