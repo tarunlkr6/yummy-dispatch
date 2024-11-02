@@ -21,12 +21,14 @@ import healthCheckRouter from "./routes/healthCheck.routes.js"
 import userRouter from "./routes/user.routes.js"
 import restaurantRouter from "./routes/restaurant.routes.js"
 import menuRouter from "./routes/menu.route.js"
+import bookingRouter from "./routes/booking.route.js"
 
 // routes
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/restaurant", restaurantRouter)
 app.use("/api/v1", menuRouter)
+app.use("/api/v1/booking", bookingRouter)
 
 
 
