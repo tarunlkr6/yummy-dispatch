@@ -10,7 +10,6 @@ const StoreContextProvider = (props) => {
 
     const [cartItems,setCartItems] = useState({});
     const url = 'http://localhost:8080';
-    const [food_list, setFoodList] = useState([])
 
     const [token, setToken] = useState('') //To save the token
 
@@ -41,22 +40,7 @@ const StoreContextProvider = (props) => {
         return totalAmount;
     }
 
-    const fetchFoodList = async () =>{
-        const response = await axios.get(url+'/api/food/list')
-        setFoodList(response.data.data)
-    }
-    
-    useEffect(() => {
-        async function loadData (){
-            await fetchFoodList()
-            const tokenFromStorage = localStorage.getItem("Token") || "";
-            setToken(tokenFromStorage);
-        }
-        loadData();
-      }, [setToken]); // Dependency on setToken ensures the effect runs when setToken changes
-
     const contextValue = {
-        food_list,
         menu_list,
         cartItems,
         offer_list,

@@ -50,48 +50,6 @@ function Footer() {
         Copyright 2024 @ Scan&Dine.in - All Right reserved.
       </p>
     </div>
-    /* <>
-    <footer id="footer">
-      <div className="contact">
-        <address>
-          <a href="#">
-            <img className="footer-logo" src={assets.app} alt="Company Logo" />
-          </a>
-          <p>
-            <b>Address:</b>
-            Pivet Lane, London
-          </p>
-          <p><b>Phone:</b> +0111-765-47</p>
-          <p><b>Email:</b> Scan@gmail.com</p>
-        </address>
-        <h3>Follow Us</h3>
-        <br />
-        <div className="socials">
-          
-        </div>
-      </div>
-      <div className="about">
-        <h3>About</h3>
-        <br />
-        <a href="#">About Us</a>
-        <a href="#">Delivery Information</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms & Conditions</a>   
-
-        <a href="#">Contact Us</a>
-      </div>
-      <div className="myaccount">
-        <h3>My account</h3>
-        <br />
-        <a href="#">Sign In</a>
-        <a href="#">View Cart</a>
-        <a href="#">My Wishlist</a>
-        <a href="#">Track My Order</a>
-        <a href="#">Help</a>
-      </div>
-    </footer>
-    </>
-    */
   );
 }
 
