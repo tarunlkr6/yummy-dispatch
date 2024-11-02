@@ -3,14 +3,19 @@ import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
+import { ApiFeatures } from "../utils/ApiFeatures.js"
 
 
 const getMenuItem = asyncHandler(async (req, res) => {
     const { resid } = req.params
-    const menu = await Menu.find({ restaurantId: resid })
 
-    if (!menu) {
-        throw new ApiError(500, "Error while fetching menu")
+    const apiFeatures = new ApiFeatures(Menu.find({ restaurantId: resid }), req.query)
+        .searchMenu()
+
+    const menu = await apiFeatures.query
+
+    if (!menu || menu.length === 0) {
+        throw new ApiError(404, "Items not found")
     }
 
     return res
