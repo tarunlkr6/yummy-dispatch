@@ -1,10 +1,23 @@
 .header{
     height: 34vw;
     margin: 30px auto;
-    background: url('../../assets/salmon.jpg') no-repeat;
+    /* background: url('../../assets/salmon.jpg') no-repeat; */
     background-size: contain;
     position: relative;
+    overflow: hidden;
+    border-radius: 16px;
 }
+  
+  .video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; 
+  }
+  
 
 .header-contents{
     position: absolute;
@@ -22,11 +35,13 @@
     font-weight: 500;
     color: white;
     font-size: max(4.5vw,22px);
+    opacity: 40%;
 }
 
 .header-contents p{
     color: white;
     font-size: 1vw;
+    opacity: 40%;;
 }
 
 .header-contents button{

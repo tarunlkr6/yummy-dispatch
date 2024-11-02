@@ -7,34 +7,11 @@ import "./Restaurantcard.css";
 
 function RestaurantCard() {
   const { data: Restaurant, isLoading, error } = useGetRestaurantQuery();
-  console.log(Restaurant);
-
-  // const prevSlide = () => {
-  //   console.log("prev");
-  // };
-
-  // const nextSlide = () => {
-  //   console.log("next");
-  // };
 
   return (
     <div className="container mx-auto px-4">
       <div className="flex my-5 items-center justify-between">
         <div className="text-2xl font-bold">Top Restaurant in Odisha</div>
-        {/* <div className="flex">
-          <div
-            className="cursor-pointer flex justify-center items-center w-8 h-8 bg-gray-300 rounded-full mx-2"
-            onClick={prevSlide}
-          >
-            <i className="fa-solid fa-arrow-left"></i>
-          </div>
-          <div
-            className="cursor-pointer flex justify-center items-center w-8 h-8 bg-gray-300 rounded-full mx-2"
-            onClick={nextSlide}
-          >
-            <i className="fa-solid fa-arrow-right"></i>
-          </div>
-        </div> */}
       </div>
 
       {isLoading ? (

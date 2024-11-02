@@ -2,10 +2,9 @@
 import React from "react";
 import "./FoodDisplay.css";
 import FoodItem from "../FoodItem/FoodItem";
-import { useGetFoodListQuery } from "../../slices/foodlistSlice";
+
 
 const FoodDisplay = ({ category }) => {
-  const { data, isLoading, error } = useGetFoodListQuery();
 
   // Extract the food_list from the API response data
   const food_list = data ? data.data : [];

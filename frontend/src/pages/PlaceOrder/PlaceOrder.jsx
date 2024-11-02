@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
 import './PlaceOrder.css'
-import { StoreContext } from '../../context/StoreContext'
 import 'boxicons'
 
 
 const PlaceOrder = () => {
 
-  // const { getTotalCartAmount } = useContext(StoreContext)
   const getTotalCartAmount = ()=>{
     console.log('0')
   }
