@@ -1,12 +1,15 @@
 import React from "react";
 import Card from "./Card";
 import { useGetRestaurantQuery } from "../../../slices/restaurantApitSlice";
-import { Spinner } from "@material-tailwind/react";
-import { Alert } from "@material-tailwind/react";
+import { Spinner, Alert } from "@material-tailwind/react";
 import "./Restaurantcard.css";
 
 function RestaurantCard() {
   const { data: Restaurant, isLoading, error } = useGetRestaurantQuery();
+  console.log(Restaurant); // Check the structure of the response
+
+  // Check if Restaurant and Restaurant.data.restaurants exist and are arrays
+  const isValidData = Restaurant && Array.isArray(Restaurant.data?.restaurants);
 
   return (
     <div className="container mx-auto px-4">
@@ -24,9 +27,15 @@ function RestaurantCard() {
         </Alert>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {Restaurant.data.map((data, index) => (
-            <Card key={index} {...data} />
-          ))}
+          {isValidData ? (
+            Restaurant.data.restaurants.map((data, index) => (
+              <Card key={index} {...data} />
+            ))
+          ) : (
+            <Alert color="yellow" className="my-4">
+              No restaurants available.
+            </Alert>
+          )}
         </div>
       )}
     </div>
