@@ -162,6 +162,10 @@ export default function RestaurantTemplate() {
 
   // Cart management functions
   const addToCart = (item) => {
+
+    console.log(item.id)
+    console.log(item.image[0].url)
+    console.log(item.description)
     setCart((prevCart) => ({
       ...prevCart,
       [item.id]: (prevCart[item.id] || 0) + 1,
@@ -333,32 +337,40 @@ export default function RestaurantTemplate() {
         </div>
 
         {/* Floating navigation */}
-        <nav className="fixed top-1/2 right-4 transform -translate-y-1/2 z-40">
-          <ul className="flex flex-col space-y-4">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <li key={item.id}>
-                  <IconButton
-                    variant={activeSection === item.id ? "filled" : "outlined"}
-                    className={`rounded-full w-12 h-12 flex items-center justify-center ${
-                      isDarkMode
-                        ? "bg-gray-800 text-white"
-                        : "bg-white text-gray-900"
-                    }`}
-                    color={isDarkMode ? "white" : "blue"}
-                    onClick={() => scrollTo(item.id)}
-                  >
-                    <Icon className="h-5 w-5" />
-                    <span className="sr-only">
-                      {item.id.charAt(0).toUpperCase() + item.id.slice(1)}
-                    </span>
-                  </IconButton>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <div className="fixed top-1/2 right-4 transform -translate-y-1/2 z-40 p-4 bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-xl border border-gray-200 dark:border-white/20 shadow-inner">
+          <nav>
+            <ul className="flex flex-col space-y-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.id}>
+                    <IconButton
+                      variant={
+                        activeSection === item.id ? "filled" : "outlined"
+                      }
+                      className={`rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 transform ${
+                        activeSection === item.id
+                          ? "scale-110"
+                          : "hover:scale-105"
+                      } ${
+                        isDarkMode
+                          ? "bg-gray-800 text-white hover:bg-gray-700"
+                          : "bg-white text-gray-900 hover:bg-gray-100"
+                      } shadow-md`}
+                      color={isDarkMode ? "white" : "blue"}
+                      onClick={() => scrollTo(item.id)}
+                    >
+                      <Icon className="h-5 w-5 transition-transform duration-300 hover:rotate-12" />
+                      <span className="sr-only">
+                        {item.id.charAt(0).toUpperCase() + item.id.slice(1)}
+                      </span>
+                    </IconButton>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
 
         <main className="container mx-auto">
           <Link to="/">
@@ -499,7 +511,7 @@ export default function RestaurantTemplate() {
                       ripple={true}
                       className="hover:bg-opacity-80 transition-all duration-300"
                     >
-                     Add to Cart
+                      Add to Cart
                     </Button>
                     {cart[item.id] && (
                       <div className="flex items-center">
@@ -529,14 +541,6 @@ export default function RestaurantTemplate() {
                   </CardFooter>
                 </Card>
               ))}
-            </div>
-            <div className="mt-8 text-right">
-              <Typography variant="h6">
-                Total Items: {getTotalItems()}
-              </Typography>
-              <Typography variant="h5" color={isDarkMode ? "blue" : "blue"}>
-                Total Price: ${getTotalPrice().toFixed(2)}
-              </Typography>
             </div>
           </Section>
 
