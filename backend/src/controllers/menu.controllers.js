@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiFeatures } from "../utils/ApiFeatures.js"
+import mongoose from "mongoose"
 
 
 const getMenuItem = asyncHandler(async (req, res) => {
@@ -18,11 +19,32 @@ const getMenuItem = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Items not found")
     }
 
+
     return res
         .status(200)
         .json(new ApiResponse(200, menu, "Menu fetched successfully"))
 })
 
+// get menu by id
+const getMenuById = asyncHandler(async (req, res) => {
+    const { resid, itemid } = req.params
+
+    const menu = await Menu.findOne({ _id: itemid, restaurantId: resid })
+
+    if (menu.restaurantId !== resid) {
+        throw new ApiError(401, "Not accessible")
+    }
+
+    if (!menu) {
+        throw new ApiError(404, "Item does not found")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, menu, "Item fetched successfully"))
+})
+
+// create menu
 const createMenuItem = asyncHandler(async (req, res) => {
     const { itemName, price, description, category, isVeg, isAvailable } = req.body
 
@@ -105,9 +127,79 @@ const deleteMenuItem = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Menu item deleted successfully"))
 })
 
+// menuReview
+const addMenuReview = asyncHandler(async (req, res) => {
+    const { resid, menuid } = req.params
+    const userId = req.user?._id
+    const { name, rating, review } = req.body
+
+    if (rating < 0 || rating > 5) {
+        throw new ApiError(400, "Rating must be between 1 and 5.")
+    }
+
+    const menuItem = await Menu.findById(menuid);
+
+    if (!menuItem) {
+        throw new ApiError(404, "Menu item not found")
+    }
+
+    if (menuItem.restaurantId.toString() !== resid) {
+        throw new ApiError(401, "Access Denied")
+    }
+    const alreadyReviewed = menuItem.reviews.find(
+        (review) => review.user.toString() === userId.toString()
+    );
+
+    if (alreadyReviewed) {
+        throw new ApiError(400, "You have already reviewed this item.")
+    }
+
+    const newReview = {
+        user: userId,
+        name,
+        rating,
+        review,
+    };
+
+    menuItem.reviews.push(newReview);
+
+    let avg = 0
+    menuItem.reviews.forEach((rev) => {
+        avg += rev.rating
+    })
+
+    menuItem.rating = avg / menuItem.reviews.length
+
+    await menuItem.save({ validateBeforeSave: false });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Review added successfully"))
+})
+
+const getMenuReviews = asyncHandler(async (req, res) => {
+    const { resid, menuid } = req.params
+    const menuItem = await Menu.findById(menuid)
+
+    if (!menuItem) {
+        throw new ApiError(404, "Item not found")
+    }
+
+    if (menuItem.restaurantId.toString() !== resid) {
+        throw new ApiError(401, "Access Denied")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, menuItem.reviews, "Review fetched successfully."))
+})
+
 export {
     getMenuItem,
     createMenuItem,
     updateMenuItem,
     deleteMenuItem,
+    getMenuById,
+    addMenuReview,
+    getMenuReviews,
 }
