@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart"))
-  : { cartItems: [], OrderDetails: [], paymentMethod: 'PayPal' };
+  : { cartItems: [], itemsPrice: 0, taxPrice: 0, serviceCharge: 0, totalPrice: 0, paymentMethod: "PayPal" };
 
-const addDecimals = () => {
+const addDecimals = (num) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };
 
@@ -13,61 +13,97 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const item = action.payload;
-      const existingItem = state.cartItems.find((x) => x._id === item._id);
+      console.log(action.payload)
+      console.log('action ',action.payload.item.id)
 
-      if (existingItem) {
-        state.cartItems = state.cartitems.map((x) =>
-          x._id === existingItem._id ? item : x
-        );
+      const existingItemIndex = state.cartItems.findIndex(
+        (x) => x?.item.id === action.payload.item.id
+      );
+      console.log('existingItemIndex ',existingItemIndex)
+    
+      if (existingItemIndex !== -1) { // Check if item exists using !== -1
+        state.cartItems[existingItemIndex].qty += 1;
       } else {
-        state.cartItems = [...state.cartItems, item];
+        // Add a new item to the cart
+        const addNewItem = {
+          ...action.payload,
+          qty: action.payload.qty > 1 ? action.payload.qty : 1,
+        };
+        state.cartItems.push(addNewItem);
       }
-
-      // calculate items price
+    
+      // Calculate items price
       state.itemsPrice = addDecimals(
-        state.cartItems.reduce(
-          (acc, item) => acc + item.price * item.quantity,
-          0
-        )
+        state.cartItems.reduce((acc, item) => acc + item.item.price * item.qty, 0)
+      );
+    
+    
+      // Calculate service charge
+      state.serviceCharge = addDecimals(state.itemsPrice * 0.1); // 10% service charge
+    
+      // Calculate tax price (18% tax)
+      state.taxPrice = addDecimals(0.18 * state.itemsPrice);
+    
+      // Calculate total price
+      state.totalPrice = (
+        Number(state.itemsPrice) +
+        Number(state.serviceCharge) +
+        Number(state.taxPrice)
+      ).toFixed(2);
+    
+      console.log('Total Price:', state.totalPrice);
+    
+      localStorage.setItem("cart", JSON.stringify(state));
+    },
+    
+    removeFromCart: (state, action) => {
+      const itemToRemove = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (item) => item.item._id !== itemToRemove.item._id
       );
 
-      // calculate shipping price (order 100 > free else 10$)
-      state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
-
-      //const service charge
-
-      const serviceCharge = addDecimals(state.itemsPrice / state.cartItems);
-
-      // calculate tax price
-      const taxPrice = addDecimals(Number(0.18 * state.itemsPrice));
-
-      // calculate total price
-      const totalPrice = (
+      // Recalculate prices after item removal
+      state.itemsPrice = addDecimals(
+        state.cartItems.reduce((acc, item) => acc + item.item.price * item.qty, 0)
+      );
+      state.serviceCharge = addDecimals(state.itemsPrice * 0.05);
+      state.taxPrice = addDecimals(state.itemsPrice * 0.18);
+      state.totalPrice = addDecimals(
         Number(state.itemsPrice) +
-        Number(state.taxPrice) +
-        Number(state.serviceCharge)
-      ).toFixed(2);
+        Number(state.serviceCharge) +
+        Number(state.taxPrice)
+      );
 
-      localStorage.setItem('cart', JSON.stringify(state));
-
+      localStorage.setItem("cart", JSON.stringify(state));
     },
-    removeFromCart: (state, action) => {
-        const itemToRemove = action.payload;
-      const updatedCartItems = state.cartItems.filter((item) => item._id!== itemToRemove._id);
-    },
-    clearAllCart: (state, action) => {
+    clearAllCart: (state) => {
       state.cartItems = [];
       state.itemsPrice = 0;
-      state.shippingPrice = 0;
       state.serviceCharge = 0;
       state.taxPrice = 0;
       state.totalPrice = 0;
-      localStorage.removeItem('cart');
-    }
-
+      localStorage.removeItem("cart");
+    },
+    incrementQty: (state, action) => {
+      const itemIndex = state.cartItems.findIndex(
+        (x) => x.item._id === action.payload._id
+      );
+      if (itemIndex !== -1) {
+        state.cartItems[itemIndex].qty += 1;
+        this.recalculateTotals(state);
+      }
+    },
+    decrementQty: (state, action) => {
+      const itemIndex = state.cartItems.findIndex(
+        (x) => x.item._id === action.payload._id
+      );
+      if (itemIndex !== -1 && state.cartItems[itemIndex].qty > 1) {
+        state.cartItems[itemIndex].qty -= 1;
+        this.recalculateTotals(state);
+      }
+    },
   },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions
+export const { addToCart, removeFromCart, clearAllCart, incrementQty, decrementQty } = cartSlice.actions;
 export default cartSlice.reducer;

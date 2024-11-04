@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Spinner } from "@material-tailwind/react";
 import { useGetRestaurantDetailsQuery } from "../../../slices/restaurantApitSlice";
+import { addToCart } from "../../../slices/cartSlice";
 import {
   ChefHat,
   Star,
@@ -45,31 +46,12 @@ import {
   Carousel,
 } from "@material-tailwind/react";
 import { useGetMenuByRestaurantIdQuery } from "../../../slices/menuApiSlice";
+import { useGetOfferByRestaurantIdQuery } from "../../../slices/offerApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetFeedbackByRestaurantIdQuery } from "../../../slices/feedbackApiSlice";
 
 // Default data for special offers, chefs, and feedbacks
 const defaultData = {
-  specialOffers: [
-    {
-      id: 1,
-      name: "Happy Hour",
-      description: "50% off all drinks from 4-6 PM",
-      image:
-        "https://images.squarespace-cdn.com/content/v1/56e0a7dae707eb4ea75d3915/1d1fa0d4-c08a-4c5b-98ff-478d9ced7b6d/TUESDAYS+%282%29.png",
-    },
-    {
-      id: 2,
-      name: "Family Sunday",
-      description: "Kids eat free on Sundays",
-      image:
-        "https://cdn.create.vista.com/downloads/51586537-4bcc-4f0b-a36a-461fbd4c45ce_640.jpeg",
-    },
-    {
-      id: 3,
-      name: "Date Night Special",
-      description: "3-course meal for two at $9.95",
-      image: "https://i.ytimg.com/vi/pd4ekjnZHVk/sddefault.jpg",
-    },
-  ],
   chefs: [
     {
       id: 1,
@@ -86,20 +68,6 @@ const defaultData = {
         "https://www.shutterstock.com/image-photo/young-beautiful-asian-woman-chef-600nw-2311174449.jpg",
     },
   ],
-  feedbacks: [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      comment: "Absolutely loved the ambiance and the food!",
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "Bob Williams",
-      comment: "Great service and delicious meals. Will come back!",
-      rating: 4,
-    },
-  ],
 };
 
 const navItems = [
@@ -114,13 +82,22 @@ const navItems = [
 
 export default function RestaurantTemplate() {
   const { id } = useParams();
+
+  const { cartItems } = useSelector((state) => state?.cart);
+  console.log("cartItems", cartItems);
+  const dispatch = useDispatch();
   const { data, isLoading, error } = useGetRestaurantDetailsQuery(id);
+  console.log("restaurant", data);
+  const { data: offers } = useGetOfferByRestaurantIdQuery(id);
+  console.log("offers ", offers);
+  const { data: feedback } = useGetFeedbackByRestaurantIdQuery(id);
+  console.log("feedback", feedback);
+
   const {
     data: menu,
     isLoading: menuLoading,
     error: menuError,
   } = useGetMenuByRestaurantIdQuery(id);
-  console.log(menu);
 
   // State for restaurant data
   const [restaurantData, setRestaurantData] = useState(null);
@@ -133,7 +110,7 @@ export default function RestaurantTemplate() {
 
   // Fetch restaurant data on component mount
   useEffect(() => {
-    if (data && menu) {
+    if (data && menu && offers && feedback) {
       setRestaurantData({
         ...defaultData,
         menuItems: menu.data.map((item) => ({
@@ -145,6 +122,18 @@ export default function RestaurantTemplate() {
           category: item.category,
           isVeg: item.isVeg,
           isAvailable: item.isAvailable,
+        })),
+        specialOffers: offers.data.map((offer) => ({
+          id: offer._id,
+          name: offer.offerName,
+          description: offer.offerDescription,
+          image: offer.offerImage,
+        })),
+        feedbacks: feedback.data.map((fb) => ({
+          id: fb._id,
+          name: fb.name,
+          comment: fb.review,
+          rating: fb.rating,
         })),
         restaurantInfo: {
           name: data.data.name,
@@ -158,42 +147,19 @@ export default function RestaurantTemplate() {
         },
       });
     }
-  }, [data, menu]);
+  }, [data, menu, offers, feedback]);
+
+  console.log("restaurant data", restaurantData);
 
   // Cart management functions
-  const addToCart = (item) => {
-
-    console.log(item.id)
-    console.log(item.image[0].url)
-    console.log(item.description)
-    setCart((prevCart) => ({
-      ...prevCart,
-      [item.id]: (prevCart[item.id] || 0) + 1,
-    }));
-  };
-
-  const removeFromCart = (item) => {
-    setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      if (newCart[item.id] > 1) {
-        newCart[item.id]--;
-      } else {
-        delete newCart[item.id];
-      }
-      return newCart;
-    });
-  };
-
-  const getTotalItems = () => {
-    return Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
-  };
-
-  const getTotalPrice = () => {
-    return Object.entries(cart).reduce((sum, [itemId, quantity]) => {
-      const item = restaurantData?.menuItems.find((item) => item.id === itemId);
-      return sum + (item ? item.price * quantity : 0);
-    }, 0);
-  };
+  const addToCartHandler = useCallback((item) => {
+    console.log("item added");
+    dispatch(addToCart({ item, qty: 1 })), [dispatch];
+  });
+  
+  const submitHandler = ()=>{
+    console.log('submit')
+  }
 
   // Navigation function
   const scrollTo = (id) => {
@@ -421,7 +387,7 @@ export default function RestaurantTemplate() {
           </Section>
 
           {/* Menu Section */}
-          <Section id="menu" title="Our Menu">
+          {/* <Section id="menu" title="Our Menu">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
               {restaurantData.menuItems.map((item) => (
                 <Card
@@ -430,15 +396,7 @@ export default function RestaurantTemplate() {
                     isDarkMode ? "bg-gray-800 text-white" : "bg-white"
                   }`}
                 >
-                  <CardHeader className="border-solid border-2 border-black p-2 ">
-                    <Typography variant="h5">{item.name}</Typography>
-                    <Typography
-                      color={isDarkMode ? "gray" : "blue-gray"}
-                      className="mt-1 line-clamp-3"
-                    >
-                      {item.description}
-                    </Typography>
-                  </CardHeader>
+                  
                   <CardBody>
                     <div className="relative h-48 overflow-hidden rounded-md">
                       <Carousel
@@ -495,6 +453,15 @@ export default function RestaurantTemplate() {
                         ))}
                       </Carousel>
                     </div>
+                    <div className="">
+                        <Typography variant="h5">{item.name}</Typography>
+                        <Typography
+                          color={isDarkMode ? "gray" : "blue-gray"}
+                          className="mt-1 line-clamp-2"
+                        >
+                          {item.description}
+                        </Typography>
+                      </div>
                     <Typography
                       variant="h6"
                       color={isDarkMode ? "gray" : "blue-gray"}
@@ -505,7 +472,9 @@ export default function RestaurantTemplate() {
                   </CardBody>
                   <CardFooter className="flex justify-between">
                     <Button
-                      onClick={() => addToCart(item)}
+                      onClick={() => {
+                        addToCartHandler(item);
+                      }}
                       color={isDarkMode ? "white" : "blue"}
                       size="sm"
                       ripple={true}
@@ -513,31 +482,106 @@ export default function RestaurantTemplate() {
                     >
                       Add to Cart
                     </Button>
-                    {cart[item.id] && (
-                      <div className="flex items-center">
-                        <IconButton
-                          variant="outlined"
-                          color={isDarkMode ? "white" : "blue"}
-                          size="sm"
-                          onClick={() => removeFromCart(item)}
-                          className="hover:bg-opacity-20 transition-all duration-300"
-                        >
-                          <Minus className="h-4 w-4" />
-                        </IconButton>
-                        <Typography className="mx-2">
-                          {cart[item.id]}
-                        </Typography>
-                        <IconButton
-                          variant="outlined"
-                          color={isDarkMode ? "white" : "blue"}
-                          size="sm"
-                          onClick={() => addToCart(item)}
-                          className="hover:bg-opacity-20 transition-all duration-300"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </IconButton>
-                      </div>
-                    )}
+          
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </Section> */}
+
+          {/* Menu Section */}
+          <Section id="menu" title="Our Menu">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {restaurantData.menuItems.map((item) => (
+                <Card
+                  key={item.id}
+                  className={`w-full shadow-lg ${
+                    isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                  }`}
+                >
+                  <CardBody>
+                    <div className="relative h-48 overflow-hidden rounded-md">
+                      <Carousel
+                        className="rounded-xl"
+                        navigation={({
+                          setActiveIndex,
+                          activeIndex,
+                          length,
+                        }) => (
+                          <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+                            {new Array(length).fill("").map((_, i) => (
+                              <span
+                                key={i}
+                                className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                                  activeIndex === i
+                                    ? "w-8 bg-white"
+                                    : "w-4 bg-white/50"
+                                }`}
+                                onClick={() => setActiveIndex(i)}
+                              />
+                            ))}
+                          </div>
+                        )}
+                        prevArrow={({ handlePrev }) => (
+                          <IconButton
+                            variant="text"
+                            color="white"
+                            size="sm"
+                            onClick={handlePrev}
+                            className="!absolute top-2/4 left-4 -translate-y-2/4"
+                          >
+                            <ChevronLeft strokeWidth={2} className="w-4 h-4" />
+                          </IconButton>
+                        )}
+                        nextArrow={({ handleNext }) => (
+                          <IconButton
+                            variant="text"
+                            color="white"
+                            size="sm"
+                            onClick={handleNext}
+                            className="!absolute top-2/4 !right-4 -translate-y-2/4"
+                          >
+                            <ChevronRight strokeWidth={2} className="w-4 h-4" />
+                          </IconButton>
+                        )}
+                      >
+                        {item.image.map((img, index) => (
+                          <img
+                            key={index}
+                            src={img.url}
+                            alt={`${item.name} - view ${index + 1}`}
+                            className="h-full w-full object-cover"
+                          />
+                        ))}
+                      </Carousel>
+                    </div>
+                    <div className="mt-4">
+                      <Typography variant="h5">{item.name}</Typography>
+                      <Typography
+                        color={isDarkMode ? "gray" : "blue-gray"}
+                        className="mt-1 line-clamp-2"
+                      >
+                        {item.description}
+                      </Typography>
+                    </div>
+                    <Typography
+                      variant="h6"
+                      color={isDarkMode ? "gray" : "blue-gray"}
+                      className="mt-2"
+                    >
+                      ${item.price.toFixed(2)}
+                    </Typography>
+                  </CardBody>
+                  <CardFooter className="flex justify-between pt-2">
+                    <Button
+                      onClick={() => addToCartHandler(item)}
+                      color={isDarkMode ? "white" : "orange"}
+                      size="sm"
+                      ripple={true}
+                      className="hover:bg-opacity-80 transition-all duration-300"
+                    >
+                      Add to Cart
+                    </Button>
                   </CardFooter>
                 </Card>
               ))}
@@ -669,7 +713,7 @@ export default function RestaurantTemplate() {
           {/* Feedback Section */}
           <Section id="feedback" title="Customer Feedback">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {restaurantData.feedbacks.map((feedback) => (
+              {restaurantData.feedbacks.length > 0 ? (restaurantData.feedbacks.map((feedback, id) => (
                 <Card
                   key={feedback.id}
                   className={`${
@@ -677,7 +721,18 @@ export default function RestaurantTemplate() {
                   } border border-gray-200 shadow-xl`}
                 >
                   <CardHeader>
-                    <Typography variant="h5">{feedback.name}</Typography>
+                    {/* <Typography variant="h5">{feedback.name}</Typography>
+                    <div className="flex">
+                      {[...Array(feedback.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
+                    </div> */}
+                  </CardHeader>
+                  <CardBody>
+                  <Typography variant="h5 p-3">{feedback.name}</Typography>
                     <div className="flex">
                       {[...Array(feedback.rating)].map((_, i) => (
                         <Star
@@ -686,12 +741,10 @@ export default function RestaurantTemplate() {
                         />
                       ))}
                     </div>
-                  </CardHeader>
-                  <CardBody>
                     <Typography>{feedback.comment}</Typography>
                   </CardBody>
                 </Card>
-              ))}
+              ))): (<h3>No Reviews</h3>)}
             </div>
           </Section>
 
@@ -746,7 +799,7 @@ export default function RestaurantTemplate() {
             <Typography variant="h5">Book a Table</Typography>
           </DialogHeader>
           <DialogBody divider>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={submitHandler}>
               <div>
                 <Typography variant="h6">Name</Typography>
                 <Input
