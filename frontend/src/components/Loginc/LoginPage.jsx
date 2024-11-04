@@ -53,8 +53,11 @@ const LoginPage = ({ setShowLogin }) => {
     if (currState === "Login") {
       try {
         const res = await login(data).unwrap();
+        console.log(res)
         dispatch(setCredentials({ ...res }));
-        console.log(res);
+      if (res.success){
+          toast.success(`Welcome back ${res.data.user.fullName}`);
+        }
         setShowLogin(false);
         navigate("/");
       } catch (error) {
@@ -67,6 +70,11 @@ const LoginPage = ({ setShowLogin }) => {
       } else {
         try {
           const res = await register(data).unwrap();
+          if(res.error){
+            toast.error(error)
+          }else if(res.success){
+            toast.success(`Successfully registered, Please login to your account`)
+          }
           dispatch(setCredentials({ ...res }));
           navigate("/");
         } catch (error) {

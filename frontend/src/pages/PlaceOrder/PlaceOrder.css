@@ -1,40 +1,87 @@
 .place-order {
     display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: 50px;
-    margin-top: 100px;
-}
-
-.place-order-left {
-    width: 100%;
-    max-width: max(30%, 500px);
-}
-
-.place-order-left .title {
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 50px;
-}
-
-.place-order-left input {
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 40px auto;
+    max-width: 1200px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .place-order-left {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .place-order-right {
+    flex-basis: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 15px;
+  }
+  
+  .multi-fields {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #c5c5c5;
     border-radius: 4px;
-    outline-color: tomato;
-}
-
-.place-order-left .multi-fields {
+    border: 1px solid #ced4da;
+    margin-bottom: 15px;
+    transition: border-color 0.2s;
+  }
+  
+  input:focus {
+    border-color: #80bdff;
+    outline: none;
+  }
+  
+  .cart-total {
+    background-color: #f1f3f5;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .cart-totals-details {
     display: flex;
-    gap: 10px;
-}
-
-.place-order-right {
-    width: 100%;
-    max-width: max(40%, 500px);
-}
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+  }
+  
+  li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  li:last-child {
+    border-bottom: none;
+  }
+  
 
 .place-order .cart-total button {
     margin-top: 30px;

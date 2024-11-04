@@ -192,7 +192,7 @@ const MenuList = ({ isOpen, onClose, restaurantId }) => {
             >
               <div className="grid grid-cols-[2fr_1fr_1fr] sm:grid-cols-1">
                 <img
-                  src={item.image[1].url}
+                  src={item.image[0].url}
                   alt={item.itemName}
                   className="w-full h-48 bject-cover col-span-1 sm:col-span-full"
                 />
