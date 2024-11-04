@@ -17,7 +17,7 @@ const restaurantReviewSchema = new Schema({
     required: true,
     default: 0,
   },
-  comment: {
+  review: {
     type: String,
     required: true,
   },

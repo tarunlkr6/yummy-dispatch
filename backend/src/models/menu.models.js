@@ -6,6 +6,11 @@ const menuItemReviewSchema = new Schema({
         ref: "User",
         required: true,
     },
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     rating: {
         type: Number,
         min: 1,
@@ -52,6 +57,12 @@ const menuSchema = new Schema({
         type: Boolean,
         required: true,
         default: true,
+    },
+    rating: {
+        type: Number,
+        min: 0,
+        max: 1,
+        default: 0,
     },
     isAvailable: {
         type: Boolean,

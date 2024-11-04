@@ -91,8 +91,70 @@ const registerRestaurant = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, createdRestaurant, "Restaurant created Successfully"))
 })
 
+const addRestaurantReview = asyncHandler(async (req, res) => {
+    const { resid } = req.params
+    const userId = req.user?._id
+    const { name, rating, review } = req.body
+
+    if (rating < 0 || rating > 5) {
+        throw new ApiError(400, "Rating must be between 1 and 5.")
+    }
+
+    const restaurant = await Restaurant.findById(resid)
+
+
+    if (!restaurant) {
+        throw new ApiError(404, "Restaurant not found")
+    }
+
+    const alreadyReviewed = restaurant.restaurantReviews?.find(
+        (review) => review.user && review.user._id.toString() === userId.toString()
+    );
+
+    if (alreadyReviewed) {
+        throw new ApiError(400, "You have already reviewed this item.")
+    }
+
+    const newReview = {
+        user: userId,
+        name,
+        rating: Number(rating),
+        review,
+    }
+
+    restaurant.restaurantReviews.push(newReview)
+
+    let avg = 0
+    restaurant.restaurantReviews.forEach((rev) => {
+        avg += rev.rating
+    })
+
+    restaurant.rating = avg / restaurant.restaurantReviews.length
+
+    await restaurant.save({ validateBeforeSave: false });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Review added successfully"))
+})
+
+const getRestaurantReview = asyncHandler(async (req, res) => {
+    const { resid } = req.params
+
+    const restaurant = await Restaurant.findById(resid)
+
+    if (!restaurant) {
+        throw new ApiError(404, "Restaurant not found")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, restaurant.restaurantReviews, "Review fetched successfully"))
+})
 export {
     registerRestaurant,
     getRestaurant,
     getRestaurantById,
+    addRestaurantReview,
+    getRestaurantReview,
 }
