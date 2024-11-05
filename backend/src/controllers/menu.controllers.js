@@ -74,7 +74,6 @@ const createMenuItem = asyncHandler(async (req, res) => {
         itemName,
         price,
         image: imageArray,
-        price,
         description,
         category,
         isVeg,
@@ -93,18 +92,46 @@ const createMenuItem = asyncHandler(async (req, res) => {
 
 const updateMenuItem = asyncHandler(async (req, res) => {
     const { resid, itemid } = req.params
-    const { price, description, isAvailable } = req.body
+    const { itemName, price, description, category, isAvailable, isVeg } = req.body
 
-    if (!price && !description && !isAvailable) {
+    if (!(price && description && itemName && category)) {
         throw new ApiError(400, "All fields are required")
+    }
+
+    const item = await Menu.findOne({ _id: itemid, restaurantId: resid })
+
+    if (!item) {
+        throw new ApiError(404, "Not found")
+    }
+
+    let imageLocalPath = []
+    imageLocalPath = req.files.image
+    //console.log(imageLocalPath)
+
+    if (!imageLocalPath) {
+        throw new ApiError(401, "Image is required")
+    }
+
+    let imageArray = []
+    for (let i = 0; i < imageLocalPath.length; i++) {
+        let imageLinks = imageLocalPath[i]?.path;
+        const result = await uploadOnCloudinary(imageLinks)
+        imageArray.push({
+            publicId: result.public_id,
+            url: result.url
+        })
     }
 
     const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
         $set: {
+            itemName,
             price,
             description,
-            isAvailable
-        }
+            category,
+            image: imageArray,
+            isAvailable,
+            isVeg,
+        },
     }, {
         new: true
     })
