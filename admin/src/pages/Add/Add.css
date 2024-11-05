@@ -1,45 +1,160 @@
-.add{
-    width: 70%;
-    margin-left: max(5vw, 25px);
-    margin-top: 50px;
-    color: #6d6d6d;
-    font-size: 16px;
-}
-
-.add form{
-    gap: 20px;
-}
-
-.add-img-upload img{
-    width: 120px;
-}
-
-.add-product-name,
-.add-product-description{
-    width: max(40%, 280px);
-}
-
-.add-product-name input,
-.add-product-description textarea{
-    padding: 10px;
-}
-
-.add-category-price{
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  .add {
+    position: relative;
     display: flex;
-    gap: 30px;
-}
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-.add-category-price select,
-.add-category-price input{
-    max-width: 140px;
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; /* Place the video behind other elements */
+    filter: brightness(0.5); /* Dim video for readability */
+  }
+  
+  .add video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Place the video behind other elements */
+    filter: brightness(0.5); /* Dim video for readability */
+  }
+  
+  form {
+    background: transparent; /* Set background to transparent */
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    transition: transform 0.3s ease, backdrop-filter 0.3s ease;
+    backdrop-filter: blur(12px) saturate(180%); /* Keep the blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    z-index: 1; /* Ensure form is above video */
+  }
+  
+  .add-img-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .add-img-upload img {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .add-img-upload img:hover {
+    transform: scale(1.05);
+  }
+  
+  .add-product-name,
+  .add-product-description,
+  .add-category-price {
+    margin-bottom: 15px;
+  }
+  
+  .add-product-name input,
+  .add-product-description textarea,
+  .add-category-price select,
+  .add-category-price input {
+    width: 100%;
     padding: 10px;
-}
-
-.add-btn{
-    max-width: 120px;
-    border: none;
-    padding: 10px;
-    background-color: black;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 14px;
+    transition: border 0.3s ease, background 0.3s ease;
+  }
+  
+  .add-product-name input::placeholder,
+  .add-product-description textarea::placeholder,
+  .add-category-price input::placeholder {
+    color: #e0e0e0;
+  }
+  
+  .add-product-name input:focus,
+  .add-product-description textarea:focus,
+  .add-category-price select:focus,
+  .add-category-price input:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+  }
+  
+  .add-product-description textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  .add-category-price {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .add-category,
+  .add-price {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .add-price {
+    margin-right: 0;
+  }
+  
+  .add-btn {
+    background: #4a90e2;
     color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-}
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .add-btn:hover {
+    background: #357abd;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .add {
+      padding: 5px;
+    }
+  
+    form {
+      padding: 15px;
+    }
+  
+    .add-category-price {
+      flex-direction: column;
+    }
+  
+    .add-category,
+    .add-price {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+  

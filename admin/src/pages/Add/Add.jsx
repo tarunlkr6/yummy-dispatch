@@ -1,53 +1,77 @@
 import React, { useState } from 'react';
 import './Add.css';
 import { assets } from '../../assets/assets';
-import axios from 'axios'
+import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const Add = ({url}) => {
-
+const Add = ({ url }) => {
+  const resid = '67251d6a3e030e9e961800b0';
   const [image, setImage] = useState(false);
-
   const [data, setData] = useState({
     name: '',
     description: '',
     price: '',
-    category: 'Salad', //default category 'Salad'
+    category: 'Salad', // default category 'Salad'
   });
 
-  // Update the state based on the name of the input field
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const onSubmitHandler = async(e) => {
-    e.preventDefault()
-    const formData = new FormData() //insert all form data into One formdata
-    formData.append('name', data.name) //insert all data..
-    formData.append('description', data.description)
-    formData.append('price', Number(data.price))
-    formData.append('category', data.category)
-    formData.append('image', image)
-    const response = await axios.post(`${url}/api/food/add`,formData);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('itemName', data.name);
+    formData.append('description', data.description);
+    formData.append('price', Number(data.price));
+    formData.append('category', data.category);
+    formData.append('image', image);
 
-    if(response.data.success){
+    try {
+
+      const token = JSON.parse(localStorage.getItem('token'))
+      console.log(token)
+
+//       const tokenData = JSON.parse(localStorage.getItem('token'));
+// const token = tokenData?.token; 
+
+
+      console.log(token);
+
+      console.log(`${token}`);
+
+      const response = await axios.post(`${url}/${resid}/menu/add`, formData, {
+        headers: {
+          'Authorization' : `Bearer ${token}`, 
+        },
+      });
+
+      console.log(response.data)
+
+      if (response.data.success) {
         setData({
-            name: '',
-            description: '',
-            price: '',
-            category: 'Salad', //default category 'Salad'
-        })
-        setImage(false)
-        toast.success(response.data.message)
-    }else{
-        toast.error(response.data.message)
+          name: '',
+          description: '',
+          price: '',
+          category: 'Salad',
+        });
+        setImage(false);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        toast.error("Unauthorized. Please log in again.");
+      } else {
+        toast.error("An error occurred while adding the food item.");
+      }
     }
-  }
-  
+  };
 
   return (
-    <div className="add">
+    <div className="body">
       <form className="flex-col" onSubmit={onSubmitHandler}>
         <div className="add-img-upload flex-col">
           <p>Upload Image</p>
@@ -71,6 +95,7 @@ const Add = ({url}) => {
             type="text"
             name="name"
             placeholder="Type here.."
+            required
           />
         </div>
 
@@ -82,6 +107,7 @@ const Add = ({url}) => {
             name="description"
             rows="6"
             placeholder="Write content here.."
+            required
           ></textarea>
         </div>
 
@@ -115,6 +141,7 @@ const Add = ({url}) => {
               type="number"
               name="price"
               placeholder="$10"
+              required
             />
           </div>
         </div>

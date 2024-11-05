@@ -2,20 +2,30 @@ import React from "react";
 import "./navbar.css";
 import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <div className="navbar">
       <div className="left-navbar-section">
-        <img className="logo" src={assets.logo} alt="logo" />
+        <Link to="/dashboard" className="logo-container">
+          <img src={assets.logo} className="logo rounded-full" alt="Logo" />
+        </Link>
+        <div className="nav-links">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/services" className="nav-link">Services</Link>
+          <Link to="/contact" className="nav-link">Contact</Link>
+        </div>
       </div>
+
       <div className="right-navbar-section">
-        <img
-          className="profile"
-          src={assets.profile_image}
-          alt="profile logo"
-        />
-        {/* <Link to="/register">Register</Link>
-        <Link to="/login">Login</Link> */}
+        <Link to="/profile" className="profile-container">
+          <img
+            className="profile"
+            src={assets.profile_image}
+            alt="Profile"
+          />
+        </Link>
       </div>
     </div>
   );

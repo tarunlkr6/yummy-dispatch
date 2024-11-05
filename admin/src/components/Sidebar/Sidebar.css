@@ -1,39 +1,59 @@
-/* Sidebar.css */
+/* Sidebar container */
 .sidebar {
+    position: fixed;
+    top: 60px; /* Position below the navbar */
+    left: 0;
     width: 18%;
-    min-height: calc(100vh - 60px); /* Adjust height to avoid overlapping Navbar */
-    margin-top: 60px; /* Match Navbar height */
-    background-color: #f5f5f5;
-    border: 1.5px solid #a9a9a9;
-    font-size: max(1vw, 10px);
-}
-
-.sidebar-options {
+    height: calc(100vh - 60px); /* Full height minus Navbar height */
     padding-top: 20px;
-    padding-left: 20%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
+    background-color: #333;
+    color: #fff;
+    z-index: 900;
+    overflow-y: auto;
 }
 
+/* Sidebar header styling */
+.sidebar-header {
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+/* Sidebar options styling */
+.sidebar-options {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Sidebar option styling */
 .sidebar-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    border: 1px solid #a9a9a9;
-    border-right: 0;
-    padding: 8px 10px;
-    border-radius: 3px 0px 0px 3px;
+    gap: 12px; /* Space between icon and text */
+    padding: 12px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.sidebar-option i {
+    font-size: 1.5rem; /* Icon size */
+}
+
+.sidebar-option p {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+}
+
+.sidebar-option:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
     cursor: pointer;
-}
-
-.sidebar-option.active {
-    background-color: #fff0ed;
-    border-color: tomato;
-}
-
-@media (max-width: 900px) {
-    .sidebar-option p {
-        display: none;
-    }
 }

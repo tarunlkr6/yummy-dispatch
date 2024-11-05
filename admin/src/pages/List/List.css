@@ -1,27 +1,148 @@
-.list-table-format{
-    display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
+/* Container styling */
+.list-container {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden; /* Hide scroll bar */
+}
+
+/* Background video styling */
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; /* Send the video behind the content overlay */
+}
+
+/* Content overlay styling */
+.content-overlay {
+    position: relative;
+    z-index: 1; /* Place content above the background video */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    border: 1px solid #acacac;
-    font-size: 13px;
+    padding: 50px 20px; /* Adjust padding for better spacing */
+    height: 100%; /* Allow content to stretch full height */
+    overflow: auto; /* Enable scrolling */
 }
 
-.list-table-format.title{
-    background-color: #f9f9f9;
+/* Header styling */
+.list-header {
+    text-align: center;
+    color: #fff;
+    animation: fadeInDown 1s ease;
 }
 
-.list-table-format img{
-    width: 50px;
+.list-header h1 {
+    font-size: 3rem;
+    color: #ff6f61;
+    margin-bottom: 10px;
 }
 
-@media (max-width: 600px) {
-    .list-table-format{
-        grid-template-columns: 1fr 3fr 1fr;
-        gap: 15px;
+.list-header p {
+    font-size: 1.5rem;
+    color: #ddd;
+}
+
+/* Grid layout for items */
+.list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Limit width for better readability */
+    margin-top: 20px;
+}
+
+/* Card styling */
+.list-card {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* For hover effects */
+}
+
+.list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Card image */
+.list-card-image img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Card content */
+.list-card-content {
+    padding: 15px;
+    text-align: center;
+}
+
+.list-card-content h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.list-card-content .category {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.list-card-content .price {
+    font-size: 1.2rem;
+    color: #ff6f61;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* Remove button */
+.remove-btn {
+    background-color: #ff6f61;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+    background-color: #e85a51;
+}
+
+.list-card.grayscale {
+    filter: grayscale(100%);
+  }
+  
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .list-header h1 {
+        font-size: 2.5rem;
     }
-    .list-table-format.title{
-        display: none;
+
+    .list-header p {
+        font-size: 1.2rem;
     }
+
+    .list-card-image img {
+        height: 120px;
+    }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
