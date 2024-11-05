@@ -1,37 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from '../../assets/images-1.jpg';
+import axios from "axios";
 
 function RestaurantLogin() {
-  const url = 'http://localhost:8080/api/v1/restaurant'
+  const url = 'http://localhost:8080/api/v1/user';
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
 
-  const onSubmitHandler = async(e) => {
-    e.preventDefault()
-    const formData = new FormData() //insert all form data into One formdata
-    formData.append('email', data.email)
-    formData.append('password', data.password)
-    const response = await axios.post (`${url}/login`, data);
+    try {
+      const response = await axios.post(`${url}/login`, { email, password });
+      console.log(response);
 
-    if(response.data.success){
-        setData({
-            email: '',
-            password: '',
-        })
-        toast.success(response.data.message)
-    }else{
-        toast.error(response.data.message)
+      if (response.data.success) {
+        console.log(response.data.data.accessToken);
+        localStorage.setItem('token', JSON.stringify(response.data.data.accessToken));
+        setEmail('');
+        setPassword('');
+        console.log(response.data.message);
+        navigate('/dashboard'); // Navigate on successful login
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      console.log("An error occurred. Please try again.");
     }
-  }
+  };
 
   return (
     <div
@@ -50,8 +49,8 @@ function RestaurantLogin() {
               type="email"
               name="email"
               placeholder="tony@gmail.com"
-              value={data.email}
-              onChange={onChangeHandler}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="form-input bg-transparent border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
           </div>
@@ -62,8 +61,8 @@ function RestaurantLogin() {
               id="password"
               name="password"
               type="password"
-              value={data.password}
-              onChange={onChangeHandler}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="bg-transparent border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="•••••••••"
             />

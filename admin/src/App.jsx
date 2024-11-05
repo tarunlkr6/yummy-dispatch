@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Home from './pages/Home/Home'
 import RestaurantRegistration from "./components/Registrer/RestaurantRegistration";
 import RestaurantLogin from "./components/Login/RestaurantLogin";
-import Dashboard from "./components/Sidebar/Dashboard";;
+import Dashboard from "./components/Sidebar/Dashboard";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
