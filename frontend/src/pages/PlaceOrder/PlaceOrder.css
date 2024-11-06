@@ -39,7 +39,7 @@
     margin-bottom: 15px;
   }
   
-  input {
+  /* input {
     width: 100%;
     padding: 10px;
     border-radius: 4px;
@@ -51,7 +51,7 @@
   input:focus {
     border-color: #80bdff;
     outline: none;
-  }
+  } */
   
   .cart-total {
     background-color: #f1f3f5;

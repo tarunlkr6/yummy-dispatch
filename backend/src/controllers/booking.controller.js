@@ -27,7 +27,7 @@ const generateBookingToken = async () => {
     }
 }
 
-// user access
+// Book table function -- User access 
 const bookTable = asyncHandler(async (req, res) => {
     const { resid } = req.params
 

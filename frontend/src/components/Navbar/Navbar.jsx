@@ -8,7 +8,8 @@ import {logout} from "../../slices/authSlice"
 const Navbar = ({ setShowLogin }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [menu, setMenu] = useState("Home");
+  
+  // const [menu, setMenu] = useState("Home");
   const { userInfo } = useSelector((state)=> state.auth)
   const [logoutApiCall] = useLogoutMutation()
   const handleLogout = async () => {
@@ -26,17 +27,15 @@ const Navbar = ({ setShowLogin }) => {
       }
     }
   };  
+  const { cartItems} = useSelector((state)=> state.cart)
 
-  const getTotalCartAmount = ()=>{
-    console.log("Total Cart Amount");
-  }
 
   return (
     <div className="navbar">
       <Link to="/">
         <img src={assets.app} alt="" className="logo" />
       </Link>
-      <ul className="navbar-menu">
+      {/* <ul className="navbar-menu">
         <Link
           to="/"
           onClick={() => setMenu("Home")}
@@ -65,16 +64,16 @@ const Navbar = ({ setShowLogin }) => {
         >
           contact us
         </a>
-      </ul>
+      </ul> */}
+      
       <div className="navbar-right">
-      <i className="fa-solid fa-magnifying-glass fa-lg"></i>
       <i className="fa-solid fa-qrcode fa-lg"></i>
       <i className="fa-solid fa-bell fa-lg"></i>
         <div className="navbar-search-icon">
           <Link to="/cart">
             <i className="fa-solid fa-basket-shopping fa-lg"></i>
           </Link>
-          <div className={getTotalCartAmount() === 0 ? "" : "dot"}>
+          <div className={cartItems.length === 0 ? "" : "dot"}>
             <p className="display-cart-quantity"></p>
           </div>
         </div>

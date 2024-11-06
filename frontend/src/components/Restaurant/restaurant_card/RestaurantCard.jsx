@@ -12,9 +12,9 @@ function RestaurantCard() {
   const isValidData = Restaurant && Array.isArray(Restaurant.data?.restaurants);
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex my-5 items-center justify-between">
-        <div className="text-2xl font-bold">Top Restaurant in Odisha</div>
+    <div className="container w-full max-w-none">
+      <div className="flex my-5 items-center justify-evenly">
+        <div className="flex-auto text-2xl font-bold">Top Restaurant in Odisha</div>
       </div>
 
       {isLoading ? (

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
+import Appbar from './components/Navbar/Appbar'
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
 import Cart from './pages/Cart/Cart';
@@ -13,7 +14,8 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { ThemeProvider } from '@material-tailwind/react';
 import { materialTheme } from './configs/theme';
 import { ToastContainer } from 'react-toastify';
-
+import ForgetPassword from './components/ForgetPassword/ForgetPassword';
+import TableBooking from './components/Restaurant/BookingTable/TableBooking';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -22,12 +24,15 @@ const App = () => {
       <ToastContainer />
       {showLogin && <Login setShowLogin={setShowLogin} />}
       <div className='app'>
-        <Navbar setShowLogin={setShowLogin} />
+      <Appbar setShowLogin={setShowLogin}/>
+        {/* <Navbar setShowLogin={setShowLogin} /> */}
         <Routes>
           {/* Public routes */}
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
           <Route path='/restaurant/:id' element={<RestaurantTemplate />} />
+          <Route path='/forgetpassword' element={<ForgetPassword />} />
+          <Route path='/:id/book-table' element={<TableBooking />} />
           
           {/* Private routes */}
           <Route path='' element={<PrivateRoute />}>

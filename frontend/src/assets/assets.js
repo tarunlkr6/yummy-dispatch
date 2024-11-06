@@ -3,6 +3,7 @@ import logo from './logo.png'
 import app from './app.png'
 import header_img from './header_img.png'
 import burger from './burger.mp4'
+import animate_burger from './animate_burger.mp4'
 import search_icon from './search_icon.png'
 import menu_1 from './menu_1.png'
 import menu_2 from './menu_2.png'
@@ -93,7 +94,8 @@ export const assets = {
     bag_icon,
     parcel_icon,
     salmon,
-    burger
+    burger,
+    animate_burger,
 }
 
 export const offer_list = {

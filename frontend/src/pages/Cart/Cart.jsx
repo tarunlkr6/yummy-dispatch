@@ -2,20 +2,20 @@ import React from "react";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../../slices/cartSlice"; // Adjust path as needed
+import { removeFromCart, clearAllCart } from "../../slices/cartSlice"; // Adjust path as needed
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state?.cart);
   const cart = useSelector((state)=> state.cart)
-  console.log(cart)
 
-  console.log(cartItems)
   const removeFromCartHandler = (itemId) => {
-    dispatch(removeFromCart({ item: { _id: itemId } }));
+    dispatch(removeFromCart(itemId));
   };
-
+  const clearCartHandler = () => {
+    dispatch(clearAllCart());
+  };
 
   return (
     <div className="cart">
@@ -39,7 +39,7 @@ const Cart = () => {
               <p>{food.qty}</p>
               <p>&#36;{(food.item.price * food.qty).toFixed(2)}</p>
               <p
-                onClick={() => removeFromCartHandler(food.item._id)}
+                onClick={() => removeFromCartHandler(food.item)}
                 className="cross"
               >
                 <i className="fa-solid fa-trash"></i>
@@ -50,6 +50,8 @@ const Cart = () => {
         ) : (
           <p>Your cart is empty.</p>
         )}
+      <button onClick={()=> clearCartHandler()} type="button" className="focus:outline-none text-white mt-4 bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900">Clear cart</button>
+
       </div>
       <div className="cart-bottom">
         <div className="cart-total">
