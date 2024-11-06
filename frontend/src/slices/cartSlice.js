@@ -57,11 +57,12 @@ const cartSlice = createSlice({
     },
     
     removeFromCart: (state, action) => {
-      const itemToRemove = action.payload;
-      state.cartItems = state.cartItems.filter(
-        (item) => item.item._id !== itemToRemove.item._id
-      );
-
+      console.log('action', action);
+    
+      // Filter out the item that matches the ID provided in action.payload
+      const updatedCartItems = state.cartItems.filter((item) => item.item.id !== action.payload.id);
+      state.cartItems = updatedCartItems;
+    
       // Recalculate prices after item removal
       state.itemsPrice = addDecimals(
         state.cartItems.reduce((acc, item) => acc + item.item.price * item.qty, 0)
@@ -73,9 +74,11 @@ const cartSlice = createSlice({
         Number(state.serviceCharge) +
         Number(state.taxPrice)
       );
-
+    
+      // Update local storage
       localStorage.setItem("cart", JSON.stringify(state));
     },
+    
     clearAllCart: (state) => {
       state.cartItems = [];
       state.itemsPrice = 0;

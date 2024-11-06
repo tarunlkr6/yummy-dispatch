@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Spinner } from "@material-tailwind/react";
 import { useGetRestaurantDetailsQuery } from "../../../slices/restaurantApitSlice";
@@ -12,13 +12,10 @@ import {
   ChefHat,
   Star,
   Clock,
-  Plus,
-  Minus,
   Home,
   Menu as MenuIcon,
   Info,
   Gift,
-  Users,
   MessageSquare,
   MapPin as LocationIcon,
   ChevronLeft,
@@ -33,16 +30,8 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Select,
-  Option,
   IconButton,
   ThemeProvider,
-  Input,
-  Textarea,
   Carousel,
 } from "@material-tailwind/react";
 import { useGetMenuByRestaurantIdQuery } from "../../../slices/menuApiSlice";
@@ -103,9 +92,8 @@ export default function RestaurantTemplate() {
   const [restaurantData, setRestaurantData] = useState(null);
 
   // States for UI interaction
-  const [cart, setCart] = useState({});
   const [activeSection, setActiveSection] = useState("home");
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  // const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Fetch restaurant data on component mount
@@ -149,17 +137,10 @@ export default function RestaurantTemplate() {
     }
   }, [data, menu, offers, feedback]);
 
-  console.log("restaurant data", restaurantData);
-
   // Cart management functions
   const addToCartHandler = useCallback((item) => {
-    console.log("item added");
     dispatch(addToCart({ item, qty: 1 })), [dispatch];
   });
-  
-  const submitHandler = ()=>{
-    console.log('submit')
-  }
 
   // Navigation function
   const scrollTo = (id) => {
@@ -341,6 +322,7 @@ export default function RestaurantTemplate() {
         <main className="container mx-auto">
           <Link to="/">
             <Button
+              variant="outlined"
               color={isDarkMode ? "white" : "blue"}
               className="mx-auto mt-4"
             >
@@ -371,125 +353,13 @@ export default function RestaurantTemplate() {
                   >
                     Our Menu
                   </Button>
-                  <Button
-                    variant="outlined"
-                    color={isDarkMode ? "white" : "blue"}
-                    size="lg"
-                    ripple={true}
-                    onClick={() => setIsBookingOpen(true)}
-                    className="px-6 hover:bg-opacity-20 transition-all duration-300"
-                  >
-                    Book a Table
-                  </Button>
                 </div>
               </div>
             </div>
           </Section>
 
-          {/* Menu Section */}
-          {/* <Section id="menu" title="Our Menu">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-              {restaurantData.menuItems.map((item) => (
-                <Card
-                  key={item.id}
-                  className={`w-full ${
-                    isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-                  }`}
-                >
-                  
-                  <CardBody>
-                    <div className="relative h-48 overflow-hidden rounded-md">
-                      <Carousel
-                        className="rounded-xl"
-                        navigation={({
-                          setActiveIndex,
-                          activeIndex,
-                          length,
-                        }) => (
-                          <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-                            {new Array(length).fill("").map((_, i) => (
-                              <span
-                                key={i}
-                                className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                                  activeIndex === i
-                                    ? "w-8 bg-white"
-                                    : "w-4 bg-white/50"
-                                }`}
-                                onClick={() => setActiveIndex(i)}
-                              />
-                            ))}
-                          </div>
-                        )}
-                        prevArrow={({ handlePrev }) => (
-                          <IconButton
-                            variant="text"
-                            color="white"
-                            size="sm"
-                            onClick={handlePrev}
-                            className="!absolute top-2/4 left-4 -translate-y-2/4"
-                          >
-                            <ChevronLeft strokeWidth={2} className="w-4 h-4" />
-                          </IconButton>
-                        )}
-                        nextArrow={({ handleNext }) => (
-                          <IconButton
-                            variant="text"
-                            color="white"
-                            size="sm"
-                            onClick={handleNext}
-                            className="!absolute top-2/4 !right-4 -translate-y-2/4"
-                          >
-                            <ChevronRight strokeWidth={2} className="w-4 h-4" />
-                          </IconButton>
-                        )}
-                      >
-                        {item.image.map((img, index) => (
-                          <img
-                            key={index}
-                            src={img.url} // Directly use the image URL
-                            alt={`${item.name} - view ${index + 1}`}
-                            className="h-full w-full object-cover"
-                          />
-                        ))}
-                      </Carousel>
-                    </div>
-                    <div className="">
-                        <Typography variant="h5">{item.name}</Typography>
-                        <Typography
-                          color={isDarkMode ? "gray" : "blue-gray"}
-                          className="mt-1 line-clamp-2"
-                        >
-                          {item.description}
-                        </Typography>
-                      </div>
-                    <Typography
-                      variant="h6"
-                      color={isDarkMode ? "gray" : "blue-gray"}
-                      className="mt-2"
-                    >
-                      ${item.price.toFixed(2)}
-                    </Typography>
-                  </CardBody>
-                  <CardFooter className="flex justify-between">
-                    <Button
-                      onClick={() => {
-                        addToCartHandler(item);
-                      }}
-                      color={isDarkMode ? "white" : "blue"}
-                      size="sm"
-                      ripple={true}
-                      className="hover:bg-opacity-80 transition-all duration-300"
-                    >
-                      Add to Cart
-                    </Button>
-          
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </Section> */}
-
-          {/* Menu Section */}
+          {menuLoading && <Spinner className="h-16 w-16 text-gray-900/50" />}
+          {menuError && toast.error(`Something went wrong`)}
           <Section id="menu" title="Our Menu">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {restaurantData.menuItems.map((item) => (
@@ -500,9 +370,12 @@ export default function RestaurantTemplate() {
                   }`}
                 >
                   <CardBody>
-                    <div className="relative h-48 overflow-hidden rounded-md">
+                    <div className="relative h-48 overflow-hidden rounded-sm">
                       <Carousel
                         className="rounded-xl"
+                        autoplay={true}
+                        loop={true}
+                        autoplayDelay={5000}
                         navigation={({
                           setActiveIndex,
                           activeIndex,
@@ -521,28 +394,6 @@ export default function RestaurantTemplate() {
                               />
                             ))}
                           </div>
-                        )}
-                        prevArrow={({ handlePrev }) => (
-                          <IconButton
-                            variant="text"
-                            color="white"
-                            size="sm"
-                            onClick={handlePrev}
-                            className="!absolute top-2/4 left-4 -translate-y-2/4"
-                          >
-                            <ChevronLeft strokeWidth={2} className="w-4 h-4" />
-                          </IconButton>
-                        )}
-                        nextArrow={({ handleNext }) => (
-                          <IconButton
-                            variant="text"
-                            color="white"
-                            size="sm"
-                            onClick={handleNext}
-                            className="!absolute top-2/4 !right-4 -translate-y-2/4"
-                          >
-                            <ChevronRight strokeWidth={2} className="w-4 h-4" />
-                          </IconButton>
                         )}
                       >
                         {item.image.map((img, index) => (
@@ -571,8 +422,23 @@ export default function RestaurantTemplate() {
                     >
                       ${item.price.toFixed(2)}
                     </Typography>
+                    <Typography className="flex justify-end mx-0" variant="h6">
+                      {item.isVeg ? (
+                        <p className="text-green-600">Veg</p> // Green for Veg
+                      ) : (
+                        <p className="text-red-600">Non Veg</p> // Red for Non Veg
+                      )}
+                    </Typography>
+
+                    <Typography className="flex justify-end mx-0" variant="h6">
+                      {item.isAvailable ? (
+                        <p className="text-green-600">Available</p> // Green for Available
+                      ) : (
+                        <p className="text-gray-500">Not Available</p> // Gray for Not Available
+                      )}
+                    </Typography>
                   </CardBody>
-                  <CardFooter className="flex justify-between pt-2">
+                  {/* <CardFooter className="flex justify-between pt-2">
                     <Button
                       onClick={() => addToCartHandler(item)}
                       color={isDarkMode ? "white" : "orange"}
@@ -582,7 +448,7 @@ export default function RestaurantTemplate() {
                     >
                       Add to Cart
                     </Button>
-                  </CardFooter>
+                  </CardFooter> */}
                 </Card>
               ))}
             </div>
@@ -713,38 +579,31 @@ export default function RestaurantTemplate() {
           {/* Feedback Section */}
           <Section id="feedback" title="Customer Feedback">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {restaurantData.feedbacks.length > 0 ? (restaurantData.feedbacks.map((feedback, id) => (
-                <Card
-                  key={feedback.id}
-                  className={`${
-                    isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-                  } border border-gray-200 shadow-xl`}
-                >
-                  <CardHeader>
-                    {/* <Typography variant="h5">{feedback.name}</Typography>
-                    <div className="flex">
-                      {[...Array(feedback.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div> */}
-                  </CardHeader>
-                  <CardBody>
-                  <Typography variant="h5 p-3">{feedback.name}</Typography>
-                    <div className="flex">
-                      {[...Array(feedback.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                    <Typography>{feedback.comment}</Typography>
-                  </CardBody>
-                </Card>
-              ))): (<h3>No Reviews</h3>)}
+              {restaurantData.feedbacks.length > 0 ? (
+                restaurantData.feedbacks.map((feedback, id) => (
+                  <Card
+                    key={feedback.id}
+                    className={`${
+                      isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                    } border border-gray-200 shadow-xl`}
+                  >
+                    <CardBody>
+                      <Typography variant="h5 p-3">{feedback.name}</Typography>
+                      <div className="flex">
+                        {[...Array(feedback.rating)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                          />
+                        ))}
+                      </div>
+                      <Typography>{feedback.comment}</Typography>
+                    </CardBody>
+                  </Card>
+                ))
+              ) : (
+                <h3>No Reviews</h3>
+              )}
             </div>
           </Section>
 
@@ -787,144 +646,6 @@ export default function RestaurantTemplate() {
             </Card>
           </Section>
         </main>
-
-        {/* Book a Table Dialog */}
-        <Dialog
-          open={isBookingOpen}
-          handler={setIsBookingOpen}
-          size="md"
-          className={isDarkMode ? "bg-gray-800 text-white" : "bg-white"}
-        >
-          <DialogHeader>
-            <Typography variant="h5">Book a Table</Typography>
-          </DialogHeader>
-          <DialogBody divider>
-            <form className="space-y-4" onSubmit={submitHandler}>
-              <div>
-                <Typography variant="h6">Name</Typography>
-                <Input
-                  type="text"
-                  placeholder="Your Name"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  containerProps={{ className: "min-w-[100px]" }}
-                />
-              </div>
-              <div>
-                <Typography variant="h6">Email</Typography>
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  containerProps={{ className: "min-w-[100px]" }}
-                />
-              </div>
-              <div>
-                <Typography variant="h6">Phone Number</Typography>
-                <Input
-                  type="tel"
-                  placeholder="(123) 456-7890"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  containerProps={{ className: "min-w-[100px]" }}
-                />
-              </div>
-              <div>
-                <Typography variant="h6">Number of Guests</Typography>
-                <Select
-                  label="Select number of guests"
-                  className={isDarkMode ? "bg-gray-700 text-white" : ""}
-                >
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                    <Option key={num} value={num.toString()}>
-                      {num} {num === 1 ? "Guest" : "Guests"}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-              <div>
-                <Typography variant="h6">Date</Typography>
-                <Input
-                  type="date"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  containerProps={{ className: "min-w-[100px]" }}
-                />
-              </div>
-              <div>
-                <Typography variant="h6">Time</Typography>
-                <Input
-                  type="time"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  containerProps={{ className: "min-w-[100px]" }}
-                />
-              </div>
-              <div>
-                <Typography variant="h6">Special Requests</Typography>
-                <Textarea
-                  placeholder="Any dietary requirements or special requests?"
-                  className={`!border !border-gray-300 ${
-                    isDarkMode
-                      ? "bg-gray-700 text-white"
-                      : "bg-white text-gray-900"
-                  } shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10`}
-                />
-              </div>
-            </form>
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              variant="text"
-              color={isDarkMode ? "white" : "red"}
-              onClick={() => setIsBookingOpen(false)}
-              className="mr-1"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button
-              variant="gradient"
-              color={isDarkMode ? "white" : "blue"}
-              onClick={() => setIsBookingOpen(false)}
-              size="lg"
-              ripple={true}
-              className="px-6"
-            >
-              <span>Book Now</span>
-            </Button>
-          </DialogFooter>
-        </Dialog>
       </div>
     </ThemeProvider>
   );

@@ -7,7 +7,7 @@ import {
   useRegisterUserMutation,
 } from "../../slices/usersApiSlice";
 import { toast } from "react-toastify";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setCredentials } from "../../slices/authSlice";
 import { Spinner } from "@material-tailwind/react";
@@ -22,7 +22,7 @@ const LoginPage = ({ setShowLogin }) => {
   const { userinfo } = useSelector((state) => state.auth);
 
   const [currState, setCurrState] = useState("Login");
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     if (userinfo) {
@@ -53,9 +53,8 @@ const LoginPage = ({ setShowLogin }) => {
     if (currState === "Login") {
       try {
         const res = await login(data).unwrap();
-        console.log(res)
         dispatch(setCredentials({ ...res }));
-      if (res.success){
+        if (res.success) {
           toast.success(`Welcome back ${res.data.user.fullName}`);
         }
         setShowLogin(false);
@@ -65,20 +64,24 @@ const LoginPage = ({ setShowLogin }) => {
       }
     } else {
       if (data.password !== confirmPassword) {
-        toast.error('Password do not match');
+        toast.error("Password do not match");
         return;
       } else {
         try {
           const res = await register(data).unwrap();
-          if(res.error){
-            toast.error(error)
-          }else if(res.success){
-            toast.success(`Successfully registered, Please login to your account`)
+          if (res.error) {
+            toast.error(error);
+          } else if (res.success) {
+            toast.success(
+              `Successfully registered, Please login to your account`
+            );
+            setConfirmPassword({ confirmPassword: ''})
           }
           dispatch(setCredentials({ ...res }));
           navigate("/");
         } catch (error) {
           toast.error(error?.data?.message || error);
+          setConfirmPassword({ confirmPassword: ''})
         }
       }
     }
@@ -129,14 +132,14 @@ const LoginPage = ({ setShowLogin }) => {
 
         {/* Right side with form */}
         <div className="w-full md:w-1/2 bg-[#f5f5f5] flex flex-col p-4 md:p-8 justify-between items-center login_container">
-          <h1 className="text-xl text-[#060606] font-semibold mb-4">
+          <h1 className="text-2xl text-[#ea580c] font-semibold mb-4">
             Scan & Dine
           </h1>
 
           <div className="w-full flex flex-col max-w-[550px]">
             <div className="w-full flex flex-col mb-2">
               {currState === "Sign Up" ? (
-                <h3 className="text-3xl font-semibold mb-2">Sign Up</h3>
+                <h4 className="text-3xl font-semibold mb-2">Sign Up</h4>
               ) : (
                 <>
                   {" "}
@@ -180,27 +183,30 @@ const LoginPage = ({ setShowLogin }) => {
                 onChange={handleInputChange}
                 name="password"
               />
-              {currState !== 'Login' && (<input
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
-                value={data.confirmPassword}
-                onChange={(e)=> setConfirmPassword(e.target.value)}
-                required
-                name="password"
-              />)}
-
+              {currState !== "Login" && (
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
+                  value={data.confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  name="password"
+                />
+              )}
 
               <div className="w-full flex items-center justify-between">
-                <div className="w-full flex items-center">
+                {/* <div className="w-full flex items-center">
                   <input type="checkbox" className="w-4 h-4 mr-2" />
                   <p className="text-sm">Remember Me</p>
-                </div>
+                </div> */}
 
                 {currState === "Login" ? (
-                  <p className="text-sm underline whitespace-nowrap underline-offset-2 cursor-pointer">
-                    Forgot Password?
-                  </p>
+                  <Link to='/forgetpassword'>
+                    <p className="text-sm underline whitespace-nowrap underline-offset-2 cursor-pointer">
+                      Forgot Password?
+                    </p>
+                  </Link>
                 ) : (
                   <></>
                 )}
@@ -212,8 +218,14 @@ const LoginPage = ({ setShowLogin }) => {
                     {registerLoading && (
                       <Spinner className="h-16 w-16 text-gray-900/50" />
                     )}
-                    <button className="w-full font-semibold text-white my-2 bg-[#0a0a0a] hover:bg-[#f97316] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
+                    {/* <button className="w-full font-semibold text-white my-2 bg-[#0a0a0a] hover:bg-[#f97316] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
                       Register
+                    </button> */}
+                    <button className="group relative m-1 cursor-pointer overflow-hidden rounded-md border-2 border-[#ff6347] px-5 py-3 font-mono font-semibold">
+                      <span className="ease absolute top-1/2 h-0 w-64 origin-center -translate-x-20 rotate-45 bg-[#ff6347] transition-all duration-300 group-hover:h-64 group-hover:-translate-y-32"></span>
+                      <span className="ease relative text-[#ff6347] transition duration-300 group-hover:text-white">
+                        Register
+                      </span>
                     </button>
                   </>
                 ) : (
@@ -221,11 +233,36 @@ const LoginPage = ({ setShowLogin }) => {
                     {isLoading && (
                       <Spinner className="h-16 w-16 text-gray-900/50" />
                     )}
-                    <button
+                    {/* <button
                       type="submit"
                       className="w-full font-semibold text-white my-2 bg-[#0a0a0a] border hover:bg-[#ea580c] border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer"
                     >
                       Login
+                    </button> */}
+                    <button
+                      type="submit"
+                      className="group relative inline-flex items-center justify-center overflow-hidden border-2 border-red-400 p-4 px-6 py-3 font-medium text-indigo-600 shadow-md transition duration-300 ease-out hover:border-4 hover:border-double"
+                    >
+                      <span className="ease absolute inset-0 flex h-full w-full -translate-x-full items-center justify-center bg-[#ff6347] text-white duration-300 group-hover:translate-x-0">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          ></path>
+                        </svg>
+                      </span>
+                      <span className="ease absolute flex h-full w-full transform items-center justify-center text-red-400 transition-all duration-300 group-hover:translate-x-full">
+                        Login
+                      </span>
+                      <span className="invisible relative">Login</span>
                     </button>
                   </>
                 )}
@@ -250,7 +287,7 @@ const LoginPage = ({ setShowLogin }) => {
                 Don't have an account?{" "}
                 <span
                   onClick={() => setCurrState("Sign Up")}
-                  className="font-semibold underline underline-offset-2 cursor-pointer"
+                  className="font-semibold underline underline-offset-2 cursor-pointer hover:text-[#ff6347]"
                 >
                   Sign Up for free
                 </span>
@@ -262,7 +299,7 @@ const LoginPage = ({ setShowLogin }) => {
                 Already have an account?{" "}
                 <span
                   onClick={() => setCurrState("Login")}
-                  className="font-semibold underline underline-offset-2 cursor-pointer"
+                  className="font-semibold underline underline-offset-2 cursor-pointer hover:text-[#ff6347]"
                 >
                   Login here
                 </span>
