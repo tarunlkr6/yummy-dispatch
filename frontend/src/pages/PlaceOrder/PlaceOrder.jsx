@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./PlaceOrder.css";
 import "boxicons";
 import { useSelector } from "react-redux";
@@ -7,27 +7,38 @@ const PlaceOrder = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = useSelector((state) => state.cart);
 
+  const [orderData, setOrderData] = useState({
+    name:'',
+    tableNumber: '',
+  });
+
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log('submit')
+  };
+
   return (
     <>
-      <form className="place-order">
-        {/* <div className="place-order-left">
-      <p className='title'>Delivery Information</p>
-      <div className="multi-fields">
-        <input type="text" placeholder='First Name'/>
-        <input type="text" placeholder='Last Name'/>
-      </div>
-      <input type="email" placeholder='Email address'/>
-      <input type="text" placeholder='Street'/>
-      <div className="multi-fields">
-        <input type="text" placeholder='City'/>
-        <input type="text" placeholder='State'/>
-      </div>
-      <div className="multi-fields">
-        <input type="text" placeholder='Zip Code'/>
-        <input type="text" placeholder='Country'/>
-      </div>
-      <input type="text" placeholder='Phone' />
-    </div> */}
+      <form onSubmit={submitHandler} className="place-order">
+          {/* <div className="place-order-left">
+        <p className='title'>Delivery Information</p>
+        <div className="multi-fields">
+          <input type="text" placeholder='First Name'/>
+          <input type="text" placeholder='Last Name'/>
+        </div>
+        <input type="email" placeholder='Email address'/>
+        <input type="text" placeholder='Street'/>
+        <div className="multi-fields">
+          <input type="text" placeholder='City'/>
+          <input type="text" placeholder='State'/>
+        </div>
+        <div className="multi-fields">
+          <input type="text" placeholder='Zip Code'/>
+          <input type="text" placeholder='Country'/>
+        </div>
+        <input type="text" placeholder='Phone' />
+        </div> */}
 
         <div className="place-order-left">
           <p className="title">Order Information</p>
@@ -40,10 +51,9 @@ const PlaceOrder = () => {
           </ul>
 
           <div className="multi-fields">
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
-
-          <input type="number" placeholder="Table no" />
+            <input type="text" placeholder="Enter your name" />
+            {/* <input type="text" placeholder="Last Name" /> */}
+            <input type="number" placeholder="Table no" />
           </div>
         </div>
         <div className="place-order-right">

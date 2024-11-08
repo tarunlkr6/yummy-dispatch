@@ -26,10 +26,18 @@ const restaurantReviewSchema = new Schema({
 // restaurant schema
 const restaurantSchema = new Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
+    ownerName: {
+      type: String,
       required: true,
-      ref: "User",
+      trim: true,
+    },
+    ownerEmail: {
+      type: String,
+      required: [true, "Email is mandatory"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
     },
     name: {
       type: String,
@@ -40,18 +48,6 @@ const restaurantSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    ownerName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      index: true,
     },
     phoneNumber: {
       type: String,
@@ -72,12 +68,6 @@ const restaurantSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    foods: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "FoodItem",
-      },
-    ],
     city: {
       type: String,
       required: true,

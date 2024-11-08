@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken"
 import crypto from "crypto"
 
 const userSchema = new Schema({
+    restaurantId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Restaurant",
+    },
     fullName: {
         type: String,
         required: true,
@@ -55,6 +59,7 @@ userSchema.methods.generateAccessToken = function () {
     return jwt.sign({
         _id: this._id,
         email: this.email,
+        restaurantId: this.restaurantId,
     },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
@@ -63,7 +68,8 @@ userSchema.methods.generateAccessToken = function () {
 
 userSchema.methods.generateRefreshToken = function () {
     return jwt.sign({
-        _id: this._id
+        _id: this._id,
+        restaurantId: this.restaurantId,
     },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
@@ -79,4 +85,5 @@ userSchema.methods.generateResetToken = function () {
 
     return token
 }
+
 export const User = mongoose.model("User", userSchema)

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -8,7 +8,6 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import MenuList from "../../Menulist/menuList";
 
 function RestaurantCard({
   _id,
@@ -19,14 +18,21 @@ function RestaurantCard({
   openingTime,
   closingTime,
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleOpenMenu = () => {
-    setIsMenuOpen(true);
+  const onClickHandler = (id, event) => {
+    event.stopPropagation(); // Prevents the event from bubbling to parent elements
+    if (id) {
+      navigate(`/restaurant/${id}/view`);
+    }
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:bg-gray-800 dark:border-gray-700">
+    <Card
+      onClick={(event) => onClickHandler(_id, event)}
+      className="w-full max-w-sm mx-auto bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:bg-gray-800 dark:border-gray-700"
+      role="button"
+    >
       <CardHeader floated={false} className="h-48 m-0 rounded-none">
         <img
           src={avatar}
@@ -35,20 +41,30 @@ function RestaurantCard({
         />
       </CardHeader>
       <CardBody className="flex-1 flex flex-col p-4">
-        <Typography variant="h5" color="blue-gray" className="mb-2 font-semibold">
-          {name}
-        </Typography>
-        <div className="flex items-center mb-2">
-          <span className={`w-3 h-3 rounded-full mr-2 ${isOpen ? 'bg-green-500' : 'bg-red-500'}`}></span>
-          <Typography
-            color={isOpen ? "green" : "red"}
-            className="text-sm font-medium"
-          >
-            {isOpen ? "Open" : "Closed"}
+        <div className="flex justify-between items-center">
+          <Typography variant="h4" color="blue-gray" className="font-semibold">
+            {name}
           </Typography>
+          <div className="flex items-center">
+            <span
+              className={`w-3 h-3 rounded-full mr-2 ${
+                isOpen ? "bg-green-500" : "bg-red-500"
+              }`}
+            ></span>
+            <Typography
+              color={isOpen ? "green" : "red"}
+              className="text-sm font-medium"
+            >
+              {isOpen ? "Open" : "Closed"}
+            </Typography>
+          </div>
         </div>
+
         <Typography color="gray" className="mb-2 text-sm">
-          Hours: <span className="font-medium">{openingTime} - {closingTime}</span>
+          Hours:{" "}
+          <span className="font-medium">
+            {openingTime} - {closingTime}
+          </span>
         </Typography>
         <Typography
           color="gray"
@@ -58,18 +74,29 @@ function RestaurantCard({
         </Typography>
       </CardBody>
       <CardFooter className="pt-0 flex justify-between p-4">
-        <Link to={`/restaurant/${_id}/menu`} className="w-[48%]">
-          <Button fullWidth className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300">View</Button>
+        <Link to={`/restaurant/${_id}/menu`} className="w-full">
+          <button
+            type="button"
+            onClick={(event) => event.stopPropagation()} // Prevents parent click event
+            className="w-full h-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          >
+            <box-icon
+              name="qr-scan"
+              animation="flashing"
+              color="white"
+            ></box-icon>
+          </button>
         </Link>
-        <Link to={`/${_id}/book-table`} className="w-[48%]">
-          <Button fullWidth className="bg-green-500 hover:bg-green-600 transition-colors duration-300">Book Table</Button>
+        <Link to={`/${_id}/book-table`} className="w-full ml-2">
+          <Button
+            fullWidth
+            onClick={(event) => event.stopPropagation()} // Prevents parent click event
+            className="w-full h-full bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-300"
+          >
+            Book Table
+          </Button>
         </Link>
       </CardFooter>
-      {/* <MenuList
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        restaurantId={_id}
-      /> */}
     </Card>
   );
 }

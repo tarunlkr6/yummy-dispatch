@@ -2,7 +2,6 @@ import React from "react";
 import Card from "./Card";
 import { useGetRestaurantQuery } from "../../../slices/restaurantApitSlice";
 import { Spinner, Alert } from "@material-tailwind/react";
-import "./Restaurantcard.css";
 
 function RestaurantCard() {
   const { data: Restaurant, isLoading, error } = useGetRestaurantQuery();

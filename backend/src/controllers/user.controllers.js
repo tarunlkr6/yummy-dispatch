@@ -45,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
         fullName,
         email,
         password,
-        isAdmin
+        isAdmin,
     })
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
@@ -160,6 +160,8 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Password changed successfully"))
 })
 
+
+// user profile details
 const getCurrentUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
@@ -203,11 +205,10 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 // reset password --- set new password using token
 const resetPassword = asyncHandler(async (req, res) => {
-    const { token } = req.params
-    const { password, confirmPassword } = req.body
+    const { passwordResetToken } = req.params
 
     const user = await User.findOne({
-        passwordResetToken: token,
+        passwordResetToken,
         passwordResetTokenExpiry: {
             $gt: Date.now()
         }
@@ -234,6 +235,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "Password changed successfully"))
 
 })
+
 export {
     registerUser,
     loginUser,

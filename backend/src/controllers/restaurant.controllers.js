@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiFeatures } from "../utils/ApiFeatures.js"
+import { User } from "../models/user.models.js"
 
 const getRestaurant = asyncHandler(async (req, res) => {
     const resultPerPage = 5
@@ -43,18 +44,26 @@ const getRestaurantById = asyncHandler(async (req, res) => {
 
 const registerRestaurant = asyncHandler(async (req, res) => {
 
-    const existedRestaurant = await Restaurant.findOne({ user: req.user._id })
-    //console.log(existedRestaurant)
+    const user = await User.findOne({ email: req.body.ownerEmail })
+    if (!user) {
+        throw new ApiError(404, "User not found, Kindly enter your existing email")
+    }
+
+    if (!user.isAdmin) {
+        throw new ApiError(409, "Not authorized")
+    }
+
+    const { ownerName, name, ownerEmail, description, phoneNumber, openingTime, closingTime, address, city, state, zipCode } = req.body
+
+    if (
+        [ownerName, name, ownerEmail, phoneNumber, openingTime, closingTime, address, city, state, zipCode].some((field) => field?.trim() === "")
+    ) { throw new ApiError(400, "All fields are required") }
+
+    const existedRestaurant = await Restaurant.findOne({ ownerEmail })
 
     if (existedRestaurant) {
         throw new ApiError(409, "User restaurant already exists")
     }
-
-    const { name, description, ownerName, email, phoneNumber, openingTime, closingTime, address, city, state, zipCode } = req.body
-
-    if (
-        [name, email, phoneNumber, openingTime, closingTime, address, city, state, zipCode].some((field) => field?.trim() === "")
-    ) { throw new ApiError(400, "All fields are required") }
 
     const avatarLocalPath = req.files?.avatar[0]?.path
 
@@ -65,11 +74,10 @@ const registerRestaurant = asyncHandler(async (req, res) => {
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
     const restaurant = await Restaurant.create({
-        user: req.user._id,
+        ownerName,
         name,
         description,
-        ownerName,
-        email: email.toLowerCase(),
+        ownerEmail: ownerEmail.toLowerCase(),
         phoneNumber,
         openingTime,
         closingTime,
@@ -83,8 +91,11 @@ const registerRestaurant = asyncHandler(async (req, res) => {
     const createdRestaurant = await Restaurant.findById(restaurant._id)
 
     if (!createdRestaurant) {
-        throw new ApiError(500, "Something went wrong while registering user restaurant")
+        throw new ApiError(500, "Something went wrong while registering restaurant")
     }
+
+    user.restaurantId = restaurant._id
+    await user.save({ validateBeforeSave: false })
 
     return res
         .status(201)
@@ -101,7 +112,6 @@ const addRestaurantReview = asyncHandler(async (req, res) => {
     }
 
     const restaurant = await Restaurant.findById(resid)
-
 
     if (!restaurant) {
         throw new ApiError(404, "Restaurant not found")

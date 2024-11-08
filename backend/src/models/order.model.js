@@ -3,21 +3,32 @@ import mongoose, { Schema } from "mongoose";
 const orderSchema = new Schema(
   {
     user: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
-    orderItem: [
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Restaurant",
+    },
+    orderNo: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    items: [
       {
+        menu: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Menu",
+        },
         name: {
           type: String,
           required: true,
         },
-        qty: {
-          type: String,
-          required: true,
-        },
-        image: {
+        quantity: {
           type: String,
           required: true,
         },
@@ -25,25 +36,8 @@ const orderSchema = new Schema(
           type: String,
           required: true,
         },
-        Food: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "FoodItem",
-        },
       },
     ],
-    paymentMethod: {
-      type: String,
-      required: true,
-    },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email: {
-        type: String,
-      },
-    },
     taxPrice: {
       type: Number,
       required: true,
@@ -54,20 +48,18 @@ const orderSchema = new Schema(
       required: true,
       default: 0.0,
     },
+    orderStatus: {
+      type: String,
+      enum: ['Pending', 'Recieved', 'Served'],
+      default: 'Pending',
+      required: true,
+    },
     isPaid: {
       type: Boolean,
       required: true,
       default: false,
     },
     paidAt: {
-      type: Date,
-    },
-    isDelivered: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    deliveredAt: {
       type: Date,
     },
   },

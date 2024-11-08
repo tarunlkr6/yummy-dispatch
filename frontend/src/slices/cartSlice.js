@@ -13,9 +13,6 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      console.log(action.payload)
-      console.log('action ',action.payload.item.id)
-
       const existingItemIndex = state.cartItems.findIndex(
         (x) => x?.item.id === action.payload.item.id
       );
@@ -50,14 +47,11 @@ const cartSlice = createSlice({
         Number(state.serviceCharge) +
         Number(state.taxPrice)
       ).toFixed(2);
-    
-      console.log('Total Price:', state.totalPrice);
-    
+        
       localStorage.setItem("cart", JSON.stringify(state));
     },
     
     removeFromCart: (state, action) => {
-      console.log('action', action);
     
       // Filter out the item that matches the ID provided in action.payload
       const updatedCartItems = state.cartItems.filter((item) => item.item.id !== action.payload.id);
