@@ -22,8 +22,8 @@ const generateBookingToken = async () => {
         }
         return token
     } catch (err) {
-        console.log("booking no generation err", err)
-        throw new ApiError(500, "Something went wrong while generating booking number")
+        console.log("order no generation err", err)
+        throw new ApiError(500, "Something went wrong while generating order number")
     }
 }
 
