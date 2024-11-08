@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.models.js"
 import jwt from "jsonwebtoken"
-import { sendPasswordResetEmail } from "../mails/emails.js"
+import { sendPasswordResetEmail, sendResetSuccessMail } from "../mails/emails.js"
 
 const options = {
     httpOnly: true,
@@ -183,8 +183,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
         await user.save({ validateBeforeSave: false })
 
-        const passwordURL = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetToken}`
-        await sendPasswordResetEmail(user.email, passwordURL)
+        const passwordURL = `${req.protocol}://${req.get("host")}/api/v1/user/reset-password/${resetToken}`
+        await sendPasswordResetEmail(user.email, user.fullName, passwordURL)
 
         return res
             .status(200)
@@ -203,10 +203,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 // reset password --- set new password using token
 const resetPassword = asyncHandler(async (req, res) => {
-    const token = req.params.token
+    const { token } = req.params
+    const { password, confirmPassword } = req.body
 
-    const user = User.findOne({
-        passwordResetToken,
+    const user = await User.findOne({
+        passwordResetToken: token,
         passwordResetTokenExpiry: {
             $gt: Date.now()
         }
@@ -216,8 +217,6 @@ const resetPassword = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Token is invalid or has been expired")
     }
 
-    const { password, confirmPassword } = req.body
-
     if (password !== confirmPassword) {
         throw new ApiError(400, "password does not match")
     }
@@ -226,12 +225,13 @@ const resetPassword = asyncHandler(async (req, res) => {
     user.passwordResetToken = undefined
     user.passwordResetTokenExpiry = undefined
 
-    const result = await user.save({ validateBeforeSave: false })
+    await user.save({ validateBeforeSave: false })
 
-    await sendResetSuccessMail(user.email)
+    await sendResetSuccessMail(user.email, user.fullName)
+
     return res
         .status(200)
-        .json(new ApiResponse(200, result, "Password changed successfully"))
+        .json(new ApiResponse(200, "Password changed successfully"))
 
 })
 export {

@@ -1,14 +1,15 @@
 import { createTransporter, sender } from "./gmailApi.config.js"
 import { ApiError } from "../utils/ApiError.js"
+import { PASSWORD_RESET_REQUEST, PASSWORD_RESET_SUCCESS } from "./emailTemplate.js"
 
-const sendPasswordResetEmail = async (email, resetURL) => {
+const sendPasswordResetEmail = async (email, name, resetURL) => {
     try {
         const transporter = await createTransporter()
         transporter.sendMail({
             from: sender,
             to: email,
-            subject: "test",
-            text: "emaml"
+            subject: "Reset your password",
+            html: PASSWORD_RESET_REQUEST.replace("{reset_link}", resetURL).replace("{userName}", name)
         })
     } catch (err) {
         console.log(err)
@@ -16,14 +17,14 @@ const sendPasswordResetEmail = async (email, resetURL) => {
     }
 }
 
-const sendResetSuccessMail = async (email) => {
+const sendResetSuccessMail = async (email, name) => {
     try {
         const transporter = await createTransporter()
         transporter.sendMail({
             from: sender,
-            to: email,
+            to: `scan&Dine <${email}>`,
             subject: "password reset success",
-            text: "password reset success mail",
+            html: PASSWORD_RESET_SUCCESS.replace("{userName}", name),
         })
 
     } catch (err) {
