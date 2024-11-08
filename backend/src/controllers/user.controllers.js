@@ -45,7 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
         fullName,
         email,
         password,
-        isAdmin
+        isAdmin,
     })
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
@@ -160,6 +160,8 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Password changed successfully"))
 })
 
+
+// user profile details
 const getCurrentUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
@@ -203,7 +205,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 // reset password --- set new password using token
 const resetPassword = asyncHandler(async (req, res) => {
-    const token = req.params.token
+    const { passwordResetToken } = req.params
 
     const user = User.findOne({
         passwordResetToken,
@@ -234,6 +236,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, result, "Password changed successfully"))
 
 })
+
 export {
     registerUser,
     loginUser,

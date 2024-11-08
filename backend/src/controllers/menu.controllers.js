@@ -4,7 +4,6 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiFeatures } from "../utils/ApiFeatures.js"
-import mongoose from "mongoose"
 
 
 const getMenuItem = asyncHandler(async (req, res) => {
@@ -31,7 +30,7 @@ const getMenuById = asyncHandler(async (req, res) => {
 
     const menu = await Menu.findOne({ _id: itemid, restaurantId: resid })
 
-    if (menu.restaurantId !== resid) {
+    if (menu.restaurantId.toString() !== resid) {
         throw new ApiError(401, "Not accessible")
     }
 
@@ -105,7 +104,7 @@ const updateMenuItem = asyncHandler(async (req, res) => {
     }
 
     let imageLocalPath = []
-    imageLocalPath = req.files.image
+    imageLocalPath = req.files?.image
     //console.log(imageLocalPath)
 
     if (!imageLocalPath) {

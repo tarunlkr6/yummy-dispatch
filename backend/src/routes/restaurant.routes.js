@@ -6,8 +6,8 @@ import { getRestaurant, registerRestaurant, getRestaurantById, addRestaurantRevi
 const router = Router()
 
 router.route("/all").get(getRestaurant)
-router.route("/register").post(verifyJWT, authRole, upload.fields([{ name: 'avatar', maxCount: 1, }]), registerRestaurant)
-router.route("/:id").get(getRestaurantById)
+router.route("/register").post(upload.fields([{ name: 'avatar', maxCount: 1, }]), registerRestaurant)
+router.route("/:id").get(verifyJWT, getRestaurantById)
 router.route("/:resid/review/add").post(verifyJWT, addRestaurantReview)
 router.route("/:resid/reviews").get(getRestaurantReview)
 

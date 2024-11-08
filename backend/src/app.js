@@ -28,6 +28,7 @@ import restaurantRouter from "./routes/restaurant.routes.js"
 import menuRouter from "./routes/menu.route.js"
 import bookingRouter from "./routes/booking.route.js"
 import offerRouter from "./routes/offer.route.js"
+import orderRouter from "./routes/order.route.js"
 
 // routes
 app.use("/api/v1/healthcheck", healthCheckRouter)
@@ -36,8 +37,6 @@ app.use("/api/v1/restaurant", restaurantRouter)
 app.use("/api/v1", menuRouter)
 app.use("/api/v1/booking", bookingRouter)
 app.use("/api/v1", offerRouter)
-
-
-
+app.use("/api/v1", orderRouter)
 
 export { app }
