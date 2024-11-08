@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Appbar from './components/Navbar/Appbar'
@@ -16,6 +16,8 @@ import { materialTheme } from './configs/theme';
 import { ToastContainer } from 'react-toastify';
 import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import TableBooking from './components/Restaurant/BookingTable/TableBooking';
+import ChangePassword from './components/ForgetPassword/ChangePassword';
+import RestaurantMenu from './components/Restaurant/RestaurantMenu/RestaurantMenu';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -31,6 +33,7 @@ const App = () => {
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
           <Route path='/restaurant/:id' element={<RestaurantTemplate />} />
+          <Route path='/restaurant/:id/menu' element={<RestaurantMenu />} />
           <Route path='/forgetpassword' element={<ForgetPassword />} />
           <Route path='/:id/book-table' element={<TableBooking />} />
           
@@ -39,6 +42,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
             <Route path='/order' element={<PlaceOrder />} />
           </Route>
+          <Route path='/user/change-password' element={<ChangePassword/>}/>
         </Routes>
       </div>
       <Footer />

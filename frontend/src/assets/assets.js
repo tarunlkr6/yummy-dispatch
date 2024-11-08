@@ -1,9 +1,10 @@
 import basket_icon from './basket_icon.png'
 import logo from './logo.png'
 import app from './app.png'
+import appXlogo from'./appXlogo.jpeg'
 import header_img from './header_img.png'
 import burger from './burger.mp4'
-import animate_burger from './animate_burger.mp4'
+import header_video from './header_video.mp4'
 import search_icon from './search_icon.png'
 import menu_1 from './menu_1.png'
 import menu_2 from './menu_2.png'
@@ -95,7 +96,8 @@ export const assets = {
     parcel_icon,
     salmon,
     burger,
-    animate_burger,
+    appXlogo,
+    header_video
 }
 
 export const offer_list = {
