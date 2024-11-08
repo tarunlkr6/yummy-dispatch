@@ -19,7 +19,6 @@ import {
   LifebuoyIcon,
   PowerIcon,
   MagnifyingGlassIcon,
-  ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
 import { assets } from "../../assets/assets";
 import "boxicons";
@@ -64,9 +63,11 @@ function ProfileMenu({ handleLogout }) {
         </MenuItem>
         <MenuItem className="flex items-center gap-2 rounded">
           <Cog6ToothIcon className="h-4 w-4" />
-          <Typography as="span" variant="small" className="font-normal">
-            Edit Profile
-          </Typography>
+          <Link to='/user/change-password'>
+            <Typography as="span" variant="small" className="font-normal">
+              Change password
+            </Typography>
+          </Link>
         </MenuItem>
         <MenuItem className="flex items-center gap-2 rounded">
           <InboxArrowDownIcon className="h-4 w-4" />
@@ -125,7 +126,7 @@ function Appbar({ setShowLogin }) {
           {/* Logo */}
           <Link to="/">
             <Typography as="div" variant="h5">
-              <img src={assets.app} alt="Scan&Dine" className="h-12 md:h-[150px]" />
+              <img src={assets.app} alt="Scan&Dine" className="h-15 md:h-[150px]" />
             </Typography>
           </Link>
 

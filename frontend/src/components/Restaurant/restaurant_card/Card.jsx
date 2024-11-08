@@ -58,7 +58,7 @@ function RestaurantCard({
         </Typography>
       </CardBody>
       <CardFooter className="pt-0 flex justify-between p-4">
-        <Link to={`/restaurant/${_id}`} className="w-[48%]">
+        <Link to={`/restaurant/${_id}/menu`} className="w-[48%]">
           <Button fullWidth className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300">View</Button>
         </Link>
         <Link to={`/${_id}/book-table`} className="w-[48%]">

@@ -50,8 +50,8 @@ const LoginPage = ({ setShowLogin }) => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    if (currState === "Login") {
-      try {
+    try{
+      if (currState === "Login") {
         const res = await login(data).unwrap();
         dispatch(setCredentials({ ...res }));
         if (res.success) {
@@ -59,15 +59,11 @@ const LoginPage = ({ setShowLogin }) => {
         }
         setShowLogin(false);
         navigate("/");
-      } catch (error) {
-        toast.error(error?.data?.message || error);
-      }
-    } else {
+    }else {
       if (data.password !== confirmPassword) {
         toast.error("Password do not match");
         return;
       } else {
-        try {
           const res = await register(data).unwrap();
           if (res.error) {
             toast.error(error);
@@ -79,11 +75,11 @@ const LoginPage = ({ setShowLogin }) => {
           }
           dispatch(setCredentials({ ...res }));
           navigate("/");
-        } catch (error) {
-          toast.error(error?.data?.message || error);
-          setConfirmPassword({ confirmPassword: ''})
-        }
       }
+    }
+    } catch(error){
+      console.error("Error during login: ", error);
+      toast.error(error?.data?.message || "Login failed")
     }
     setData({
       fullName: "",

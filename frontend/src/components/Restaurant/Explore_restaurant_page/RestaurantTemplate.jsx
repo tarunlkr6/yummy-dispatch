@@ -73,14 +73,10 @@ export default function RestaurantTemplate() {
   const { id } = useParams();
 
   const { cartItems } = useSelector((state) => state?.cart);
-  console.log("cartItems", cartItems);
   const dispatch = useDispatch();
   const { data, isLoading, error } = useGetRestaurantDetailsQuery(id);
-  console.log("restaurant", data);
   const { data: offers } = useGetOfferByRestaurantIdQuery(id);
-  console.log("offers ", offers);
   const { data: feedback } = useGetFeedbackByRestaurantIdQuery(id);
-  console.log("feedback", feedback);
 
   const {
     data: menu,
@@ -338,18 +334,27 @@ export default function RestaurantTemplate() {
                 backgroundImage: `url(${restaurantData.restaurantInfo.avatar})`,
               }}
             >
-              <div className="bg-black bg-opacity-50 p-8 rounded-lg text-white">
+              <div className="p-8 text-white">
+                <h1
+                  className="font-Outfit text-4xl md:text-5xl ease-in-out"
+                  style={{ fontFamily: "Outfit, sans-serif" }}
+                >
+                  Welcome to
+                </h1>
+                <h2 className="text-6xl md:text-7xl font-bold opacity-60 mt-4 ease-out">
+                  {restaurantData.restaurantInfo.name}
+                </h2>
                 <AnimatedText
-                  text={`Welcome to ${restaurantData.restaurantInfo.name}`}
+                  text="Experience Culinary Excellence"
+                  className="mt-4"
                 />
-                <AnimatedText text="Experience Culinary Excellence" />
                 <div className="mt-8 space-x-4">
                   <Button
                     onClick={() => scrollTo("menu")}
-                    color={isDarkMode ? "white" : "blue"}
+                    color={isDarkMode ? "white" : "black"}
                     size="lg"
                     ripple={true}
-                    className="px-6 hover:bg-opacity-80 transition-all duration-300"
+                    className="px-6 rounded-full border border-black hover:bg-opacity-30 transition-all duration-300"
                   >
                     Our Menu
                   </Button>
