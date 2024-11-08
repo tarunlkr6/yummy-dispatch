@@ -9,10 +9,11 @@ import {
     Textarea,
 } from "@material-tailwind/react";
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const TableBooking = ({ isDarkMode = false }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [bookTable, { isLoading }] = useBookTableMutation();
 
   const [formData, setFormData] = useState({
@@ -38,7 +39,17 @@ const TableBooking = ({ isDarkMode = false }) => {
     try {
       const bookResponse = await bookTable({ id, ...formData }).unwrap();
       toast.success("Table booked successfully!");
-      console.log(bookResponse);
+      // Reset form fields
+      setFormData({
+        name: "",
+        reservationDate: "",
+        reservationTime: "",
+        numGuests: "",
+        specialRequests: "",
+        contactPhone: "",
+        contactEmail: "",
+      });
+      navigate('/')
     } catch (error) {
       console.error('Booking error:', error);
       if (error.status === 'PARSING_ERROR' && error.originalStatus === 500) {
