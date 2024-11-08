@@ -1,52 +1,83 @@
 .menu-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .menu-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .menu-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-  
-  .menu-details {
-    padding: 15px;
-  }
-  
-  .menu-price {
-    font-size: 1.1em;
-    margin: 5px 0;
-  }
-  
-  .menu-category.veg {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .menu-category.non-veg {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .menu-availability.available {
-    color: #4caf50;
-    font-weight: bold;
-  }
-  
-  .menu-availability.unavailable {
-    color: #f44336;
-    font-weight: bold;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.menu-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.menu-details {
+  padding: 10px;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-details h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.menu-details p {
+  font-size: 15px;
+  color: gray;
+}
+
+.menu-price {
+  font-size: 1.1em;
+  margin: 5px 0;
+}
+
+.menu-category {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.menu-category.veg {
+  color: green;
+}
+
+.menu-category.non-veg {
+  color: red;
+}
+
+.menu-availability.available {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.menu-availability.unavailable {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.add-to-cart-btn {
+  width: 90%;
+  margin: 10px auto;
+  display: block;
+  background-color: tomato;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}

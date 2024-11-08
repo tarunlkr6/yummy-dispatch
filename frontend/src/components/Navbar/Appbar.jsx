@@ -126,7 +126,7 @@ function Appbar({ setShowLogin }) {
           {/* Logo */}
           <Link to="/">
             <Typography as="div" variant="h5">
-              <img src={assets.app} alt="Scan&Dine" className="h-15 md:h-[150px]" />
+              <img src={assets.app} alt="Scan&Dine" className="h-15 md:h-[190px]" />
             </Typography>
           </Link>
 

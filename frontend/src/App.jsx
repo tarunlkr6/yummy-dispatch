@@ -32,8 +32,7 @@ const App = () => {
           {/* Public routes */}
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
-          <Route path='/restaurant/:id' element={<RestaurantTemplate />} />
-          <Route path='/restaurant/:id/menu' element={<RestaurantMenu />} />
+          <Route path='/restaurant/:id/view' element={<RestaurantTemplate />} />
           <Route path='/forgetpassword' element={<ForgetPassword />} />
           <Route path='/:id/book-table' element={<TableBooking />} />
           
@@ -41,6 +40,7 @@ const App = () => {
           <Route path='' element={<PrivateRoute />}>
           <Route path='/cart' element={<Cart />} />
             <Route path='/order' element={<PlaceOrder />} />
+            <Route path='/restaurant/:id/menu' element={<RestaurantMenu />} />
           </Route>
           <Route path='/user/change-password' element={<ChangePassword/>}/>
         </Routes>

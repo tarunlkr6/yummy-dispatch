@@ -443,7 +443,7 @@ export default function RestaurantTemplate() {
                       )}
                     </Typography>
                   </CardBody>
-                  {/* <CardFooter className="flex justify-between pt-2">
+                  <CardFooter className="flex justify-between pt-2">
                     <Button
                       onClick={() => addToCartHandler(item)}
                       color={isDarkMode ? "white" : "orange"}
@@ -453,7 +453,7 @@ export default function RestaurantTemplate() {
                     >
                       Add to Cart
                     </Button>
-                  </CardFooter> */}
+                  </CardFooter>
                 </Card>
               ))}
             </div>
