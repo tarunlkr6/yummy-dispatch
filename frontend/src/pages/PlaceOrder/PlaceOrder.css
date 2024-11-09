@@ -1,114 +1,129 @@
+/* Base styles for the form container */
 .place-order {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin: 40px auto;
-    max-width: 1200px;
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .place-order-left {
-    flex: 1;
-    min-width: 300px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .place-order-left li{
-    color: rgb(89, 89, 89);
-    font-weight: 100;
-  }
-  .place-order-right {
-    flex-basis: 300px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  .multi-fields {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-
-  .multi-fields input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ced4da;
-    margin-bottom: 15px;
-    transition: border-color 0.2s;
-  }
-  
-  /* input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ced4da;
-    margin-bottom: 15px;
-    transition: border-color 0.2s;
-  }
-  
-  input:focus {
-    border-color: #80bdff;
-    outline: none;
-  } */
-  
-  .cart-total {
-    background-color: #f1f3f5;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  .cart-totals-details {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 15px;
-  }
-  
-  li {
-    padding: 10px 0;
-    border-bottom: 1px solid #e9ecef;
-  }
-  
-  li:last-child {
-    border-bottom: none;
-  }
-  
-
-.place-order .cart-total button {
-    margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 40px auto;
+  max-width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }
 
+/* Left section for order details */
+.place-order-left {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  
+}
+
+/* Table styling */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-header {
+  padding: 10px;
+  text-align: left;
+  background-color: #f1f3f5;
+  font-weight: bold;
+}
+
+.table-row {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.table-data {
+  padding: 10px;
+  text-align: left;
+}
+
+.table-data strong {
+  font-weight: bold;
+}
+
+/* Input fields layout */
+.multi-fields {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.multi-fields input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  margin-bottom: 15px;
+  transition: border-color 0.2s;
+}
+
+.multi-fields input:focus {
+  border-color: #f44336;
+  outline: none;
+}
+
+/* Right section for cart total */
+.place-order-right {
+  flex-basis: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+ 
+}
+
+.cart-total {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.cart-totals-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.cart-totals-details b {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cart-total button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cart-total button:hover {
+  background-color: #d32f2f;
+}
+
+/* Responsive layout for smaller screens */
 @media (max-width: 750px) {
-    .place-order {
-        flex-direction: column; /* Change to column to stack elements */
-    }
-    .place-order-left {
-        order: 1; /* Ensure it appears first */
-    }
-    .place-order-right {
-        order: 2; /* Ensure it appears second */
-        justify-content: start;
-    }
+  .place-order {
+    flex-direction: column;
+  }
+
+  .place-order-left {
+    order: 1;
+  }
+
+  .place-order-right {
+    order: 2;
+    justify-content: start;
+  }
 }

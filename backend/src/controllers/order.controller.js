@@ -26,9 +26,10 @@ const generateOrderToken = async () => {
     }
 }
 
+// Place order controller   @CUSTOMER
 const placeOrder = asyncHandler(async (req, res) => {
     const { resid } = req.params
-    const { items, taxPrice, totalPrice } = req.body
+    const { items, taxPrice, totalPrice, serviceCharge } = req.body
 
     if (items && items.length === 0) {
         throw new ApiError(400, "No items in order")
@@ -41,10 +42,11 @@ const placeOrder = asyncHandler(async (req, res) => {
         orderNo,
         items: items.map((item) => ({
             ...item,
-            menu: item._id,
+            menu: item.menu,
         })),
         taxPrice,
         totalPrice,
+        serviceCharge,
     })
 
     const placedOrder = await Order.findById(order._id)
@@ -59,6 +61,7 @@ const placeOrder = asyncHandler(async (req, res) => {
 
 })
 
+// Get Order           @USER only
 const getMyOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user?._id })
 
@@ -71,6 +74,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, orders, "Orders fetched successfully."))
 })
 
+// Get All Orders           @ADMIN only
 const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({ restaurantId: req.user?.restaurantId })
     console.log("Orders: ", orders)
@@ -84,6 +88,7 @@ const getOrders = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, orders, "Orders fetched successfully."))
 })
 
+// Add additional item           @USER Only
 const addItem = asyncHandler(async (req, res) => {
     const { orderid } = req.params
     const { items } = req.body
@@ -112,6 +117,7 @@ const addItem = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, order, "Order added successfully."))
 })
 
+// Update Order status           @ADMIN only
 const updateOrderStatus = asyncHandler(async (req, res) => {
     const { orderid } = req.params
     const { status } = req.body

@@ -20,6 +20,8 @@ import {
   PowerIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
+import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone';
+
 import { assets } from "../../assets/assets";
 import "boxicons";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,12 +77,14 @@ function ProfileMenu({ handleLogout }) {
             Inbox
           </Typography>
         </MenuItem>
-        <MenuItem className="flex items-center gap-2 rounded">
-          <LifebuoyIcon className="h-4 w-4" />
-          <Typography as="span" variant="small" className="font-normal">
-            Help
-          </Typography>
-        </MenuItem>
+        <Link to='/vieworders'>
+          <MenuItem className="flex items-center gap-2 rounded">
+            <FastfoodTwoToneIcon sx={{fontSize:18}} />
+            <Typography as="span" variant="small" className="font-normal">
+              Orders
+            </Typography>
+          </MenuItem>
+        </Link>
         <hr className="my-2 border-blue-gray-50" />
         <MenuItem
           onClick={handleLogout}

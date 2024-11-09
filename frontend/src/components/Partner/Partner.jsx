@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { Button } from "@material-tailwind/react";
 
 function Partner() {
   const navigate = useNavigate();
-  const url = 'http://localhost:8080/api/v1/user';
+  const url = "http://localhost:8080/api/v1/user";
 
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // State for user data input
   let [data, setData] = useState({
     fullName: "",
     email: "",
     password: "",
-    isAdmin: true
+    isAdmin: true,
   });
 
   // Handle input change for form fields
@@ -33,32 +34,40 @@ function Partner() {
   const submitHandler = async (event) => {
     event.preventDefault();
     if (data.password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return;
     }
     try {
-      const res = await axios.post(`${url}/register`,data)
-      if(res.success) {
-        toast.success('Registration successful');
+      const res = await axios.post(`${url}/register`, data);
+      if (res.success) {
+        toast.success("Registration successful");
       }
       navigate("/");
       setData({
         fullName: "",
         email: "",
         password: "",
-        isAdmin: true
+        isAdmin: true,
       });
-      setConfirmPassword('');
+      setConfirmPassword("");
     } catch (error) {
-      toast.error(error?.data?.message || error.message || 'Registration failed');
+      toast.error(
+        error?.data?.message || error.message || "Registration failed"
+      );
     }
   };
 
   return (
-    <div>
-
+    <>
+      <div className="mb-5">
+        <Link to="/">
+          <Button variant="outlined" className="mx-auto mt-4">
+            Go back
+          </Button>
+        </Link>
+      </div>
       <section className="bg-gray-100 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center px-4 py-6 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -66,7 +75,10 @@ function Partner() {
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
                 <div>
-                  <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="fullName"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Your Name
                   </label>
                   <input
@@ -81,7 +93,10 @@ function Partner() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Your email
                   </label>
                   <input
@@ -96,7 +111,10 @@ function Partner() {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Password
                   </label>
                   <input
@@ -110,7 +128,10 @@ function Partner() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
                     Confirm Password
                   </label>
                   <input
@@ -141,7 +162,7 @@ function Partner() {
         </div>
         <ToastContainer />
       </section>
-    </div>
+    </>
   );
 }
 

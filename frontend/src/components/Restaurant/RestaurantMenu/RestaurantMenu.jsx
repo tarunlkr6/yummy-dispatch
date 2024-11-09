@@ -5,7 +5,7 @@ import "./RestaurantMenu.css";
 import { Button, Spinner } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import { addToCart } from "../../../slices/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const RestaurantMenu = () => {
   const { id } = useParams();
@@ -15,6 +15,7 @@ const RestaurantMenu = () => {
     isLoading: menuLoading,
     error: menuError,
   } = useGetMenuByRestaurantIdQuery(id);
+ const cart = useSelector((state)=> state?.cart);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,10 +38,18 @@ const RestaurantMenu = () => {
   // Cart management functions
   const addToCartHandler = useCallback(
     (item) => {
-      dispatch(addToCart({ item, qty: 1 }));
+      dispatch(addToCart({ item, qty: 1, resId:id })), [dispatch];
     },
-    [dispatch]
   );
+
+  
+   useEffect(() => {
+    if(cart.successMessage){
+      toast.success(cart.successMessage);
+    }else if (cart.errorMessage) {
+      toast.error(cart.errorMessage); 
+    }
+  }, [cart.errorMessage, cart.successMessage]);
 
   return (
     <>
@@ -50,7 +59,7 @@ const RestaurantMenu = () => {
         {menuLoading && <Spinner className="h-16 w-16 text-gray-900/50" />}
       </div>
       <Link to="/">
-        <Button variant="outlined" className="mx-auto mt-4">
+        <Button size="medium" variant="outlined" className="mx-auto">
           Go back
         </Button>
       </Link>
