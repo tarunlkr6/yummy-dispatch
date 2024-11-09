@@ -1,0 +1,227 @@
+/* Book.css */
+
+.book-table {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: cornsilk;
+  }
+  
+  .date-picker {
+    width: 200px;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+    background: #f2f2f2;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  th, td {
+    padding: 12px;
+    color: yellow;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #f1f1f1;
+  }
+
+  .confirmed {
+    color: green;
+    font-weight: bold;
+    font-weight: bolder;
+  }
+  
+
+  .book-table table tbody {
+    display: block;
+    max-height: 300px; /* Adjust this value as needed */
+    overflow-y: auto;
+    width: 100%;
+  }
+  
+  .error, p {
+    color: #d9534f;
+  }
+  
+  button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .view-details {
+    background-color: #5bc0de;
+    color: white;
+  }
+  
+  .cancel {
+    background-color: #d9534f;
+    color: white;
+  }
+  
+  .confirm {
+    background-color: #5cb85c;
+    color: white;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.4s ease;
+  }
+  
+  .modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  .modal-content p {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+  
+  .modal-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #d9534f;
+  }
+  
+  .close:hover {
+    color: #a94442;
+  }
+
+  .background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; /* Send the video behind the content overlay */
+}
+
+.book-table table thead,
+.book-table table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-in forwards;
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+  }
+  
+  
+  /* Fade-in animation */
+  
+  /* Slide-in animation */
+  @keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .confirmation-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    animation: slideIn 0.4s ease-out;
+  }
+  
+  .popup-content h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .popup-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .popup-content button {
+    padding: 8px 15px;
+    margin: 5px;
+  }
+  

@@ -24,6 +24,17 @@ const Sidebar = () => {
         <i className="fa-solid fa-cart-plus"></i>
           <p>Orders</p>
         </NavLink>
+
+{/* 
+        /:resid/all */}
+
+
+        <NavLink to='/dashboard/67251d6a3e030e9e961800b0/all' className="sidebar-option">
+        <i className="fa-solid fa-hand-holding-heart"></i>
+          <p>Bookings</p>
+        </NavLink>
+        
+
       </div>
     </div>
   );

@@ -110,9 +110,9 @@ const cancelBooking = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Past booking cannot cancelled")
     }
 
-    if (booking.status === 'Confirmed') {
-        throw new ApiError(400, "Confirmed booking cannot be cancelled")
-    }
+    // if (booking.status === 'Confirmed') {
+    //     throw new ApiError(400, "Confirmed booking cannot be cancelled")
+    // }
 
     await Booking.deleteOne({ _id: bookingid })
 
@@ -157,18 +157,30 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
 })
 
 const getAllBookings = asyncHandler(async (req, res) => {
-    const { resid } = req.params
+    const { resid } = req.params;
+    const { date } = req.query;
+    console.log(`Fetching bookings for restaurant: ${resid}`);
 
-    const allBookings = await Booking.find({ restaurantId: resid })
+    const query = { restaurantId: resid };
 
-    if (!allBookings) {
-        throw new ApiError(404, "There is no any bookings")
+    if (date) {
+        const [day, month, year] = date.split('/');
+        const searchDate = new Date(year, month - 1, day);
+        query.reservationDate = {
+            $gte: searchDate,
+            $lt: new Date(searchDate.getTime() + 24 * 60 * 60 * 1000),
+        };
     }
 
+    const allBookings = await Booking.find(query);
+
+    // Return an empty array instead of an error if no bookings are found
     return res
         .status(200)
-        .json(new ApiResponse(200, allBookings, "All bookings fetched successfully"))
-})
+        .json(new ApiResponse(200, allBookings, "All bookings fetched successfully"));
+});
+
+
 
 export {
     bookTable,

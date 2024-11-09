@@ -5,6 +5,7 @@ import Navbar from "../Navbar/Navbar";
 import Add from "../../pages/Add/Add";
 import List from "../../pages/List/List";
 import Orders from "../../pages/Orders/Orders";
+import BookTable from "../../pages/BookTable/Book";
 import './dashboard.css';
 import bgv from './bgv.mp4'
 
@@ -30,6 +31,7 @@ const Dashboard = () => {
           <Route path="add" element={<Add url={url} />} />
           <Route path="restaurant/67251d6a3e030e9e961800b0/menu" element={<List url={url} />} />
           <Route path="orders" element={<Orders url={url} />} />
+          <Route path="67251d6a3e030e9e961800b0/all" element={<BookTable url={url}/>} />
         </Routes>
       </div>
     </div>

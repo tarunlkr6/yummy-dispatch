@@ -1,148 +1,413 @@
 /* Container styling */
 .list-container {
-    position: relative;
-    min-height: 100vh;
-    overflow: hidden; /* Hide scroll bar */
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden; 
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Hide scroll bar */
+}
+
+.veg-icon {
+margin-right: 8px; /* Adjust the value for desired spacing */
+display: inline-block;
+vertical-align: middle;
 }
 
 /* Background video styling */
 .background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1; /* Send the video behind the content overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1; /* Send the video behind the content overlay */
 }
 
 /* Content overlay styling */
 .content-overlay {
-    position: relative;
-    z-index: 1; /* Place content above the background video */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px 20px; /* Adjust padding for better spacing */
-    height: 100%; /* Allow content to stretch full height */
-    overflow: auto; /* Enable scrolling */
+  position: relative;
+  z-index: 1; /* Place content above the background video */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px; /* Adjust padding for better spacing */
+  height: 100%; /* Allow content to stretch full height */
+  overflow: auto; /* Enable scrolling */
 }
 
 /* Header styling */
 .list-header {
-    text-align: center;
-    color: #fff;
-    animation: fadeInDown 1s ease;
+  text-align: center;
+  color: #fff;
+  animation: fadeInDown 1s ease;
 }
 
 .list-header h1 {
-    font-size: 3rem;
-    color: #ff6f61;
-    margin-bottom: 10px;
+  font-size: 3rem;
+  color: #ff6f61;
+  margin-bottom: 10px;
 }
 
 .list-header p {
-    font-size: 1.5rem;
-    color: #ddd;
+  font-size: 1.5rem;
+  color: #ddd;
 }
 
 /* Grid layout for items */
 .list-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px; /* Limit width for better readability */
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* Limit width for better readability */
+  margin-top: 20px;
+}
+
+/* Ensures cards maintain a consistent size regardless of the number of items */
+.list-grid > .list-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Card styling */
 .list-card {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    position: relative; /* For hover effects */
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For hover effects */
 }
 
 .list-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Card image */
 .list-card-image img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
+
+
+/* Card image */
+.list-card-image {
+  position: relative;
+  width: 100%;  /* Ensure the image container takes full width */
+  height: 200px; /* Fixed height to maintain aspect ratio */
+  overflow: hidden;
+}
+
+.list-card-image img {
+  width: 100%;
+  height: 100%;  /* Make sure it fills the entire space */
+  object-fit: cover;  /* Ensure the image covers the container without distortion */
+  object-position: center; /* Ensure the image is centered */
+}
+
+
 
 /* Card content */
 .list-card-content {
-    padding: 15px;
-    text-align: center;
+  padding: 15px;
+  text-align: center;
 }
 
 .list-card-content h3 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 5px;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .list-card-content .category {
-    font-size: 1rem;
-    color: #888;
-    margin-bottom: 8px;
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 8px;
 }
 
 .list-card-content .price {
-    font-size: 1.2rem;
-    color: #ff6f61;
-    font-weight: bold;
-    margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: #ff6f61;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
 /* Remove button */
+/* Remove Button Icon Styles */
 .remove-btn {
-    background-color: #ff6f61;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.2rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: 5px;
 }
 
 .remove-btn:hover {
-    background-color: #e85a51;
+  color: #ff4d4d; /* Change to a red shade on hover */
+  transform: scale(1.2); /* Slightly enlarge icon on hover */
+}
+
+.remove-btn:active {
+  transform: scale(1); /* Reset scale on click */
 }
 
 .list-card.grayscale {
-    filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+/* Toggle Switch Style */
+.availability-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Pagination Button Styles */
+.pagination-controls button {
+  margin: 0 12px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Hover and Active State for Buttons */
+.pagination-controls button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.8);
+}
+
+.pagination-controls button:focus {
+  outline: none;
+}
+
+/* "Active" Page Button */
+.pagination-controls button.active {
+  background-color: #28a745;
+  color: white;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.8);
+}
+
+/* Disabled State for Buttons */
+.pagination-controls button:disabled {
+  background-color: #d6d6d6;
+  color: #7d7d7d;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Animated Transition for Pagination */
+.pagination-controls button {
+  animation: buttonFadeIn 0.5s ease-out;
+}
+
+@keyframes buttonFadeIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.5);
   }
-  
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+/* Style for "Back" and "Next" buttons */
+.pagination-controls button:nth-child(1),
+.pagination-controls button:nth-last-child(1) {
+  background-color: #17a2b8;
+}
+
+.pagination-controls button:nth-child(1):hover,
+.pagination-controls button:nth-last-child(1):hover {
+  background-color: #138496;
+}
+
+.pagination-controls button:nth-child(1):disabled,
+.pagination-controls button:nth-last-child(1):disabled {
+  background-color: #b8e0e0;
+}
+
+/* Grid layout for items */
+.list-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Always display 4 cards in a row */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* Limit width for better readability */
+  margin-top: 20px;
+}
+
+/* Ensure each card takes the same size */
+.list-card {
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For hover effects */
+  height: 100%; /* Make sure all cards have the same height */
+}
+
+/* Handling a single card, ensuring it takes the full available space in the grid */
+.list-grid:empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.list-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.list-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for uniform size */
+  gap: 20px;
+}
+
+/* To ensure the grid doesn't collapse if there's only one item */
+.list-grid > .list-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* If there's only one card, make it stretch across the available space */
+.list-grid.single-item {
+  grid-template-columns: 1fr; /* Makes a single column layout */
+}
+
+/* Card image */
+.list-card-image img {
+  width: 100%;  /* Makes the image take full width */
+  height: 200px;  /* Fixed height to maintain aspect ratio */
+  object-fit: cover;  /* Ensure the image covers the area without distortion */
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .list-header h1 {
-        font-size: 2.5rem;
-    }
+  .list-header h1 {
+      font-size: 2.5rem;
+  }
 
-    .list-header p {
-        font-size: 1.2rem;
-    }
+  .list-header p {
+      font-size: 1.2rem;
+  }
 
-    .list-card-image img {
-        height: 120px;
-    }
+  .list-card-image img {
+      height: 120px;
+  }
+
+  /* Ensure card height is consistent in small screens */
+  .list-card {
+      height: 100%;
+  }
 }
 
 /* Animations */
-@keyframes fadeInDown {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
 }
