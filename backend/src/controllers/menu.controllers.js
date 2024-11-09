@@ -90,60 +90,60 @@ const createMenuItem = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, createdMenuItem, "Menu addedd successfully"))
 })
 
-// const updateMenuItem = asyncHandler(async (req, res) => {
-//     const { resid, itemid } = req.params
-//     const { itemName, price, description, category, isAvailable, isVeg } = req.body
+const updateMenuItem = asyncHandler(async (req, res) => {
+    const { resid, itemid } = req.params
+    const { itemName, price, description, category, isAvailable, isVeg } = req.body
 
-//     console.log(isAvailable);
 
-//     // if (!(price && description && itemName && category)) {
-//     //     throw new ApiError(400, "All fields are required")
-//     // }
 
-//     const item = await Menu.findOne({ _id: itemid, restaurantId: resid })
+    if (!(price && description && itemName && category)) {
+        throw new ApiError(400, "All fields are required")
+    }
 
-//     if (!item) {
-//         throw new ApiError(404, "Not found")
-//     }
+    const item = await Menu.findOne({ _id: itemid, restaurantId: resid })
 
-//     // let imageLocalPath = []
-//     // imageLocalPath = req.files?.image
-//     //console.log(imageLocalPath)
+    if (!item) {
+        throw new ApiError(404, "Not found")
+    }
 
-//     // console.log(imageLocalPath)
+    let imageLocalPath = []
+    imageLocalPath = req.files?.image
+    //console.log(imageLocalPath)
 
-//     // if (!imageLocalPath) {
-//     //     throw new ApiError(401, "Image is required")
-//     // }
 
-//     // let imageArray = []
-//     // for (let i = 0; i < imageLocalPath.length; i++) {
-//     //     let imageLinks = imageLocalPath[i]?.path;
-//     //     const result = await uploadOnCloudinary(imageLinks)
-//     //     imageArray.push({
-//     //         publicId: result.public_id,
-//     //         url: result.url
-//     //     })
-//     // }
 
-//     const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
-//         $set: {
-//             // itemName,
-//             // price,
-//             // description,
-//             // category,
-//             // image: imageArray,
-//             isAvailable,
-//             // isVeg,
-//         },
-//     }, {
-//         new: true
-//     })
+    if (!imageLocalPath) {
+        throw new ApiError(401, "Image is required")
+    }
 
-//     return res
-//         .status(200)
-//         .json(new ApiResponse(200, menuItem, "Item updated successfully."))
-// })
+    let imageArray = []
+    for (let i = 0; i < imageLocalPath.length; i++) {
+        let imageLinks = imageLocalPath[i]?.path;
+        const result = await uploadOnCloudinary(imageLinks)
+        imageArray.push({
+            publicId: result.public_id,
+            url: result.url
+        })
+    }
+
+    const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
+        $set: {
+            itemName,
+            price,
+            description,
+            category,
+            image: imageArray,
+            isAvailable,
+            isVeg,
+        },
+    }, {
+        new: true
+    })
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, menuItem, "Item updated successfully."))
+})
 
 
 const updateItemToVeg = asyncHandler(async (req, res) => {
@@ -265,4 +265,5 @@ export {
     addMenuReview,
     getMenuReviews,
     updateItemToVeg,
+    updateMenuItem,
 }
