@@ -1,61 +1,129 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./PlaceOrder.css";
-import "boxicons";
-import { useSelector } from "react-redux";
-
+import { useCreateOrderMutation } from "../../slices/orderApiSlice";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
+import { clearAllCartItems } from "../../slices/cartSlice";
 const PlaceOrder = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const [orderData, setOrderData] = useState({
-    name:'',
-    tableNumber: '',
+    name: "",
+    tableNumber: "",
+    items: [],
+    totalPrice: 0,
+    taxPrice: 0,
+    serviceCharge: 0,
+    restaurantId: "",
   });
 
+  useEffect(() => {
+    setOrderData((prevData) => ({
+      ...prevData,
+      items: cartItems.map((item) => ({
+        name: item.item.name,
+        price: item.item.price,
+        quantity: item.qty,
+        menu: item.item.id,
+      })),
+      totalPrice: cart.totalPrice,
+      taxPrice: cart.taxPrice,
+      serviceCharge: cart.serviceCharge,
+      restaurantId: cartItems[0]?.resId || "",
+    }));
+  }, [cartItems, cart]);
 
-  const submitHandler = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setOrderData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log('submit')
+    try {
+      const res = await createOrder(orderData).unwrap();
+      console.log("response", res);
+      toast.success(`Order placed successfully!`);
+      dispatch(clearAllCartItems());
+      navigate('/vieworders')
+    } catch (err) {
+      console.error("Error placing order: ", err);
+      if (err.status === 404) {
+        toast.error(
+          "The server could not find the requested resource. Please check your connection or try again."
+        );
+      } else if (err.status === 400) {
+        toast.error(
+          err.data?.message || "Bad request. Please check the order details."
+        );
+      } else if (err.status === 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error(
+          err.data?.message || "Failed to place order. Please try again."
+        );
+      }
+    }
   };
 
   return (
     <>
+      <div className="">
+        <Link to="/cart">
+          <Button size="medium" variant="outlined" className="mx-auto">
+            Go back
+          </Button>
+        </Link>
+      </div>
       <form onSubmit={submitHandler} className="place-order">
-          {/* <div className="place-order-left">
-        <p className='title'>Delivery Information</p>
-        <div className="multi-fields">
-          <input type="text" placeholder='First Name'/>
-          <input type="text" placeholder='Last Name'/>
-        </div>
-        <input type="email" placeholder='Email address'/>
-        <input type="text" placeholder='Street'/>
-        <div className="multi-fields">
-          <input type="text" placeholder='City'/>
-          <input type="text" placeholder='State'/>
-        </div>
-        <div className="multi-fields">
-          <input type="text" placeholder='Zip Code'/>
-          <input type="text" placeholder='Country'/>
-        </div>
-        <input type="text" placeholder='Phone' />
-        </div> */}
-
         <div className="place-order-left">
-          <p className="title">Order Information</p>
-          <ul className="mb-5">
-            {cartItems.map((food, index) => (
-              <li key={food.item.id || index}>
-                <strong>{food.item.name}</strong> - {food.qty}
-              </li>
-            ))}
-          </ul>
+          <p className="title">Order Details</p>
+          <table className="order-table">
+            <thead>
+              <tr>
+                <th className="table-header">Item Name</th>
+                <th className="table-header">Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems.map((food, index) => (
+                <tr key={food.item.id || index} className="table-row">
+                  <td className="table-data">
+                    <strong>{food.item.name}</strong>
+                  </td>
+                  <td className="table-data">{food.qty}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
           <div className="multi-fields">
-            <input type="text" placeholder="Enter your name" />
-            {/* <input type="text" placeholder="Last Name" /> */}
-            <input type="number" placeholder="Table no" />
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              value={orderData.name}
+              onChange={handleInputChange}
+            />
+            <input
+              type="number"
+              placeholder="Table No."
+              name="tableNumber"
+              value={orderData.tableNumber}
+              onChange={handleInputChange}
+            />
           </div>
         </div>
+
         <div className="place-order-right">
           <div className="cart-total">
             <h2>Cart Total</h2>
@@ -70,7 +138,13 @@ const PlaceOrder = () => {
                 <b>&#36;{cart.totalPrice}</b>
               </div>
             </div>
-            <button>Proceed To Payment</button>
+            <button
+              type="submit"
+              className="place-order-button"
+              disabled={isLoading}
+            >
+              {isLoading ? "Placing Order..." : "Place Order"}
+            </button>
           </div>
         </div>
       </form>

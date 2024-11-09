@@ -18,6 +18,7 @@ import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import TableBooking from './components/Restaurant/BookingTable/TableBooking';
 import ChangePassword from './components/ForgetPassword/ChangePassword';
 import RestaurantMenu from './components/Restaurant/RestaurantMenu/RestaurantMenu';
+import OrderDetails from './components/ViewOrder/OrderDetails';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/restaurant/:id/view' element={<RestaurantTemplate />} />
           <Route path='/forgetpassword' element={<ForgetPassword />} />
           <Route path='/:id/book-table' element={<TableBooking />} />
+          <Route path='/vieworders' element={<OrderDetails/>}/>
           
           {/* Private routes */}
           <Route path='' element={<PrivateRoute />}>
