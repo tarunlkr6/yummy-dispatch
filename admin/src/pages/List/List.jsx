@@ -119,7 +119,6 @@ const List = ({ url }) => {
                 </h3>
                 <p className="category">{item.category}</p>
                 <p className="price">${item.price}</p>
-
                 <button className="remove-btn" onClick={() => removeFood(item._id)}>
                   <i className="fa-solid fa-trash"></i>
                 </button>

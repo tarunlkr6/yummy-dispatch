@@ -146,7 +146,7 @@ const createMenuItem = asyncHandler(async (req, res) => {
 // })
 
 
-const updateMenuItem = asyncHandler(async (req, res) => {
+const updateItemToVeg = asyncHandler(async (req, res) => {
     const { resid, itemid } = req.params;
     let { isAvailable } = req.body; // Extract isAvailable from request body
 
@@ -174,32 +174,6 @@ const updateMenuItem = asyncHandler(async (req, res) => {
 });
 
 
-const updateMenuVeg = asyncHandler(async (req, res) => {
-    const { resid, itemid } = req.params;
-    let { isVeg } = req.body; // Extract isAvailable from request body
-
-    // Convert isAvailable to boolean if it comes as a string
-    if (typeof isVeg === 'string') {
-        isVeg = isVeg === 'true'; // Convert to boolean
-    }
-
-    console.log("isAvailable after parsing:", isVeg); // Should be true or false
-
-    // Find the item by restaurant ID and item ID
-    const item = await Menu.findOne({ _id: itemid, restaurantId: resid });
-    if (!item) {
-        throw new ApiError(404, "Not found");
-    }
-
-    // Update the menu item with the new availability status
-    const menuItem = await Menu.findByIdAndUpdate(
-        { restaurantId: resid, _id: itemid },
-        { $set: { isVeg } },
-        { new: true }
-    );
-
-    return res.status(200).json(new ApiResponse(200, menuItem, "Item updated successfully."));
-});
 
 
 
@@ -286,10 +260,9 @@ const getMenuReviews = asyncHandler(async (req, res) => {
 export {
     getMenuItem,
     createMenuItem,
-    updateMenuItem,
     deleteMenuItem,
     getMenuById,
     addMenuReview,
     getMenuReviews,
-    updateMenuVeg,
+    updateItemToVeg,
 }
