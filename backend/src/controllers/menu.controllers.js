@@ -93,6 +93,8 @@ const updateMenuItem = asyncHandler(async (req, res) => {
     const { resid, itemid } = req.params
     const { itemName, price, description, category, isAvailable, isVeg } = req.body
 
+
+
     if (!(price && description && itemName && category)) {
         throw new ApiError(400, "All fields are required")
     }
@@ -106,6 +108,8 @@ const updateMenuItem = asyncHandler(async (req, res) => {
     let imageLocalPath = []
     imageLocalPath = req.files?.image
     //console.log(imageLocalPath)
+
+
 
     if (!imageLocalPath) {
         throw new ApiError(401, "Image is required")
@@ -139,6 +143,38 @@ const updateMenuItem = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, menuItem, "Item updated successfully."))
 })
+
+
+const updateItemToVeg = asyncHandler(async (req, res) => {
+    const { resid, itemid } = req.params;
+    let { isAvailable } = req.body; // Extract isAvailable from request body
+
+    // Convert isAvailable to boolean if it comes as a string
+    if (typeof isAvailable === 'string') {
+        isAvailable = isAvailable === 'true'; // Convert to boolean
+    }
+
+    console.log("isAvailable after parsing:", isAvailable); // Should be true or false
+
+    // Find the item by restaurant ID and item ID
+    const item = await Menu.findOne({ _id: itemid, restaurantId: resid });
+    if (!item) {
+        throw new ApiError(404, "Not found");
+    }
+
+    // Update the menu item with the new availability status
+    const menuItem = await Menu.findByIdAndUpdate(
+        { restaurantId: resid, _id: itemid },
+        { $set: { isAvailable } },
+        { new: true }
+    );
+
+    return res.status(200).json(new ApiResponse(200, menuItem, "Item updated successfully."));
+});
+
+
+
+
 
 const deleteMenuItem = asyncHandler(async (req, res) => {
     const { resid, itemid } = req.params
@@ -223,9 +259,10 @@ const getMenuReviews = asyncHandler(async (req, res) => {
 export {
     getMenuItem,
     createMenuItem,
-    updateMenuItem,
     deleteMenuItem,
     getMenuById,
     addMenuReview,
     getMenuReviews,
+    updateItemToVeg,
+    updateMenuItem,
 }

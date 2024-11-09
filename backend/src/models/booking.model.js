@@ -40,7 +40,7 @@ const bookingSchema = new Schema({
         type: Number,
         required: true,
         min: [1, 'At least one guest is required'],
-        max: [20, 'Maximum number of gues is 20'],
+        max: [20, 'Maximum number of guest is 20'],
     },
     specialRequests: {
         type: String,

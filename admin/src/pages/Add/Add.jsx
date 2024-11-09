@@ -6,17 +6,24 @@ import { toast } from 'react-toastify';
 
 const Add = ({ url }) => {
   const resid = '67251d6a3e030e9e961800b0';
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState(false); // Add buttonClicked state here
   const [data, setData] = useState({
     name: '',
     description: '',
     price: '',
     category: 'Salad', // default category 'Salad'
+    isVeg: true, // default to Veg
   });
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const toggleVegStatus = (status) => {
+    setData((prevData) => ({ ...prevData, isVeg: status }));
+    setButtonClicked(true); // Mark as clicked
   };
 
   const onSubmitHandler = async (e) => {
@@ -26,28 +33,19 @@ const Add = ({ url }) => {
     formData.append('description', data.description);
     formData.append('price', Number(data.price));
     formData.append('category', data.category);
-    formData.append('image', image);
+    formData.append('isVeg', data.isVeg);
+
+    Array.from(image).forEach((item) => {
+      formData.append('image', item);
+    });
 
     try {
-
-      const token = JSON.parse(localStorage.getItem('token'))
-      console.log(token)
-
-//       const tokenData = JSON.parse(localStorage.getItem('token'));
-// const token = tokenData?.token; 
-
-
-      console.log(token);
-
-      console.log(`${token}`);
-
+      const token = JSON.parse(localStorage.getItem('token'));
       const response = await axios.post(`${url}/${resid}/menu/add`, formData, {
         headers: {
-          'Authorization' : `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log(response.data)
 
       if (response.data.success) {
         setData({
@@ -55,38 +53,35 @@ const Add = ({ url }) => {
           description: '',
           price: '',
           category: 'Salad',
+          isVeg: true,
         });
-        setImage(false);
+        setImage([]);
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        toast.error("Unauthorized. Please log in again.");
-      } else {
-        toast.error("An error occurred while adding the food item.");
-      }
+      toast.error('An error occurred while adding the food item.');
     }
   };
 
   return (
-    <div className="body">
+    <div className="body fade-in">
       <form className="flex-col" onSubmit={onSubmitHandler}>
+        {/* Image upload */}
         <div className="add-img-upload flex-col">
           <p>Upload Image</p>
           <label htmlFor="image">
-            <img src={image ? URL.createObjectURL(image) : assets.upload_area} alt="" />
+            {Array.from(image).map((item, index) => (
+              <span key={index}>
+                <img src={URL.createObjectURL(item)} alt="" />
+              </span>
+            ))}
           </label>
-          <input
-            onChange={(e) => setImage(e.target.files[0])}
-            type="file"
-            id="image"
-            hidden
-            required
-          />
+          <input onChange={(e) => setImage(e.target.files)} type="file" multiple />
         </div>
 
+        {/* Product details */}
         <div className="add-product-name flex-col">
           <p>Product name</p>
           <input
@@ -111,6 +106,7 @@ const Add = ({ url }) => {
           ></textarea>
         </div>
 
+        {/* Category and price */}
         <div className="add-category-price">
           <div className="add-category flex-col">
             <p>Product Category</p>
@@ -146,7 +142,27 @@ const Add = ({ url }) => {
           </div>
         </div>
 
-        <button type="submit" className="add-btn">Add</button>
+        {/* Veg/Non-Veg Toggle */}
+        <div className="veg-toggle">
+          <button
+            type="button"
+            className={` veg ,  ${data.isVeg ? 'active' : ''} ${buttonClicked && !data.isVeg ? 'blur' : ''}`}
+            onClick={() => toggleVegStatus(true)}
+          >
+            Veg
+          </button>
+          <button
+            type="button"
+            className={` non-veg ,  ${!data.isVeg ? 'active' : ''} ${buttonClicked && data.isVeg ? 'blur' : ''}`}
+            onClick={() => toggleVegStatus(false)}
+          >
+            Non-Veg
+          </button>
+        </div>
+
+        <button type="submit" className="add-btn">
+          Add
+        </button>
       </form>
     </div>
   );
