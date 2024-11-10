@@ -19,6 +19,7 @@ import TableBooking from './components/Restaurant/BookingTable/TableBooking';
 import ChangePassword from './components/ForgetPassword/ChangePassword';
 import RestaurantMenu from './components/Restaurant/RestaurantMenu/RestaurantMenu';
 import OrderDetails from './components/ViewOrder/OrderDetails';
+import Profile from './components/Profile/Profile';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -37,14 +38,17 @@ const App = () => {
           <Route path='/forgetpassword' element={<ForgetPassword />} />
           <Route path='/:id/book-table' element={<TableBooking />} />
           <Route path='/vieworders' element={<OrderDetails/>}/>
-          
+
+          {/* User Routes */}
+          <Route path='/user/change-password' element={<ChangePassword/>}/>
+          <Route path='/user/me' element={<Profile/>}/>
           {/* Private routes */}
           <Route path='' element={<PrivateRoute />}>
           <Route path='/cart' element={<Cart />} />
             <Route path='/order' element={<PlaceOrder />} />
             <Route path='/restaurant/:id/menu' element={<RestaurantMenu />} />
           </Route>
-          <Route path='/user/change-password' element={<ChangePassword/>}/>
+          
         </Routes>
       </div>
       <Footer />

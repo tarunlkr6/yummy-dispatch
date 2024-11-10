@@ -11,7 +11,8 @@ const ForgetPassword = () => {
     console.log(email);
 
     try {
-      const response = await forgetPassword({ email }).unwrap();
+      const response = await forgetPassword({email}).unwrap();
+      console.log(response);
       toast.success("Reset link sent, check your email.");
     } catch (error) {
       toast.error("Failed to send reset link. Please try again.");

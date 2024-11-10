@@ -15,7 +15,7 @@ const RestaurantMenu = () => {
     isLoading: menuLoading,
     error: menuError,
   } = useGetMenuByRestaurantIdQuery(id);
- const cart = useSelector((state)=> state?.cart);
+  const cart = useSelector((state) => state?.cart);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,18 +36,15 @@ const RestaurantMenu = () => {
   }, [data]);
 
   // Cart management functions
-  const addToCartHandler = useCallback(
-    (item) => {
-      dispatch(addToCart({ item, qty: 1, resId:id })), [dispatch];
-    },
-  );
+  const addToCartHandler = useCallback((item) => {
+    dispatch(addToCart({ item, qty: 1, resId: id })), [dispatch];
+  });
 
-  
-   useEffect(() => {
-    if(cart.successMessage){
+  useEffect(() => {
+    if (cart.successMessage) {
       toast.success(cart.successMessage);
-    }else if (cart.errorMessage) {
-      toast.error(cart.errorMessage); 
+    } else if (cart.errorMessage) {
+      toast.error(cart.errorMessage);
     }
   }, [cart.errorMessage, cart.successMessage]);
 
@@ -70,7 +67,9 @@ const RestaurantMenu = () => {
             <div className="menu-details">
               <div className="menu-header">
                 <h3>{item.name}</h3>
-                <p className={`menu-category ${item.isVeg ? "veg" : "non-veg"}`}>
+                <p
+                  className={`menu-category ${item.isVeg ? "veg" : "non-veg"}`}
+                >
                   {item.isVeg ? (
                     <box-icon name="food-tag" color="#56c309"></box-icon>
                   ) : (
@@ -88,12 +87,14 @@ const RestaurantMenu = () => {
                 {item.isAvailable ? "Available" : "Not Available"}
               </p>
             </div>
-            <button
-              onClick={() => addToCartHandler(item)}
-              className="add-to-cart-btn"
-            >
-              Add to Cart
-            </button>
+            <div className="menu-footer">
+              <button
+                onClick={() => addToCartHandler(item)}
+                className="add-to-cart-btn"
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         ))}
       </div>

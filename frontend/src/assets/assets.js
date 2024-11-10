@@ -4,6 +4,7 @@ import app from './app.png'
 import appXlogo from'./appXlogo.jpeg'
 import header_img from './header_img.png'
 import burger from './burger.mp4'
+import Black_banner from './Black_banner.png'
 import header_video from './header_video.mp4'
 import search_icon from './search_icon.png'
 import menu_1 from './menu_1.png'
@@ -97,7 +98,8 @@ export const assets = {
     salmon,
     burger,
     appXlogo,
-    header_video
+    header_video,
+    Black_banner
 }
 
 export const offer_list = {

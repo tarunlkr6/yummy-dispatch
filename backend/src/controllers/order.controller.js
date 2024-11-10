@@ -1,4 +1,5 @@
 import { Order } from "../models/order.model.js"
+import { Restaurant } from "../models/restaurant.models.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
@@ -49,15 +50,24 @@ const placeOrder = asyncHandler(async (req, res) => {
         serviceCharge,
     })
 
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(
+        resid,
+        { $push: { orders: order._id } },
+        { new: true,}
+      );
+
     const placedOrder = await Order.findById(order._id)
 
     if (!placedOrder) {
         throw new ApiError(500, "Something went wrong while placing order")
     }
 
+    if (!updatedRestaurant) {
+        throw new ApiError(500, "Failed to associate order with the restaurant");
+      }
     return res
         .status(200)
-        .json(new ApiResponse(200, placedOrder, "Order placed successfully"))
+        .json(new ApiResponse(200, {placedOrder, updatedRestaurant}, "Order placed successfully"))
 
 })
 

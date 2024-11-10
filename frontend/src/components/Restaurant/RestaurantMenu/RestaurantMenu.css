@@ -70,14 +70,22 @@
   font-weight: bold;
 }
 
+.menu-footer {
+  margin-top: auto;
+  padding: 10px;
+  text-align: center;
+}
+
 .add-to-cart-btn {
-  width: 90%;
-  margin: 10px auto;
-  display: block;
+  width: 100%;
   background-color: tomato;
   color: white;
-  padding: 4px;
+  padding: 8px;
   border-radius: 4px;
-  text-align: center;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: rgb(209, 47, 19);
 }
