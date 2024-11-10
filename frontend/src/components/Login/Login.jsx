@@ -72,7 +72,7 @@ const Login = ({ formData, handleInputChange, handleSubmit }) => {
         <p className='text-lg absolute top-1/2 transform -translate-y-1/2 text-black/80 bg-[#f5f5f5] px-2'>Or</p>
       </div>
       <div className='w-full font-semibold text-[#060606] my-2 bg-white border border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer hover:bg-black/85 hover:text-white transition-colors duration-300'>
-        <FcGoogle className='h-6 mr-2' size={24} />
+      <box-icon name='google' type='logo' color='#ffffff' ></box-icon>
         Login With Google
       </div>
     </>
