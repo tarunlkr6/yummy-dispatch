@@ -136,8 +136,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Access token refreshed successfully."))
 
     } catch (err) {
-        console.log(err)
-        throw new ApiError(500, "Something went wrong while refreshing access token")
+        // console.log(err)
+        throw new ApiError(500, `Something went wrong while refreshing access token: ${err}`)
     }
 })
 

@@ -5,7 +5,7 @@ import { Spinner, Alert } from "@material-tailwind/react";
 
 function RestaurantCard() {
   const { data: Restaurant, isLoading, error } = useGetRestaurantQuery();
-  console.log(Restaurant); // Check the structure of the response
+
 
   // Check if Restaurant and Restaurant.data.restaurants exist and are arrays
   const isValidData = Restaurant && Array.isArray(Restaurant.data?.restaurants);

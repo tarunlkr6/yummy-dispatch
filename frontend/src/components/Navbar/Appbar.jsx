@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   Typography,
@@ -28,10 +28,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../../slices/usersApiSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { logout } from "../../slices/authSlice";
+import { Html5QrcodeScanner } from "html5-qrcode";
+
 
 function ProfileMenu({ handleLogout }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  const navigate = useNavigate();
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -73,12 +76,14 @@ function ProfileMenu({ handleLogout }) {
             </Typography>
           </Link>
         </MenuItem>
+        <Link to='/table/details'>
         <MenuItem className="flex items-center gap-2 rounded">
           <InboxArrowDownIcon className="h-4 w-4" />
           <Typography as="span" variant="small" className="font-normal">
             Inbox
           </Typography>
         </MenuItem>
+        </Link>
         <Link to='/vieworders'>
           <MenuItem className="flex items-center gap-2 rounded">
             <FastfoodTwoToneIcon sx={{fontSize:18}} />
@@ -111,9 +116,9 @@ function Appbar({ setShowLogin }) {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.auth);
   const [logoutApiCall] = useLogoutMutation();
+  const [isScannerActive, setIsScannerActive] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -124,6 +129,37 @@ function Appbar({ setShowLogin }) {
       console.error("Logout error:", error);
     }
   };
+
+  useEffect(() => {
+    let scanner;
+
+    if (isScannerActive) {
+      scanner = new Html5QrcodeScanner("qr-reader", {
+        qrbox: { width: 250, height: 250 },
+        fps: 5,
+      });
+
+      scanner.render(onScanSuccess, onScanError);
+    }
+
+    function onScanSuccess(result) {
+      scanner.clear();
+      setIsScannerActive(false); // Close the modal after a successful scan
+      navigate(result); // Redirect to the scanned URL
+    }
+
+    function onScanError(error) {
+      console.warn("QR Scan Error:", error);
+    }
+
+    return () => {
+      if (scanner) {
+        scanner
+          .clear()
+          .catch((error) => console.warn("Clear scanner error:", error));
+      }
+    };
+  }, [isScannerActive, navigate]);
 
   return (
     <div className="w-full">
@@ -172,6 +208,9 @@ function Appbar({ setShowLogin }) {
               size="sm"
               color="blue-gray"
               variant="text"
+              onClick={() => {
+                setIsScannerActive(true);
+              }}
             >
               <box-icon name='qr-scan' color='#6d6d6d' ></box-icon>
             </IconButton>
@@ -186,7 +225,6 @@ function Appbar({ setShowLogin }) {
             </Link>
             {!userInfo ? (
               <Button
-                // variant="gradient"
                 size="md"
                 onClick={() => setShowLogin(true)}
                 className="w-full bg-[#ff6347] rounded-full hover:bg-red-600 hover:shadow-red-400"
@@ -199,6 +237,21 @@ function Appbar({ setShowLogin }) {
           </div>
         </div>
 
+        {/* QR Scanner Modal */}
+        {isScannerActive && (
+          <div className="relative mt-50 inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-gray-200 w-80 p-8 rounded-lg shadow-lg relative">
+              <button
+                onClick={() => setIsScannerActive(false)}
+                className="absolute top-1 right-1 text-gray-700 hover:text-gray-900 font-bold"
+              >
+                <box-icon name="x-square" type="solid" color="black"></box-icon>
+              </button>
+              <div id="qr-reader" className="w-full h-full"></div>
+            </div>
+          </div>
+        )}
+        
         {/* Responsive search bar for mobile */}
         {isSearchVisible && (
           <div className="mt-2 md:hidden px-4">
@@ -212,7 +265,7 @@ function Appbar({ setShowLogin }) {
                 }}
               />
               <Button
-                size='sm'
+                size="sm"
                 className="!absolute right-1 top-1 rounded text-red-500"
               >
                 Search
