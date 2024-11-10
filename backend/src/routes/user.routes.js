@@ -1,18 +1,28 @@
-import { Router } from "express"
-import { registerUser, logoutUser, loginUser, refreshAccessToken, forgotPassword, changeCurrentPassword, resetPassword } from "../controllers/user.controllers.js"
-import { verifyJWT } from "../middlewares/auth.middlewares.js"
+import { Router } from "express";
+import {
+  registerUser,
+  logoutUser,
+  loginUser,
+  refreshAccessToken,
+  forgotPassword,
+  changeCurrentPassword,
+  resetPassword,
+  getCurrentUser,
+} from "../controllers/user.controllers.js";
+import { verifyJWT } from "../middlewares/auth.middlewares.js";
 
-const router = Router()
+const router = Router();
 
 // public routes
-router.route("/register").post(registerUser)
-router.route("/login").post(loginUser)
-router.route("/forgot-password").post(forgotPassword)
-router.route("/reset-password/:token").post(resetPassword)
+router.route("/register").post(registerUser);
+router.route("/login").post(loginUser);
+router.route("/forgot-password").post(forgotPassword);
+router.route("/reset-password/:token").post(resetPassword);
 
 // sercured routes
-router.route("/logout").post(verifyJWT, logoutUser)
-router.route("/refresh-token").post(verifyJWT, refreshAccessToken)
-router.route("/update-password").post(verifyJWT, changeCurrentPassword)
+router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/refresh-token").post(verifyJWT, refreshAccessToken);
+router.route("/update-password").post(verifyJWT, changeCurrentPassword);
+router.route("/me").get(verifyJWT, getCurrentUser);
 
-export default router
+export default router;

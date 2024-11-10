@@ -62,6 +62,7 @@ const restaurantSchema = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order",
+        required: true,
       },
     ],
     registrationDate: {

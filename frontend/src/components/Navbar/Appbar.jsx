@@ -57,12 +57,14 @@ function ProfileMenu({ handleLogout }) {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
+        <Link to='/user/me'>
         <MenuItem className="flex items-center gap-2 rounded">
           <UserCircleIcon className="h-4 w-4" />
           <Typography as="span" variant="small" className="font-normal">
             My Profile
           </Typography>
         </MenuItem>
+        </Link>
         <MenuItem className="flex items-center gap-2 rounded">
           <Cog6ToothIcon className="h-4 w-4" />
           <Link to='/user/change-password'>
@@ -171,7 +173,7 @@ function Appbar({ setShowLogin }) {
               color="blue-gray"
               variant="text"
             >
-              <box-icon name='qr-scan' animation='flashing' flip='horizontal' color='#5a5a5a' ></box-icon>
+              <box-icon name='qr-scan' color='#6d6d6d' ></box-icon>
             </IconButton>
             <Link to="/cart">
               <IconButton
