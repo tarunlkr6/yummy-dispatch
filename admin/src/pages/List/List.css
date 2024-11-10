@@ -410,4 +410,61 @@ input:checked + .slider:before {
 
 .fade-out {
   animation: fadeOut 0.5s ease-out forwards;
+}.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
 }
+
+.filter-btn, .keyword-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-btn:hover, .keyword-btn:hover {
+  background-color: #0056b3;
+}
+
+.filter-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.filter-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.close-btn {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: #e60000;
+}
+
