@@ -30,7 +30,7 @@ const Dashboard = () => {
         <Routes>
           <Route path="add" element={<Add url={url} />} />
           <Route path="restaurant/67251d6a3e030e9e961800b0/menu" element={<List url={url} />} />
-          <Route path="orders" element={<Orders url={url} />} />
+          <Route path="orders/67251d6a3e030e9e961800b0" element={<Orders url={url} />} />
           <Route path="67251d6a3e030e9e961800b0/all" element={<BookTable url={url}/>} />
         </Routes>
       </div>

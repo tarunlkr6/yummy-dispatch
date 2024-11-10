@@ -20,7 +20,7 @@ const Sidebar = () => {
           <p>List Items</p>
         </NavLink>
 
-        <NavLink to='/dashboard/orders' className="sidebar-option">
+        <NavLink to='/dashboard/orders/67251d6a3e030e9e961800b0' className="sidebar-option">
         <i className="fa-solid fa-cart-plus"></i>
           <p>Orders</p>
         </NavLink>
