@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaInstagram, FaXTwitter, FaLinkedin } from "react-icons/fa6";
+// import { FaInstagram, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 import {
   Typography,
   Button,
@@ -33,13 +33,13 @@ function Footer() {
             </Typography>
             <div className="mt-6 flex gap-4">
               <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-                <FaInstagram className="h-6 w-6" />
+                <box-icon name='instagram' type='logo' color='#ffffff' ></box-icon>
               </IconButton>
               <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-                <FaXTwitter className="h-6 w-6" />
+               <box-icon name='twitter' type='logo' color='#ffffff' ></box-icon>
               </IconButton>
               <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-                <FaLinkedin className="h-6 w-6" />
+                <box-icon name='linkedin-square' type='logo' color='#ffffff' ></box-icon>
               </IconButton>
             </div>
           </div>
