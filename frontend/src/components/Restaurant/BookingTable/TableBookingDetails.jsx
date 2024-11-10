@@ -73,6 +73,7 @@ const TableBookingDetails = () => {
         const bookingid = bookingId._id;
         await cancelBooking({resid,bookingid}).unwrap();
         toast.success("Booking cancelled")
+        window. location. reload(false);
         navigate('/table/details')
       } catch (err) {
         toast.error("Cancellation error:", err);
