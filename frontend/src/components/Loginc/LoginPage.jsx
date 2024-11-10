@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import logImage from "/logimage.jpg";
-import { FcGoogle } from "react-icons/fc";
 import { assets } from "../../assets/assets";
 import {
   useLoginMutation,

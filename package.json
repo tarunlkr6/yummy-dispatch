@@ -31,7 +31,6 @@
     "mongoose": "^8.6.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
-    "react-icons": "^5.3.0",
     "react-router-bootstrap": "^0.26.3",
     "react-router-dom": "^6.26.2",
     "stripe": "^17.2.1",
