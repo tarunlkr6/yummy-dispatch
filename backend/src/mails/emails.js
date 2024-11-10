@@ -12,8 +12,8 @@ const sendPasswordResetEmail = async (email, name, resetURL) => {
             html: PASSWORD_RESET_REQUEST.replace("{reset_link}", resetURL).replace("{userName}", name)
         })
     } catch (err) {
-        console.log(err)
-        throw new ApiError(500, "Error while sending mail")
+        // console.log(err)
+        throw new ApiError(500, `Error while sending mail: ${err}`)
     }
 }
 
@@ -28,8 +28,8 @@ const sendResetSuccessMail = async (email, name) => {
         })
 
     } catch (err) {
-        console.log(err)
-        throw new ApiError(500, "Error while sending reset success mail")
+        // console.log(err)
+        throw new ApiError(500, `Error while sending reset success mail: ${err}`)
     }
 }
 export { sendPasswordResetEmail, sendResetSuccessMail }

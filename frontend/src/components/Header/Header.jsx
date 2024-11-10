@@ -12,7 +12,7 @@ const Header = () => {
         {/* <button>View Menu</button> */}
       </div>
       <video autoPlay muted loop id="myVideo" className="video-background">
-        <source src={assets.header_video} type="video/mp4" />
+        <source src={assets.burger} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>

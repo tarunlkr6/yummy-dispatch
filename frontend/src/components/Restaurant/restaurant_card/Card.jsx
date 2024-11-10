@@ -9,6 +9,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Html5QrcodeScanner } from "html5-qrcode";
+import {toast} from 'react-toastify'
 
 function RestaurantCard({
   _id,
@@ -37,11 +38,20 @@ function RestaurantCard({
     }
 
     function onScanSuccess(result) {
-      scanner.clear();
-      setIsScannerActive(false); // Close the modal after a successful scan
-      console.log(result)
-      setScanResult(result);
-      navigate(result); // Redirect to the scanned URL
+      // Extract the restaurant ID from the scanned URL
+      const scannedId = result.split("/restaurant/")[1]?.split("/")[0];
+      
+      if (scannedId === _id) {
+        // IDs match; navigate to the result
+        scanner.clear();
+        setIsScannerActive(false);
+        navigate(result);
+      } else {
+        // IDs do not match; show error
+        toast.error("Scanned QR code does not match this restaurant.");
+        scanner.clear();
+        setIsScannerActive(false);
+      }
     }
 
     function onScanError(error) {
@@ -55,7 +65,11 @@ function RestaurantCard({
           .catch((error) => console.warn("Clear scanner error:", error));
       }
     };
-  }, [isScannerActive, navigate]);
+  }, [isScannerActive, navigate, _id]);
+
+  const openScanner = () => {
+    setIsScannerActive(true);
+  };
 
   const onClickHandler = (id, event) => {
     event.stopPropagation();
@@ -141,8 +155,7 @@ function RestaurantCard({
               <button
                 type="button"
                 onClick={(event) => {
-                  event.stopPropagation(); // Prevents card click event
-                  setIsScannerActive(true);
+                  event.stopPropagation(); openScanner(); 
                 }}
                 className="w-full h-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
               >

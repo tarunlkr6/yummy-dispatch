@@ -32,13 +32,13 @@ function Footer() {
               with a seamless and efficient ordering process.
             </Typography>
             <div className="mt-6 flex gap-4">
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:shadow-current hover:text-white">
+              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
                 <FaInstagram className="h-6 w-6" />
               </IconButton>
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:shadow-current hover:text-white">
+              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
                 <FaXTwitter className="h-6 w-6" />
               </IconButton>
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:shadow-current hover:text-white">
+              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
                 <FaLinkedin className="h-6 w-6" />
               </IconButton>
             </div>
@@ -59,7 +59,7 @@ function Footer() {
                         as="a"
                         href="#"
                         variant="small"
-                        className="text-gray-400 hover:text-white transition-colors duration-300"
+                        className="text-gray-400 transition-colors duration-300 hover:text-[#fa2600] "
                       >
                         {item}
                       </Typography>
@@ -86,9 +86,9 @@ function Footer() {
                   <li>
                     <Typography
                       variant="small"
-                      className="text-gray-400"
+                      className="text-gray-400 hover:text-[#fa2600] cursor-pointer"
                     >
-                      contact@foodkart.com
+                      scandine69@gmail.com
                     </Typography>
                   </li>
                 </ul>

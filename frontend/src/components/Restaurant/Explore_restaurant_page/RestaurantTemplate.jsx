@@ -320,7 +320,7 @@ export default function RestaurantTemplate() {
             <Button
             size="medium"
               variant="outlined"
-              color={isDarkMode ? "white" : "blue"}
+              color={isDarkMode ? "white" : "black"}
               className="mx-auto mt-4"
             >
               Go back
