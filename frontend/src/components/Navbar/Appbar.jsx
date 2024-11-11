@@ -225,9 +225,9 @@ function Appbar({ setShowLogin }) {
             </Link>
             {!userInfo ? (
               <Button
-                size="md"
+                size="sm"
                 onClick={() => setShowLogin(true)}
-                className="w-full bg-[#ff6347] rounded-full hover:bg-red-600 hover:shadow-red-400"
+                className="w-full bg-[#ff6347] rounded-full hover:bg-red-600 hover:shadow-red-400 p-2"
               >
                 Sign In
               </Button>
