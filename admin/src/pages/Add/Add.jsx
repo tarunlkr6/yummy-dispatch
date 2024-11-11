@@ -3,9 +3,10 @@ import './Add.css';
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import add from './add.mp4';
 
 const Add = ({ url }) => {
-  const resid = '67251d6a3e030e9e961800b0';
+  const resid = '67309331287f4addfc376298';
   const [image, setImage] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false); // Add buttonClicked state here
   const [data, setData] = useState({
@@ -67,6 +68,9 @@ const Add = ({ url }) => {
 
   return (
     <div className="body fade-in">
+            <video autoPlay loop muted src={add} className="background-video">
+        Your browser does not support the video tag.
+      </video>
       <form className="flex-col" onSubmit={onSubmitHandler}>
         {/* Image upload */}
         <div className="add-img-upload flex-col">

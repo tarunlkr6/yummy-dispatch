@@ -28,10 +28,20 @@ const Sidebar = () => {
 {/* 
         /:resid/all */}
 
+{/* // router.route("/:resid/offer/create").post(verifyJWT, authRole, upload.fields([{ name: 'offerImage', maxCount: 1, }]), createOffer)
+// router.route("/:resid/offer/delete/:offerid").delete(verifyJWT, authRole, deleteOffer)
+// router.route("/:resid/offers").get(getOffers) */}
+
 
         <NavLink to='/dashboard/67251d6a3e030e9e961800b0/all' className="sidebar-option">
         <i className="fa-solid fa-hand-holding-heart"></i>
           <p>Bookings</p>
+        </NavLink>
+
+
+        <NavLink to='/dashboard/67251d6a3e030e9e961800b0/offers' className="sidebar-option">
+        <i className="fa-solid fa-hand-holding-heart"></i>
+          <p>Offers</p>
         </NavLink>
         
 

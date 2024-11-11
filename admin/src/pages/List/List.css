@@ -1,17 +1,131 @@
-/* Container styling */
-.list-container {
+.list-card {
   position: relative;
-  min-height: 100vh;
-  overflow: hidden; 
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Hide scroll bar */
+  width: 100%;
+  max-width: 200px; /* Adjust as per your design */
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  transition: transform 0.3s ease;
+}
+
+.list-card:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.list-card:hover .remove-btn {
+  opacity: 1;
+}
+
+.list-card-image img {
+  width: 100%;
+  height: auto;
+  border-bottom: 2px solid #ddd;
+}
+
+.list-card-content {
+  padding: 15px;
+}
+
+.list-card-content h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.list-card-content .category {
+  font-size: 14px;
+  color: gray;
+}
+
+.list-card-content .price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #28a745;
 }
 
 .veg-icon {
-margin-right: 8px; /* Adjust the value for desired spacing */
-display: inline-block;
-vertical-align: middle;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.switch input[type="checkbox"] {
+  display: none;
+}
+
+.switch span {
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 50px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.switch input[type="checkbox"]:checked + span {
+  background-color: #28a745;
+}
+
+.switch span:before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.switch input[type="checkbox"]:checked + span:before {
+  transform: translateX(14px);
+}
+
+.pagination-controls button {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover {
+  background-color: #218838;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ddd;
+}
+
+
+/* Container styling for the entire list component */
+.list-container {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Background video styling */
@@ -19,166 +133,134 @@ vertical-align: middle;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: -1; /* Send the video behind the content overlay */
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(3px);
 }
 
-/* Content overlay styling */
+/* Overlay for content above the background video */
 .content-overlay {
   position: relative;
-  z-index: 1; /* Place content above the background video */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 20px; /* Adjust padding for better spacing */
-  height: 100%; /* Allow content to stretch full height */
-  overflow: auto; /* Enable scrolling */
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
 }
 
 /* Header styling */
-.list-header {
-  text-align: center;
-  color: #fff;
-  animation: fadeInDown 1s ease;
-}
-
 .list-header h1 {
-  font-size: 3rem;
-  color: #ff6f61;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .list-header p {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
   color: #ddd;
 }
 
-/* Grid layout for items */
+/* Filter buttons */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.filter-buttons button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  margin: 0 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.filter-buttons button:hover {
+  background-color: #555;
+}
+
+.all-btn {
+  background-color: #4caf50; /* Green for 'All' */
+}
+
+.veg-btn {
+  background-color: #8bc34a; /* Light green for 'Veg' */
+}
+
+.non-veg-btn {
+  background-color: #f44336; /* Red for 'Non-Veg' */
+}
+
+/* Grid for cards */
 .list-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: 20px;
-  width: 100%;
-  max-width: 1200px; /* Limit width for better readability */
-  margin-top: 20px;
+  padding: 10px 0;
+  scroll-snap-type: x mandatory;
 }
 
-/* Ensures cards maintain a consistent size regardless of the number of items */
-.list-grid > .list-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Card styling */
+/* Individual card styling with scroll snapping */
 .list-card {
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative; /* For hover effects */
+  min-width: 250px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
 .list-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
 }
 
-/* Card image */
 .list-card-image img {
   width: 100%;
   height: 150px;
   object-fit: cover;
-}
-
-
-/* Card image */
-.list-card-image {
-  position: relative;
-  width: 100%;  /* Ensure the image container takes full width */
-  height: 200px; /* Fixed height to maintain aspect ratio */
-  overflow: hidden;
-}
-
-.list-card-image img {
-  width: 100%;
-  height: 100%;  /* Make sure it fills the entire space */
-  object-fit: cover;  /* Ensure the image covers the container without distortion */
-  object-position: center; /* Ensure the image is centered */
-}
-
-
-
-/* Card content */
-.list-card-content {
-  padding: 15px;
-  text-align: center;
+  border-radius: 10px;
 }
 
 .list-card-content h3 {
   font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 5px;
+  margin: 10px 0;
+  color: #fff;
 }
 
 .list-card-content .category {
-  font-size: 1rem;
-  color: #888;
-  margin-bottom: 8px;
+  color: #ddd;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
 .list-card-content .price {
   font-size: 1.2rem;
-  color: #ff6f61;
+  color: #ffdd57;
   font-weight: bold;
-  margin-bottom: 12px;
 }
 
-/* Remove button */
-/* Remove Button Icon Styles */
-.remove-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #888;
-  font-size: 1.2rem;
-  transition: color 0.3s ease, transform 0.2s ease;
-  padding: 5px;
-}
-
-.remove-btn:hover {
-  color: #ff4d4d; /* Change to a red shade on hover */
-  transform: scale(1.2); /* Slightly enlarge icon on hover */
-}
-
-.remove-btn:active {
-  transform: scale(1); /* Reset scale on click */
-}
-
-.list-card.grayscale {
-  filter: grayscale(100%);
-}
-
-/* Toggle Switch Style */
 .availability-toggle {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: bold;
-  color: #333;
+  gap: 8px; /* Adjust the gap as needed */
+}
+
+.availability-toggle span {
+  font-size: 16px; /* Adjust font size if needed */
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 20px;
+  width: 34px;
+  height: 18px;
 }
 
 .switch input {
@@ -202,9 +284,9 @@ vertical-align: middle;
 .slider:before {
   position: absolute;
   content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
+  height: 14px;
+  width: 14px;
+  left: 2px;
   bottom: 2px;
   background-color: white;
   transition: 0.4s;
@@ -212,259 +294,10 @@ vertical-align: middle;
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: #4CAF50;
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-/* Pagination Controls */
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-/* Pagination Button Styles */
-.pagination-controls button {
-  margin: 0 12px;
-  padding: 10px 18px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  background-color: #007bff;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5);
-}
-
-/* Hover and Active State for Buttons */
-.pagination-controls button:hover {
-  background-color: #0056b3;
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.8);
-}
-
-.pagination-controls button:focus {
-  outline: none;
-}
-
-/* "Active" Page Button */
-.pagination-controls button.active {
-  background-color: #28a745;
-  color: white;
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.8);
-}
-
-/* Disabled State for Buttons */
-.pagination-controls button:disabled {
-  background-color: #d6d6d6;
-  color: #7d7d7d;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* Animated Transition for Pagination */
-.pagination-controls button {
-  animation: buttonFadeIn 0.5s ease-out;
-}
-
-@keyframes buttonFadeIn {
-  0% {
-      opacity: 0;
-      transform: scale(0.5);
-  }
-  100% {
-      opacity: 1;
-      transform: scale(1);
-  }
-}
-
-/* Style for "Back" and "Next" buttons */
-.pagination-controls button:nth-child(1),
-.pagination-controls button:nth-last-child(1) {
-  background-color: #17a2b8;
-}
-
-.pagination-controls button:nth-child(1):hover,
-.pagination-controls button:nth-last-child(1):hover {
-  background-color: #138496;
-}
-
-.pagination-controls button:nth-child(1):disabled,
-.pagination-controls button:nth-last-child(1):disabled {
-  background-color: #b8e0e0;
-}
-
-/* Grid layout for items */
-.list-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Always display 4 cards in a row */
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px; /* Limit width for better readability */
-  margin-top: 20px;
-}
-
-/* Ensure each card takes the same size */
-.list-card {
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative; /* For hover effects */
-  height: 100%; /* Make sure all cards have the same height */
-}
-
-/* Handling a single card, ensuring it takes the full available space in the grid */
-.list-grid:empty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.list-container {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.list-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns for uniform size */
-  gap: 20px;
-}
-
-/* To ensure the grid doesn't collapse if there's only one item */
-.list-grid > .list-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-/* If there's only one card, make it stretch across the available space */
-.list-grid.single-item {
-  grid-template-columns: 1fr; /* Makes a single column layout */
-}
-
-/* Card image */
-.list-card-image img {
-  width: 100%;  /* Makes the image take full width */
-  height: 200px;  /* Fixed height to maintain aspect ratio */
-  object-fit: cover;  /* Ensure the image covers the area without distortion */
-}
-
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .list-header h1 {
-      font-size: 2.5rem;
-  }
-
-  .list-header p {
-      font-size: 1.2rem;
-  }
-
-  .list-card-image img {
-      height: 120px;
-  }
-
-  /* Ensure card height is consistent in small screens */
-  .list-card {
-      height: 100%;
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-      opacity: 1;
-  }
-  to {
-      opacity: 0;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in forwards;
-}
-
-.fade-out {
-  animation: fadeOut 0.5s ease-out forwards;
-}.filter-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  justify-content: center;
-}
-
-.filter-btn, .keyword-btn {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.filter-btn:hover, .keyword-btn:hover {
-  background-color: #0056b3;
-}
-
-.filter-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.filter-modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  max-width: 90%;
-  text-align: center;
-}
-
-.close-btn {
-  background-color: #ff4d4d;
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.close-btn:hover {
-  background-color: #e60000;
+  transform: translateX(16px);
 }
 

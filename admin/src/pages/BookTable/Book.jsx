@@ -13,7 +13,7 @@ const BookTable = ({ url }) => {
   const [confirmAction, setConfirmAction] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [searchDate, setSearchDate] = useState(null);
-  const restaurantId = '67251d6a3e030e9e961800b0';
+  const restaurantId = '67309331287f4addfc376298';
 
   const fetchBookings = async (date) => {
     try {
@@ -105,11 +105,22 @@ const BookTable = ({ url }) => {
     fetchBookings();
   }, []);
 
+  // Close pop-up on outside click
+  const handleOutsideClick = (e) => {
+    if (e.target.classList.contains('modal') || e.target.classList.contains('confirmation-popup')) {
+      handleCloseDetails();
+      setShowConfirmationPopup(false);
+    }
+  };
+
   return (
-    <div className="book-table fade-in">
+
+    <div className="book-table fade-in" onClick={handleOutsideClick}>
+
       <video autoPlay loop muted src={book} className="background-video">
         Your browser does not support the video tag.
       </video>
+
       <h2>Book Table</h2>
 
       <DatePicker
@@ -117,12 +128,13 @@ const BookTable = ({ url }) => {
         onChange={handleDateChange}
         dateFormat="dd/MM/yyyy"
         placeholderText="Select a date"
-        className="date-picker"
+        className="date-picker glass"
+    
       />
 
       {error && <p className="error">{error}</p>}
       {bookings.length > 0 ? (
-        <table>
+        <table className="glass">
           <thead>
             <tr>
               <th>Booking ID</th>
@@ -148,22 +160,22 @@ const BookTable = ({ url }) => {
                   {booking.status}
                 </td>
                 <td>
-                  <button onClick={() => handleShowDetails(booking)} className="view-details">
+                  <button onClick={() => handleShowDetails(booking)} className="view-details glass">
                     View Details
                   </button>
                 </td>
                 <td>
                   {booking.status !== 'Cancelled' && booking.status !== 'Confirmed' && (
-                    <button onClick={() => handleCancelBooking(booking._id)} className="cancel">
+                    <button onClick={() => handleCancelBooking(booking._id)} className="cancel glass">
                       Cancel
                     </button>
                   )}
                   {booking.status === 'Pending' && (
-                    <button onClick={() => handleUpdateBookingStatus(booking._id)} className="confirm">
+                    <button onClick={() => handleUpdateBookingStatus(booking._id)} className="confirm glass">
                       Confirm
                     </button>
                   )}
-                  {booking.status === 'Confirmed' && <span className="confirmed">Confirmed</span>}
+                  {booking.status === 'Confirmed' && <span className="confirmed glass">Confirmed</span>}
                 </td>
               </tr>
             ))}
@@ -174,14 +186,14 @@ const BookTable = ({ url }) => {
       )}
 
       {showDetails && selectedBooking && (
-        <div className="modal fade-in">
-          <div className="modal-content">
+        <div className="modal fade-in glass" onClick={handleOutsideClick}>
+          <div className="modal-content glass">
             <span className="close" onClick={handleCloseDetails}>&times;</span>
             <h3>Booking Details</h3>
             <p><strong>Contact Email:</strong> {selectedBooking.contactEmail}</p>
             <p><strong>Contact Phone:</strong> {selectedBooking.contactPhone}</p>
             <p><strong>Created At:</strong> {new Date(selectedBooking.createdAt).toLocaleString()}</p>
-            <p><strong>Name:</strong> {selectedBooking.name}</p>
+            <p><strong>Name:</strong>{selectedBooking.name}</p>
             <p><strong>Number of Guests:</strong> {selectedBooking.numGuests}</p>
             <p><strong>Reservation Date:</strong> {new Date(selectedBooking.reservationDate).toLocaleDateString()}</p>
             <p><strong>Reservation Time:</strong> {selectedBooking.reservationTime}</p>
@@ -190,12 +202,12 @@ const BookTable = ({ url }) => {
       )}
 
       {showConfirmationPopup && (
-        <div className="confirmation-popup fade-in">
-          <div className="popup-content">
+        <div className="confirmation-popup fade-in glass" onClick={handleOutsideClick}>
+          <div className="popup-content glass">
             <h3>Are you sure?</h3>
             <p>Do you want to proceed with this action?</p>
-            <button onClick={confirmActionHandler}>Yes</button>
-            <button onClick={cancelConfirmationHandler}>No</button>
+            <button onClick={confirmActionHandler} className="confirm-btn glass">Yes</button>
+            <button onClick={cancelConfirmationHandler} className="cancel-btn glass">No</button>
           </div>
         </div>
       )}

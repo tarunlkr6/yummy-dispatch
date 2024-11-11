@@ -1,103 +1,325 @@
+/* Basic page styling */
 .orders-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background: rgba(0, 0, 0, 0.1); /* Subtle background with transparency */
+  min-height: 100vh; /* Ensure the container takes up full height */
+}
+
+/* Orders list container */
+.orders-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual order card styling */
+.order-card {
+  width: 100%;
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.2); /* Glass effect */
+  backdrop-filter: blur(10px); /* Adding blur to create the frosted glass effect */
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Order header details */
+.order-header p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Order details button */
+.order-details-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.order-details-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Order details popup */
+.order-details-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Styling for the order details content */
+.order-details-content {
+  background: rgba(255, 255, 255, 0.1); /* Glass effect */
+  backdrop-filter: blur(15px); /* Increased blur for a polished look */
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 700px;
+  position: relative;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Back button in the details popup */
+.back-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for the invoice in the popup */
+.order-invoice {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  margin-top: 20px;
+  color: #fff;
+}
+
+.order-header h3 {
+  font-size: 24px;
+  color: #f0f0f0;
+}
+
+
+
+.order-items {
+  margin-top: 20px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #fff;
+}
+
+.order-summary p {
+  font-weight: bold;
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.order-summary {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Fade-in animation for the details popup */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-  
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* Back button in the details popup */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #e74c3c; /* Initial red color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.back-btn:hover {
+  background-color: #c0392b; /* Darker red for hover effect */
+}
+
+/* When order details are selected, change the back button to green */
+.selected-order .back-btn {
+  background-color: #27ae60; /* Green color when selected */
+}
+
+.selected-order .back-btn:hover {
+  background-color: #2ecc71; /* Lighter green for hover effect */
+}
+
+/* Initially, the "View Order Details" button is red */
+.order-details-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* When the order details are viewed, change the button color to green */
+.order-details-btn.viewed {
+  background-color: green;
+}
+
+/* To make sure the "Back" button and other details are stacked correctly */
+.order-details-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* Ensure the button moves to the bottom of the order details section */
+.order-details-content button {
+  position: absolute;
+  bottom: 20px; /* Place the button at the bottom */
+}
+
+.order-details-content h2 {
+  color: wheat;
+}
+
+/* Styling for the "Back" button */
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+/* Order details content container */
+
+/* Orders.css */
+
+
+
+.orders-container.page-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.orders-container.page-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+
+/* Centering the "Order Invoice" text */
+/* Initially, the "View Order Details" button is red */
+.order-details-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* When the order details are viewed, change the button color to green */
+.order-details-btn.viewed {
+  background-color: green;
+}
+
+/* To make sure the "Back" button and other details are stacked correctly */
+.order-details-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* Ensure the button moves to the bottom of the order details section */
+.order-details-content button {
+  position: absolute;
+  bottom: 20px; /* Place the button at the bottom */
+}
+
+/* Styling for the "Back" button */
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+
+
+
+/* Styling for responsive design */
+@media (max-width: 768px) {
   .orders-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .order-card {
-    width: 100%;
-    max-width: 400px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  
-  .order-card:hover {
-    transform: translateY(-10px);
-  }
-  
-  .order-header p {
-    margin: 5px 0;
-  }
-  
-  .order-details-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .order-details-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .order-details-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    z-index: 1000;
   }
-  
+
+  .order-card {
+    width: 90%;
+    max-width: 500px;
+  }
+
   .order-details-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 20px;
   }
-  
+
   .back-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    cursor: pointer;
+    top: 15px;
+    left: 15px;
+    padding: 8px 12px;
   }
-  
-  .back-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .order-items {
-    margin-bottom: 20px;
-  }
-  
-  .order-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 480px) {
+  .order-details-btn {
+    font-size: 14px;
+    padding: 8px 16px;
   }
   
   .order-summary p {
-    font-weight: bold;
-    margin: 5px 0;
-  }
-  
-  .order-summary {
-    margin-top: 20px;
     font-size: 16px;
   }
-  
+
+  .order-item {
+    font-size: 14px;
+  }
+}

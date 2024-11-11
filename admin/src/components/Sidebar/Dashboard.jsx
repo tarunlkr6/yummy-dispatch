@@ -6,8 +6,9 @@ import Add from "../../pages/Add/Add";
 import List from "../../pages/List/List";
 import Orders from "../../pages/Orders/Orders";
 import BookTable from "../../pages/BookTable/Book";
+import Offer from "../../pages/Offer/Offer";
 import './dashboard.css';
-import bgv from './bgv.mp4'
+// import bgv from './bgv.mp4'
 
 const url = 'http://localhost:8080/api/v1';
 
@@ -18,10 +19,10 @@ const Dashboard = () => {
     <div className="dashboard-layout">
       <Navbar />
       <Sidebar />
-      <video className="background-video" autoPlay loop muted>
+      {/* <video className="background-video" autoPlay loop muted>
         <source src={bgv} type="video/mp4" />
         Your browser does not support the video tag.
-      </video>
+      </video> */}
       <div className="content">
 
 
@@ -32,6 +33,7 @@ const Dashboard = () => {
           <Route path="restaurant/67251d6a3e030e9e961800b0/menu" element={<List url={url} />} />
           <Route path="orders/67251d6a3e030e9e961800b0" element={<Orders url={url} />} />
           <Route path="67251d6a3e030e9e961800b0/all" element={<BookTable url={url}/>} />
+          <Route path="67251d6a3e030e9e961800b0/offers" element={<Offer url={url}/>} />
         </Routes>
       </div>
     </div>
