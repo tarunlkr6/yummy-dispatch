@@ -10,8 +10,8 @@ const StoreContextProvider = (props) => {
 
     const [cartItems,setCartItems] = useState({});
     // const url ='https://scan-dine-backend-j9ci.onrender.com' || 'http://localhost:8080';
- const url = 'https://13.201.227.26'
-//const url = 'https://scan-dine-backend-j9ci.onrender.com'
+ //const url = 'https://13.201.227.26'
+const url = 'https://scan-dine-backend-j9ci.onrender.com'
  
     const [token, setToken] = useState('') //To save the token
 
