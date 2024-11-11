@@ -20,6 +20,7 @@ import ChangePassword from './components/ForgetPassword/ChangePassword';
 import RestaurantMenu from './components/Restaurant/RestaurantMenu/RestaurantMenu';
 import OrderDetails from './components/ViewOrder/OrderDetails';
 import Profile from './components/Profile/Profile';
+import TableBookingDetails from './components/Restaurant/BookingTable/TableBookingDetails';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route path='/forgetpassword' element={<ForgetPassword />} />
           <Route path='/:id/book-table' element={<TableBooking />} />
           <Route path='/vieworders' element={<OrderDetails/>}/>
+          <Route path='/table/details' element={<TableBookingDetails/>}/>
 
           {/* User Routes */}
           <Route path='/user/change-password' element={<ChangePassword/>}/>

@@ -71,10 +71,10 @@ const bookTable = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, createdBooking, "Table booked successfully"))
 })
 
-// user access
+// User cancel boking(Table)   @User only
 const cancelBookTable = asyncHandler(async (req, res) => {
     const { resid, bookingid } = req.params
-    const userId = req.user._id
+    const userId = req.user?._id
 
     const booking = await Booking.findOne({ _id: bookingid, user: userId, restaurantId: resid })
 
@@ -156,6 +156,29 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, updatedBooking, "Booking Confirmed successfully"))
 })
 
+// User access: Get all bookings with restaurant details
+const getBookingsByUserId = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    // Fetch bookings for the specified user and populate restaurant details
+    const bookings = await Booking.find({ user: userId })
+        .populate({
+            path: 'restaurantId',
+            select: 'name address phoneNumber rating',
+        });
+
+    if (!bookings || bookings.length === 0) {
+        throw new ApiError(404, [], "No bookings found for this user");
+    }
+
+    // Send back the bookings with populated restaurant details
+    return res
+        .status(200)
+        .json(new ApiResponse(200, bookings, "Bookings fetched successfully"));
+});
+
+
+// Admin access   @Get all bookings
 const getAllBookings = asyncHandler(async (req, res) => {
     const { resid } = req.params;
     const { date } = req.query;
@@ -188,4 +211,5 @@ export {
     cancelBookTable,
     cancelBooking,
     getAllBookings,
+    getBookingsByUserId,
 }

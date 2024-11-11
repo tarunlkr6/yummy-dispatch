@@ -9,7 +9,7 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 
 const TableBooking = ({ isDarkMode = false }) => {
   const { id } = useParams();
@@ -49,7 +49,7 @@ const TableBooking = ({ isDarkMode = false }) => {
         contactPhone: "",
         contactEmail: "",
       });
-      navigate("/");
+      navigate(`/table/details`);
     } catch (error) {
       console.error("Booking error:", error);
       if (error.status === "PARSING_ERROR" && error.originalStatus === 500) {
@@ -69,12 +69,7 @@ const TableBooking = ({ isDarkMode = false }) => {
       }
     }
   };
-
-  // const gradientBg = isDarkMode
-  //   ? 'bg-gradient-to-br from-slate-900 to-gray-800'
-  //   : 'bg-gradient-to-br from-orange-50 to-red-100';
-  //   ${gradientBg}
-
+  
   return (
     <>
       <div className="mb-5">

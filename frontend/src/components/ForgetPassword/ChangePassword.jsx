@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useUpdatePasswordMutation } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@material-tailwind/react';
 
 const ChangePassword = () => {
   const navigate = useNavigate()
@@ -54,7 +55,19 @@ const ChangePassword = () => {
   };
 
   return (
-    <section className="bg-gray-100 dark:bg-gray-800">
+    <>
+    <Link to="/">
+            <Button
+            size="medium"
+              variant="gradient"
+              color="black"
+              className="mx-auto"
+            >
+              Go back
+            </Button>
+      </Link>
+      <section className="bg-gray-100 dark:bg-gray-800">
+      
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full p-8 bg-white rounded-lg shadow-lg dark:bg-gray-900 dark:border-gray-700 sm:max-w-md">
           <h2 className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
@@ -162,6 +175,8 @@ const ChangePassword = () => {
         </div>
       </div>
     </section>
+    </>
+    
   );
 };
 

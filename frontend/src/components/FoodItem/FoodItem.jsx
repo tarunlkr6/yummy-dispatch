@@ -4,8 +4,8 @@ import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 
 const FoodItem = ({ id, name, price, description, image }) => {
-  const url = "http://localhost:8080"; // Update this with your base URL for images
-
+  const url ='https://scan-dine-backend-j9ci.onrender.com' // || "http://localhost:8080";  Update this with your base URL for images
+// const url = 'http://52.66.114.28'
   // Placeholder functions to avoid errors
   const addToCart = (id) => {
     console.log(`Added item ${id} to cart`);

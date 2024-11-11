@@ -10,7 +10,20 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getTableBookingDetails: builder.query({
+      query: (userId) => ({
+        url: `${BOOK_TABLE_URL}/details/user/${userId}`,
+        method: 'GET',
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    cancelBooking: builder.mutation({
+      query: ({ resid, bookingid }) => ({
+        url: `${BOOK_TABLE_URL}/${resid}/cancel/${bookingid}`,
+        method: 'PATCH',
+      }),
+    }),    
   }),
 });
 
-export const { useBookTableMutation } = bookingApiSlice;
+export const { useBookTableMutation, useGetTableBookingDetailsQuery, useCancelBookingMutation } = bookingApiSlice;

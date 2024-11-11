@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import logImage from "/logimage.jpg";
-import { FcGoogle } from "react-icons/fc";
 import { assets } from "../../assets/assets";
 import {
   useLoginMutation,
@@ -272,7 +271,7 @@ const LoginPage = ({ setShowLogin }) => {
               </div>
 
               <div className="w-full font-semibold text-[#060606] my-2 bg-white border border-black/40 rounded-md p-4 text-center flex items-center justify-center cursor-pointer hover:bg-black/85 hover:text-white transition-colors duration-300">
-                <FcGoogle className="h-6 mr-2" size={24} />
+              <box-icon name='google' type='logo' color='#ffffff' ></box-icon>
                 Sign Up With Google
               </div>
             </form>

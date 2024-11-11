@@ -42,6 +42,7 @@ const getRestaurantById = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, restaurant, "Restaurant fetched successfully."))
 })
 
+// Register restaurant
 const registerRestaurant = asyncHandler(async (req, res) => {
 
     console.log(req.body)
