@@ -2,7 +2,7 @@
   "name": "scan-dine",
   "private": true,
   "version": "0.0.0",
-  "proxy": "http://52.66.114.28",
+  "proxy": "https://scan-dine-backend-j9ci.onrender.com",
   "type": "module",
   "scripts": {
     "start": "vite --host",

@@ -3,7 +3,8 @@ import backgroundImage from "../../assets/pexels--2.jpg";
 import axios from 'axios'
 
 const RestaurantRegistration = () => {
-  const url = 'http://localhost:8080/api/v1/restaurant'
+  // const url = 'http://localhost:8080/api/v1/restaurant'
+  const url = 'https://scan-dine-backend-j9ci.onrender.com/api/v1/restaurant'
   const [image, setImage] = useState(false);
   const [data, setData] = useState({
     name: "",
