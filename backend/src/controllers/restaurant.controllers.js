@@ -45,6 +45,8 @@ const getRestaurantById = asyncHandler(async (req, res) => {
 // Register restaurant
 const registerRestaurant = asyncHandler(async (req, res) => {
 
+    console.log(req.body)
+
     const user = await User.findOne({ email: req.body.ownerEmail })
     if (!user) {
         throw new ApiError(404, "User not found, Kindly enter your existing email")

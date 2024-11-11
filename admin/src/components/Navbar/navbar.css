@@ -1,123 +1,80 @@
-/* Navbar Container */
+/* Navbar container */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: linear-gradient(90deg, #1a2a6c, #b21f1f, #fdbb2d); /* Gradient background */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    height: 60px;
-    gap: 15px;
-  }
-  
-  /* Left Section (Logo and Links) */
-  .left-navbar-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .logo-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 55px;
-    height: 55px;
-    transition: transform 0.3s ease;
-  }
-  
-  .logo-container:hover .logo {
-    transform: scale(1.1); /* Zoom-in effect on hover */
-  }
-  
-  /* Links Section */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Left section - logo and nav links */
+.left-navbar-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  margin-right: 1.5rem;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover .logo {
+  transform: scale(1.1); /* Hover effect */
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #f0a500; /* Accent color on hover */
+  transform: translateY(-3px); /* Lift on hover */
+}
+
+/* Right section - profile image */
+.right-navbar-section {
+  display: flex;
+  align-items: center;
+}
+
+.profile-container {
+  position: relative;
+}
+
+.profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #f0a500; /* Border for profile image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-container:hover .profile {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(240, 165, 0, 0.5); /* Enhanced shadow on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .nav-links {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+    display: none; /* Hide links on smaller screens */
   }
-  
-  .nav-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-    position: relative;
-    padding: 5px 10px;
-    transition: color 0.3s, transform 0.3s;
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-link:hover {
-    color: #ffdd57; /* Neon hover color */
-    transform: translateY(-2px); /* Hover lift effect */
-  }
-  
-  /* Underline animation on hover */
-  .nav-link::after {
-    content: "";
-    display: block;
-    width: 0;
-    height: 2px;
-    background: #ffdd57;
-    transition: width 0.3s;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-  }
-  
-  .nav-link:hover::after {
-    width: 100%;
-  }
-  
-  /* Profile Section */
-  .right-navbar-section {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profile-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    overflow: hidden;
-    border-radius: 50%;
-    transition: box-shadow 0.3s;
-  }
-  
-  .profile {
-    width: 100%;
-    height: auto;
-  }
-  
-  .profile-container:hover {
-    box-shadow: 0px 0px 10px #ffdd57; /* Neon border effect on hover */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .nav-links {
-      display: none; /* Hide links on small screens */
-    }
-  
-    /* Navbar adjusts to vertical layout on smaller screens */
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 15px;
-    }
-  
-    .logo {
-      margin-bottom: 10px;
-    }
-  }
-  
-  
+}

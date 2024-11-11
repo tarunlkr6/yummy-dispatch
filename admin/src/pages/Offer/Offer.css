@@ -1,0 +1,202 @@
+/* Offer container styling */
+.offer-container {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center contents vertically */
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    min-height: 70vh;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+/* Header */
+.offer-container h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffdd57;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Enhanced Offer form styling */
+/* Offer container styling */
+
+
+/* Enhanced Offer form styling */
+.offer-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 100px auto; /* Center form within container */
+    width: 80%;
+    max-width: 500px; /* Smaller width for compact design */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.offer-form input,
+.offer-form textarea,
+.offer-form button {
+    width: 90%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.offer-form button:hover {
+    background-color: #ffcc33;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 204, 51, 0.4);
+}
+.offer-form input,
+.offer-form textarea {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.offer-form input:focus,
+.offer-form textarea:focus {
+    box-shadow: 0 0 8px rgba(255, 221, 87, 0.6);
+    transform: scale(1.02);
+}
+
+/* File input */
+.offer-form input[type="file"] {
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Submit button */
+.offer-form button {
+    background-color: #ffdd57;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 60%;
+    transition: all 0.3s ease;
+}
+
+.offer-form button:hover {
+    background-color: #ffcc33;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 204, 51, 0.4);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Offer list styling */
+.offer-list {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+
+}
+
+/* Offer card styling */
+.offer-card {
+
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 300px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.offer-card:hover {
+    transform: scale(1.05);
+}
+
+.offer-image {
+    width: 100%;
+    height: 250px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Offer info */
+.offer-info h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffdd57;
+    margin-bottom: 10px;
+}
+
+.offer-info p {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+/* Delete button */
+.delete-button {
+    background-color: #ff5c57;
+    color: #fff;
+    font-size: 1rem;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.delete-button:hover {
+    background-color: #ff2a15;
+}
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.pagination-button {
+    background-color: #ffdd57;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 8px;
+    margin: 0 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-button:hover {
+    background-color: #ffcc33;
+    transform: scale(1.1);
+}
+
+.pagination-button.active {
+    background-color: #ff5c57;
+    color: white;
+}

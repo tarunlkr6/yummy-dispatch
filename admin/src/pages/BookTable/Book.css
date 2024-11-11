@@ -1,227 +1,301 @@
-/* Book.css */
-
+/* General Styling */
 .book-table {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    color: cornsilk;
-  }
-  
-  .date-picker {
-    width: 200px;
-    padding: 8px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    border: none;
-    background: #f2f2f2;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  th, td {
-    padding: 12px;
-    color: yellow;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #f1f1f1;
-  }
-
-  .confirmed {
-    color: green;
-    font-weight: bold;
-    font-weight: bolder;
-  }
-  
-
-  .book-table table tbody {
-    display: block;
-    max-height: 300px; /* Adjust this value as needed */
-    overflow-y: auto;
-    width: 100%;
-  }
-  
-  .error, p {
-    color: #d9534f;
-  }
-  
-  button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-  }
-  
-  .view-details {
-    background-color: #5bc0de;
-    color: white;
-  }
-  
-  .cancel {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .confirm {
-    background-color: #5cb85c;
-    color: white;
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-  }
-  
-  .modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    animation: fadeIn 0.4s ease;
-  }
-  
-  .modal-content {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-    animation: slideIn 0.5s ease-out;
-  }
-  
-  .modal-content p {
-    font-size: 1rem;
-    margin: 10px 0;
-  }
-  
-  .modal-content h3 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #d9534f;
-  }
-  
-  .close:hover {
-    color: #a94442;
-  }
-
-  .background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1; /* Send the video behind the content overlay */
+  position: relative;
+  padding: 2rem;
+  color: #4bdb09;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-.book-table table thead,
-.book-table table tbody tr {
-  display: table;
+.book-table h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin-bottom: 1.5rem;
+}
+
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  table-layout: fixed;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+/* DatePicker Styling */
+.date-picker {
+  font-size: 1.1rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #333;
+  color: #211e1e;
+  margin-bottom: 1rem;
+  transition: border 0.3s ease;
+}
+
+.date-picker:focus {
+  outline: none;
+  border: 1px solid #00aaff;
+}
+
+/* Add this CSS to your Book.css or a relevant CSS file */
+.react-datepicker__header {
+  background-color: #333; /* Dark background for header */
+  border-bottom: 1px solid #444;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: #fff; /* White color for text */
+}
+
+.react-datepicker__day,
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #555; /* Darker background for selected day */
+  color: #fff;
+}
+
+.react-datepicker__day:hover {
+  background-color: #666; /* Hover effect */
+  color: #fff;
+}
+
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  filter: invert(1); /* Invert colors for arrows */
+}
+
+
+/* Error Message */
+.error {
+  color: #ff4c4c;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  color: #ddd;
+}
+
+th {
+  background-color: #444;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+td {
+  background-color: #222;
+}
+
+tr:nth-child(even) td {
+  background-color: #2b2b2b;
+}
+
+/* Action Buttons */
+button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button.cancel {
+  background-color: #ff4c4c;
+  color: #fff;
+}
+
+button.cancel:hover {
+  background-color: #ff6666;
+}
+
+button.confirm {
+  background-color: #00cc66;
+  color: #fff;
+}
+
+button.confirm:hover {
+  background-color: #00e673;
+}
+
+button.view-details {
+  background-color: #00aaff;
+  color: #fff;
+}
+
+button.view-details:hover {
+  background-color: #00c4ff;
+}
+
+/* Confirmed Tag */
+.confirmed {
+  color: #00cc66;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: #222;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  color: #f8f8f8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.modal-content h3 {
+  margin-bottom: 1rem;
+  color: #f8f8f8;
+}
+
+.modal-content p {
+  margin: 0.5rem 0;
+  color: #ddd;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #f8f8f8;
+}
+
+
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: green;
+  padding: 10px;
+}
+
+.modal, .confirmation-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content, .popup-content {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+
+
+/* Confirmation Popup */
+.confirmation-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-content {
+  background: #222;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: #f8f8f8;
+}
+
+.popup-content h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.popup-content p {
+  margin: 1rem 0;
+  color: #ccc;
+}
+
+.popup-content button {
+  margin: 0.5rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.popup-content button:first-child {
+  background-color: #00cc66;
+}
+
+.popup-content button:first-child:hover {
+  background-color: #00e673;
+}
+
+.popup-content button:last-child {
+  background-color: #ff4c4c;
+}
+
+.popup-content button:last-child:hover {
+  background-color: #ff6666;
+}
+
+/* Fade-in Animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-  
-  .fade-in {
-    animation: fadeIn 0.5s ease-in forwards;
-  }
-  
-  .fade-out {
-    animation: fadeOut 0.5s ease-out forwards;
-  }
-  
-  
-  /* Fade-in animation */
-  
-  /* Slide-in animation */
-  @keyframes slideIn {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .confirmation-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    animation: fadeIn 0.3s ease;
-  }
-  
-  .popup-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    animation: slideIn 0.4s ease-out;
-  }
-  
-  .popup-content h3 {
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .popup-content p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-  
-  .popup-content button {
-    padding: 8px 15px;
-    margin: 5px;
-  }
-  
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
