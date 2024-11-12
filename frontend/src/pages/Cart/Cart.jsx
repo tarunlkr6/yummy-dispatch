@@ -7,7 +7,7 @@ import {
   clearAllCart,
   incrementQty,
   decrementQty,
-} from "../../slices/cartSlice"; // Adjust path as needed
+} from "../../slices/cartSlice";
 import { Button } from "@material-tailwind/react";
 
 const Cart = () => {

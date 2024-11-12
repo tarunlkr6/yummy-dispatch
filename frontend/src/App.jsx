@@ -21,6 +21,7 @@ import RestaurantMenu from './components/Restaurant/RestaurantMenu/RestaurantMen
 import OrderDetails from './components/ViewOrder/OrderDetails';
 import Profile from './components/Profile/Profile';
 import TableBookingDetails from './components/Restaurant/BookingTable/TableBookingDetails';
+import Payment from './components/Payment/Payment';
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -36,8 +37,8 @@ const App = () => {
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
           <Route path='/restaurant/:id/view' element={<RestaurantTemplate />} />
-          <Route path='/forgetpassword' element={<ForgetPassword />} />
-          <Route path='/:id/book-table' element={<TableBooking />} />
+          <Route path='/forgetpassword'setShowLogin={setShowLogin} element={<ForgetPassword />} />
+          
           <Route path='/vieworders' element={<OrderDetails/>}/>
           <Route path='/table/details' element={<TableBookingDetails/>}/>
 
@@ -47,7 +48,9 @@ const App = () => {
           {/* Private routes */}
           <Route path='' element={<PrivateRoute />}>
           <Route path='/cart' element={<Cart />} />
+            <Route path='/:id/book-table' element={<TableBooking />} />
             <Route path='/order' element={<PlaceOrder />} />
+            <Route path='/order/:id' element={<Payment/>}/>
             <Route path='/restaurant/:id/menu' element={<RestaurantMenu />} />
           </Route>
           

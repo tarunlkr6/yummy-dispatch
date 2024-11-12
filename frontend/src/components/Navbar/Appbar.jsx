@@ -264,12 +264,14 @@ function Appbar({ setShowLogin }) {
                   className: "min-w-full",
                 }}
               />
-              <Button
+              {/* <Button
                 size="sm"
+                variant="outlined"
+                color="black"
                 className="!absolute right-1 top-1 rounded text-red-500"
               >
                 Search
-              </Button>
+              </Button> */}
             </div>
           </div>
         )}

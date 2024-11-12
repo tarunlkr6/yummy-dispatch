@@ -9,8 +9,8 @@ import BookTable from "../../pages/BookTable/Book";
 import './dashboard.css';
 import bgv from './bgv.mp4'
 
-const url = 'https://scan-dine-backend-j9ci.onrender.com' // || 'http://localhost:8080/api/v1';
-
+const url = 'https://scan-dine-backend-j9ci.onrender.com/api/v1'
+// const url = 'http://localhost:8080/api/v1'
 const Dashboard = () => {
   console.log("Dashboard component rendered"); // Debugging log
 

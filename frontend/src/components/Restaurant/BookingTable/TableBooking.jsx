@@ -9,13 +9,13 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
-import { Link, redirect, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const TableBooking = ({ isDarkMode = false }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [bookTable, { isLoading }] = useBookTableMutation();
-
+  
   const [formData, setFormData] = useState({
     name: "",
     reservationDate: "",

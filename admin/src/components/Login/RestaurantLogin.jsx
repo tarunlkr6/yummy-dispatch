@@ -4,7 +4,7 @@ import backgroundImage from '../../assets/images-1.jpg';
 import axios from "axios";
 
 function RestaurantLogin() {
-  const url ='https://scan-dine-backend-j9ci.onrender.com/api/v1/user' // || 'http://localhost:8080/api/v1/user';
+  const url = 'https://scan-dine-backend-j9ci.onrender.com/api/v1/user'  //'http://localhost:8080/api/v1/user';
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -30,15 +30,15 @@ function Footer() {
               empowers restaurants to streamline operations and delight customers
               with a seamless and efficient ordering process.
             </Typography>
-            <div className="mt-6 flex gap-4">
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-                <box-icon name='instagram' type='logo' color='#ffffff' ></box-icon>
+            <div className="mt-6 flex gap-4 items-center">
+              <IconButton color="black" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
+              <i className="fa-brands fa-instagram fa-2xl"></i>
               </IconButton>
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-               <box-icon name='twitter' type='logo' color='#ffffff' ></box-icon>
+              <IconButton color="black" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
+              <i className="fa-brands fa-x-twitter fa-2xl"></i>
               </IconButton>
-              <IconButton color="white" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
-                <box-icon name='linkedin-square' type='logo' color='#ffffff' ></box-icon>
+              <IconButton color="black" className="rounded-full shadow-md hover:bg-[#ff6347] hover:decoration-deep-orange-300 hover:text-white">
+              <i className="fa-brands fa-linkedin fa-2xl"></i>
               </IconButton>
             </div>
           </div>

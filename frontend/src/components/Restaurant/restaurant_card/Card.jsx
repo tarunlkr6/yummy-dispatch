@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 
 function RestaurantCard({
   _id,
@@ -23,7 +23,6 @@ function RestaurantCard({
   const navigate = useNavigate();
   const [scanResult, setScanResult] = useState(null);
   const [isScannerActive, setIsScannerActive] = useState(false);
-  
 
   useEffect(() => {
     let scanner;
@@ -40,7 +39,7 @@ function RestaurantCard({
     function onScanSuccess(result) {
       // Extract the restaurant ID from the scanned URL
       const scannedId = result.split("/restaurant/")[1]?.split("/")[0];
-      
+
       if (scannedId === _id) {
         // IDs match; navigate to the result
         scanner.clear();
@@ -98,16 +97,24 @@ function RestaurantCard({
       )}
 
       {/* Restaurant Card */}
+
       <Card
-        onClick={(event) => onClickHandler(_id, event)}
-        className="w-full max-w-sm mx-auto bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl dark:bg-gray-800 dark:border-gray-700"
+        onClick={(event) => isOpen && onClickHandler(_id, event)}
+        className={`w-full max-w-sm mx-auto rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
+          isOpen
+            ? "bg-white hover:shadow-xl cursor-pointer"
+            : "bg-gray-900 cursor-not-allowed opacity-70"
+        }`}
         role="button"
+        aria-disabled={!isOpen} // Accessibility attribute
       >
         <CardHeader floated={false} className="h-48 m-0 rounded-none">
           <img
             src={avatar}
             alt={name}
-            className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+            className={`w-full h-full object-cover object-center transition-transform duration-300 ${
+              isOpen ? "hover:scale-105" : ""
+            }`}
           />
         </CardHeader>
         <CardBody className="flex-1 flex flex-col p-4">
@@ -115,7 +122,7 @@ function RestaurantCard({
             <Typography
               variant="h4"
               color="blue-gray"
-              className="font-semibold"
+              className={`font-semibold ${!isOpen && "text-gray-400"}`}
             >
               {name}
             </Typography>
@@ -155,9 +162,17 @@ function RestaurantCard({
               <button
                 type="button"
                 onClick={(event) => {
-                  event.stopPropagation(); openScanner(); 
+                  if (isOpen) {
+                    event.stopPropagation();
+                    openScanner();
+                  }
                 }}
-                className="w-full h-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                disabled={!isOpen}
+                className={`w-full h-full text-white font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 ${
+                  isOpen
+                    ? "bg-gray-800 hover:bg-gray-900"
+                    : "bg-gray-500 cursor-not-allowed"
+                }`}
               >
                 <box-icon
                   name="qr-scan"
@@ -170,8 +185,16 @@ function RestaurantCard({
           <Link to={`/${_id}/book-table`} className="w-full ml-2">
             <Button
               fullWidth
-              onClick={(event) => event.stopPropagation()}
-              className="w-full h-full bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-300"
+              onClick={(event) => {
+                event.stopPropagation()
+                if (!isOpen) event.preventDefault(); // Prevent navigation if closed
+              }}
+              disabled={!isOpen}
+              className={`w-full h-full font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-300 ${
+                isOpen
+                  ? "bg-green-500 hover:bg-green-600"
+                  : "bg-gray-700 cursor-not-allowed"
+              }`}
             >
               Book Table
             </Button>

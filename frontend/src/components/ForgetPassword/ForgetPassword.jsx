@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForgetPasswordMutation } from "../../slices/usersApiSlice";
 import { toast } from "react-toastify";
+import { Link } from 'react-router-dom'
+import { Button } from "@material-tailwind/react";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,8 +21,20 @@ const ForgetPassword = () => {
     }
   };
 
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-800">
+    <>
+    <Link to="/">
+            <Button
+            size="medium"
+              variant="outlined"
+              color="black"
+              className="mx-auto mt-4"
+            >
+              Go back
+            </Button>
+          </Link>
+          <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <form
         onSubmit={handleSubmit}
         className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md"
@@ -67,6 +81,8 @@ const ForgetPassword = () => {
         </button>
       </form>
     </div>
+    </>
+
   );
 };
 
