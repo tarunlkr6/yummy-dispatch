@@ -4,7 +4,7 @@ import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 
 const FoodItem = ({ id, name, price, description, image }) => {
-const url ='https://scan-dine-backend-j9ci.onrender.com' 
+const url ='https://scan-dine-backend-bnj2.onrender.com' 
 //  const url ='http://localhost:8080'
 
   // Placeholder functions to avoid errors

@@ -14,6 +14,5 @@ export const assets ={
     parcel_icon
 }
 
-export const url ='http://localhost:4000'
-
-//'https://scan-dine-backend-j9ci.onrender.com' 
+// export const url ='http://localhost:4000'   
+export const url = 'https://scan-dine-backend-bnj2.onrender.com' 
