@@ -10,8 +10,7 @@ const StoreContextProvider = (props) => {
 
     const [cartItems,setCartItems] = useState({});
     const url = process.env.BACKEND_URL
- //const url = 'https://13.201.227.26'
-// const url = 'https://scan-dine-backend-j9ci.onrender.com'
+//const url = 'https://scan-dine-backend-bnj2.onrender.com'
 
     const contextValue = {
         menu_list,
