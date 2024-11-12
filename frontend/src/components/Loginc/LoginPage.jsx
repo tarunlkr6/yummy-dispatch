@@ -70,10 +70,11 @@ const LoginPage = ({ setShowLogin }) => {
             toast.success(
               `Successfully registered, Please login to your account`
             );
-            setConfirmPassword({ confirmPassword: ''})
+            setConfirmPassword('')
           }
           dispatch(setCredentials({ ...res }));
           navigate("/");
+          setShowLogin(true)
       }
     }
     } catch(error){
@@ -86,6 +87,10 @@ const LoginPage = ({ setShowLogin }) => {
       password: "",
     });
   };
+  const forgotHandler =() =>{
+    //window.location.reload(false);
+    navigate('/forgetpassword');    
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
@@ -198,7 +203,7 @@ const LoginPage = ({ setShowLogin }) => {
 
                 {currState === "Login" ? (
                   <Link to='/forgetpassword'>
-                    <p className="text-sm underline whitespace-nowrap underline-offset-2 cursor-pointer">
+                    <p onClick={forgotHandler} className="text-sm underline whitespace-nowrap underline-offset-2 cursor-pointer">
                       Forgot Password?
                     </p>
                   </Link>

@@ -38,5 +38,6 @@ app.use("/api/v1", menuRouter)
 app.use("/api/v1/booking", bookingRouter)
 app.use("/api/v1", offerRouter)
 app.use("/api/v1", orderRouter)
+app.get("/api/config/paypal", (req,res)=> res.send({ clientId: process.env.PAYPAL_CLIENT_ID }))
 
 export { app }

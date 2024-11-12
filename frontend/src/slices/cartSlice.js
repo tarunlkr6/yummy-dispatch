@@ -147,6 +147,10 @@ const cartSlice = createSlice({
       state.errorMessage = '';
       state.successMessage = '';
     },
+    savePaymentMethod: (state, action) => {
+      state.paymentMethod = action.payload;
+      localStorage.setItem("cart", JSON.stringify(state));
+    }
   },
 });
 
@@ -157,6 +161,7 @@ export const {
   incrementQty,
   decrementQty,
   clearAllCartItems,
+  savePaymentMethod,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

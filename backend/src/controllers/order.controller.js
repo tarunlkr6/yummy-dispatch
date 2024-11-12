@@ -84,6 +84,20 @@ const getMyOrders = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, orders, "Orders fetched successfully."))
 })
 
+// Get Order by ID           @USER only
+const getOrderById = asyncHandler(async (req, res) => {
+    const { orderid } = req.params
+    const order = await Order.findById(orderid)
+
+    if (!order) {
+        throw new ApiError(404, "Order not found")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, order, "Order fetched successfully."))
+})
+
 // Get All Orders           @ADMIN only
 const getOrders = asyncHandler(async (req, res) => {
     console.log(req.user);
@@ -153,10 +167,47 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, order, "Status updated successfully."))
 })
 
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+    const { orderid } = req.params;
+
+
+    // Find and update the order's status
+    const order = await Order.findById(orderid);
+
+    if (!order) {
+        throw new ApiError(404, "Order not found");
+    }
+
+    // Set order properties to reflect payment
+    order.isPaid = 'true'
+    order.status = 'Paid'
+    order.paidAt = Date.now()
+    order.paymentMethod = 'PayPal'
+
+    // Destructure payment result from request body
+    const { id, status, update_time, email_address } = req.body;
+    order.paymentResult = {
+        id,
+        status,
+        update_time,
+        email_address,
+    };
+
+    // Save the updated order
+    const updatedOrder = await order.save({validateBeforeSave: false});
+    console.log(updatedOrder)
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, updatedOrder, "Order updated to Paid successfully."));
+});
+
 export {
     placeOrder,             // user
     getMyOrders,           // user
     addItem,             // user
     getOrders,            // restaurant owner
     updateOrderStatus,  // restaurant owner
+    updateOrderToPaid,   // private
+    getOrderById,        // user
 }

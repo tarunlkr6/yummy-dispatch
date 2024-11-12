@@ -5,8 +5,22 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Spinner } from "@material-tailwind/react";
-import { useGetRestaurantDetailsQuery } from "../../../slices/restaurantApitSlice";
+import {
+  Select,
+  Spinner,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  IconButton,
+  ThemeProvider,
+  Carousel,
+  Textarea,
+  Option
+} from "@material-tailwind/react";
+import { useCreateReviewMutation, useGetRestaurantDetailsQuery } from "../../../slices/restaurantApitSlice";
 import { addToCart } from "../../../slices/cartSlice";
 import {
   ChefHat,
@@ -23,17 +37,6 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  IconButton,
-  ThemeProvider,
-  Carousel,
-} from "@material-tailwind/react";
 import { useGetMenuByRestaurantIdQuery } from "../../../slices/menuApiSlice";
 import { useGetOfferByRestaurantIdQuery } from "../../../slices/offerApiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,12 +74,15 @@ const navItems = [
 
 export default function RestaurantTemplate() {
   const { id } = useParams();
-
+  const restaurantId = id;
   const { cartItems } = useSelector((state) => state?.cart);
   const dispatch = useDispatch();
   const { data, isLoading, error } = useGetRestaurantDetailsQuery(id);
   const { data: offers } = useGetOfferByRestaurantIdQuery(id);
-  const { data: feedback } = useGetFeedbackByRestaurantIdQuery(id);
+  const { data: feedback, refetch, isLoading: feedbackLoading } = useGetFeedbackByRestaurantIdQuery(id);
+  console.log(feedback)
+  const [createReview, { isLoading: reviewLoader}] = useCreateReviewMutation();
+  const { userInfo } = useSelector((state) => state?.auth)
 
   const {
     data: menu,
@@ -86,6 +92,30 @@ export default function RestaurantTemplate() {
 
   // State for restaurant data
   const [restaurantData, setRestaurantData] = useState(null);
+  const [rating, setRating ] = useState(0);
+  const [comment, setComment] = useState(''); 
+  const [reviewLoading, setReviewLoading] = useState(false);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    try {
+      setReviewLoading(true);
+      await createReview({
+        restaurantId,
+        data: { rating, comment } // Pass data as an object containing rating and comment
+      }).unwrap();
+      refetch();
+      toast.success("Review submitted successfully!");
+      setReviewLoading(false);
+      setRating(0); // Reset rating to 0 instead of an empty string
+      setComment('');
+    } catch (error) {
+      toast.error(error?.message || 'Something went wrong');
+      setReviewLoading(false);
+    }
+  };
+  
+  
 
   // States for UI interaction
   const [activeSection, setActiveSection] = useState("home");
@@ -583,36 +613,91 @@ export default function RestaurantTemplate() {
           </Section>
 
           {/* Feedback Section */}
-          <Section id="feedback" title="Customer Feedback">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {restaurantData.feedbacks.length > 0 ? (
-                restaurantData.feedbacks.map((feedback, id) => (
-                  <Card
-                    key={feedback.id}
-                    className={`${
-                      isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-                    } border border-gray-200 shadow-xl`}
+          <section id="feedback" className="py-12 bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Customer Feedback</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            {restaurantData.feedbacks && restaurantData.feedbacks.length > 0 ? (
+              restaurantData.feedbacks.map((feedback) => (
+                <Card
+                  key={feedback._id}
+                  className={`${
+                    isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                  } border border-gray-200 shadow-xl transition-shadow hover:shadow-2xl`}
+                >
+                  <CardBody>
+                    <Typography variant="h5" className="mb-2">{feedback.user}</Typography>
+                    <div className="flex mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${
+                            i < feedback.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <Typography className="text-gray-600 dark:text-gray-300">{feedback.comment}</Typography>
+                    <Typography className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                      {new Date(feedback.createdAt).toLocaleDateString()}
+                    </Typography>
+                  </CardBody>
+                </Card>
+              ))
+            ) : (
+              <Typography className="text-center text-gray-500 dark:text-gray-400">No reviews yet. Be the first to leave a review!</Typography>
+            )}
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Write a Review</h3>
+            {reviewLoading && <Spinner className="mx-auto" />}
+            {userInfo ? (
+              <form onSubmit={handleSubmitReview} className="space-y-4">
+                <div>
+                  <label htmlFor="rating" className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Rating</label>
+                  <Select
+                    id="rating"
+                    value={rating}
+                    onChange={(value) => setRating(value)}
+                    label="Select a rating"
+                    color="blue"
                   >
-                    <CardBody>
-                      <Typography variant="h5 p-3">{feedback.name}</Typography>
-                      <div className="flex">
-                        {[...Array(feedback.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                          />
-                        ))}
-                      </div>
-                      <Typography>{feedback.comment}</Typography>
-                    </CardBody>
-                  </Card>
-                ))
-              ) : (
-                <h3>No Reviews</h3>
-              )}
-            </div>
-          </Section>
-
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <Option key={value} value={value.toString()}>
+                        {value} {value === 1 ? 'Star' : 'Stars'}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+                <div>
+                  <label htmlFor="comment" className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Comment</label>
+                  <Textarea
+                    id="comment"
+                    placeholder="Share your experience..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows={4}
+                    color="blue"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white" 
+                  disabled={reviewLoading || !rating || !comment}
+                >
+                  Submit Review
+                </Button>
+              </form>
+            ) : (
+              <Typography className="text-center text-gray-600 dark:text-gray-300">
+                Please <Link to="/" className="text-blue-500 hover:underline">log in</Link> to leave a review.
+              </Typography>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
           {/* Location Section */}
           <Section id="location" title="Our Location">
             <Card

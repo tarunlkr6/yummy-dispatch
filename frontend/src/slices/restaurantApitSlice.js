@@ -15,8 +15,16 @@ const restaurantApiSlice = apiSlice.injectEndpoints({
                 url: `${RESTAURANT_URL}/${restaurantId}`,
             }),
             keepUnusedDataFor: 5,
-        })
+        }),
+        createReview: builder.mutation({
+            query: ({restaurantId, data}) => ({
+                url: `${RESTAURANT_URL}/${restaurantId}/review/add`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['restaurant'], // Invalidate the cache for restaurant tag when a review is added
+        }),
     }),
 })
 
-export const { useGetRestaurantQuery, useGetRestaurantDetailsQuery } = restaurantApiSlice;
+export const { useGetRestaurantQuery, useGetRestaurantDetailsQuery, useCreateReviewMutation } = restaurantApiSlice;
