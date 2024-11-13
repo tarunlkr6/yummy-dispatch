@@ -105,12 +105,33 @@ const updateMenuItem = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Not found")
     }
 
+    let imageLocalPath = []
+    imageLocalPath = req.files?.image
+    //console.log(imageLocalPath)
+
+
+
+    if (!imageLocalPath) {
+        throw new ApiError(401, "Image is required")
+    }
+
+    let imageArray = []
+    for (let i = 0; i < imageLocalPath.length; i++) {
+        let imageLinks = imageLocalPath[i]?.path;
+        const result = await uploadOnCloudinary(imageLinks)
+        imageArray.push({
+            publicId: result.public_id,
+            url: result.url
+        })
+    }
+
     const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
         $set: {
             itemName,
             price,
             description,
             category,
+            image: imageArray,
             isAvailable,
             isVeg,
         },

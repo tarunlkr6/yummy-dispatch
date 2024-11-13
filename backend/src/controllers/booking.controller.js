@@ -127,7 +127,6 @@ const cancelBooking = asyncHandler(async (req, res) => {
 // update booking status
 const updateBookingStatus = asyncHandler(async (req, res) => {
     const { bookingid } = req.params
-    const { resid } = req.params;
 
     const booking = await Booking.findById(bookingid)
 
@@ -149,8 +148,6 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
         // send confirmation mail
     }
     await booking.save({ validateBeforeSave: false })
-
-    
 
     const updatedBooking = await Booking.findOne({ bookingToken: booking.bookingToken })
 
