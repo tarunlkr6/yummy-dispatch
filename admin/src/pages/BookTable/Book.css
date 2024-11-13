@@ -213,6 +213,15 @@ button.view-details:hover {
   padding: 10px;
 }
 
+.glas {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: red;
+  padding: 10px;
+}
+
 .modal, .confirmation-popup {
   position: fixed;
   top: 0;

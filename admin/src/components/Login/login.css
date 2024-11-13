@@ -1,0 +1,120 @@
+/* Background styling */
+.background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: url('../../assets/images-1.jpg') no-repeat center center/cover;
+  }
+  
+  /* Glass effect for form container */
+  .login-form {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 1.2s ease-out;
+    transform: translateY(-20px);
+    transition: transform 0.5s ease;
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Form title */
+  .login-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    animation: slideIn 1s ease;
+  }
+  
+  /* Subtitle styling */
+  .login-subtitle {
+    color: #b3b3b3;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 1.4s ease;
+  }
+  
+  /* Input field styling */
+  .form-input {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #1da1f2;
+    box-shadow: 0 4px 12px rgba(29, 161, 242, 0.2);
+  }
+  
+  /* Button styling */
+  .login-button {
+    background: linear-gradient(135deg, #1da1f2, #0077b5);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    animation: fadeIn 1.6s ease;
+  }
+  
+  .login-button:hover {
+    background: linear-gradient(135deg, #0077b5, #1da1f2);
+    transform: scale(1.05);
+  }
+  
+  /* Placeholder color for inputs */
+  ::placeholder {
+    color: #ddd;
+    opacity: 0.7;
+  }
+  
+  /* Animation for elements */
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .login-form {
+      padding: 1.5rem;
+      width: 90%;
+    }
+  }
+  

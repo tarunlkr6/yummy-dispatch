@@ -3,11 +3,14 @@ import backgroundImage from "../../assets/pexels--2.jpg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const RestaurantRegistration = () => {
 
  const [image, setImage] = useState(false);
-  const url = 'http://localhost:8080/api/v1/restaurant'
+ const navigate = useNavigate();
+  // const url = 'http://localhost:8080/api/v1/restaurant'
+  const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1/restaurant'
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -37,6 +40,7 @@ const RestaurantRegistration = () => {
 
     try {
       const response = await axios.post(`${url}/register`, formData);
+      console.log(response);
       if (response.data.success) {
         setData({
           name: "",
@@ -60,6 +64,7 @@ const RestaurantRegistration = () => {
     } catch (error) {
       toast.error("Failed to register. Please try again.");
     }
+    navigate('/login');
   };
 
   return (
