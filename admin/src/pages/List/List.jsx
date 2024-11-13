@@ -2,22 +2,24 @@ import React, { useEffect, useState } from 'react';
 import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import bgvideo from './bgvideo.mp4'
+import bgvideo from './bgvideo.mp4';
 
 const List = ({ url }) => {
-  const resid = '67309331287f4addfc376298';
   const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isVegFilter, setIsVegFilter] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
+  const [editItem, setEditItem] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const itemsPerPage = 4;
 
   const fetchList = async () => {
     try {
-      const response = await axios.get(`${url}/${resid}/menu`);
+      const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
+      const response = await axios.get(`${url}/${restaurantId}/menu`);
       if (response.data.success) {
-        console.log(response.data.data);
         setList(response.data.data);
+        console.log(response.data.data);
         setFilteredItems(response.data.data);
       } else {
         toast.error('Error fetching list');
@@ -33,11 +35,13 @@ const List = ({ url }) => {
   }, []);
 
   const toggleAvailability = async (foodId) => {
+    console.log(foodId)
     try {
       const token = JSON.parse(localStorage.getItem('token'));
+      const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const updatedData = { isAvailable: !list.find(item => item._id === foodId).isAvailable };
 
-      await axios.patch(`${url}/${resid}/menu/${foodId}`, updatedData, {
+      await axios.patch(`${url}/${restaurantId}/menu/${foodId}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -53,10 +57,12 @@ const List = ({ url }) => {
   };
 
   const removeFood = async (foodId) => {
+
     const token = JSON.parse(localStorage.getItem('token'));
+    const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
 
     try {
-      await axios.delete(`${url}/${resid}/menu/${foodId}`, {
+      await axios.delete(`${url}/${restaurantId}/menu/${foodId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,9 +114,42 @@ const List = ({ url }) => {
     setCurrentPage(pageNum);
   };
 
+  const openEditModal = (item) => {
+    setEditItem(item);
+    setShowEditModal(true);
+  };
+
+  const handleEditChange = (e) => {
+    console.log(e);
+    setEditItem({ ...editItem, [e.target.name]: e.target.value });
+  };
+
+  const saveEdit = async (foodId) => {
+    console.log(foodId)
+    try {
+      const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
+      const token = JSON.parse(localStorage.getItem('token'));
+      console.log(editItem);
+      const updatedData = editItem;
+      // const updatedData = editItem ;
+      await axios.put(`${url}/${restaurantId}/menu/${foodId}`, updatedData , {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      toast.success("Item updated successfully");
+      fetchList();
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("Error saving edit:", error);
+      toast.error("Error saving item changes");
+    }
+  };
+
   return (
     <div className="list-container">
-                  <video autoPlay loop muted src={bgvideo} className="background-video">
+      <video autoPlay loop muted src={bgvideo} className="background-video">
         Your browser does not support the video tag.
       </video>
       <header className="list-header">
@@ -147,6 +186,9 @@ const List = ({ url }) => {
           >
             <button className="remove-btn" onClick={() => removeFood(item._id)}>
               <i className="fa-solid fa-trash"></i>
+            </button>
+            <button className="edit-btn" onClick={() => openEditModal(item)}>
+              <i className="fa-solid fa-edit"></i>
             </button>
             <div className="list-card-image">
               <img src={item.image[0]?.url} alt={item.itemName} />
@@ -198,6 +240,53 @@ const List = ({ url }) => {
           Next
         </button>
       </div>
+
+      {showEditModal && editItem && (
+        <div className={`modal-overlay ${showEditModal ? 'show' : ''}`} onClick={() => setShowEditModal(false)}>
+          <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={() => setShowEditModal(false)}>&times;</button>
+            <div className="edit-modal-content">
+              <h2>Edit Item</h2>
+              <label>
+                Name:
+                <input
+                  type="text"
+                  name="itemName"
+                  value={editItem.itemName}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <label>
+                Price:
+                <input
+                  type="Number"
+                  name="price"
+                  value={editItem.price}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <label>
+                Description:
+                <textarea
+                  name="description"
+                  value={editItem.description}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <label>
+                Category:
+                <input
+                  type="text"
+                  name="category"
+                  value={editItem.category}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <button onClick={() => saveEdit(editItem._id)} className="save-btn">Save</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

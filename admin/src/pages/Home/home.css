@@ -1,0 +1,74 @@
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes slideInRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  /* Utility Classes */
+  .hero-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh; /* Allows scrolling when more content is added */
+  }
+  
+  .info-section,
+  .assistance-section {
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+  
+  /* Buttons */
+  .button-primary, .button-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .button-primary {
+    background-color: #ff7e1a;
+    color: white;
+    border-color: #ff7e1a;
+  }
+  
+  .button-primary:hover {
+    background-color: transparent;
+    color: #ff7e1a;
+  }
+  
+  .button-secondary {
+    background-color: #f59e0b;
+    color: #333;
+    border-color: #f59e0b;
+  }
+  
+  .button-secondary:hover {
+    background-color: transparent;
+    color: #f59e0b;
+  }
+  
+  .hero-section h1 {
+    animation: slideUp 1s ease forwards;
+  }
+  
+  .hero-section span,
+  .hero-section p {
+    animation: fadeIn 1.5s ease forwards;
+  }
+  

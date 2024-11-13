@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Offer.css';
 import offerVideo from './offer.mp4';
 
+
 const Offer = ({ url }) => {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,10 +14,12 @@ const Offer = ({ url }) => {
   const [offerImage, setOfferImage] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const offersPerPage = 3;
-  const resid = '67309331287f4addfc376298';
+
+  const resid =  JSON.parse(localStorage.getItem('restaurantId'));
 
   useEffect(() => {
     const fetchOffers = async () => {
+        const resid =  JSON.parse(localStorage.getItem('restaurantId'));
       try {
         const response = await axios.get(`${url}/${resid}/offers`);
         setOffers(response.data.data);
@@ -27,11 +30,12 @@ const Offer = ({ url }) => {
       }
     };
     fetchOffers();
-  }, [url, resid]);
+  }, [url, `${resid}`]);
 
   const handleDelete = async (offerId) => {
     setDeletingOfferId(offerId);
     const token = JSON.parse(localStorage.getItem('token'));
+    const resid =  JSON.parse(localStorage.getItem('restaurantId'));
 
     try {
       await axios.delete(`${url}/${resid}/offer/delete/${offerId}`, {
@@ -57,6 +61,7 @@ const Offer = ({ url }) => {
     formData.append('offerImage', offerImage);
 
     const token = JSON.parse(localStorage.getItem('token'));
+    const resid =  JSON.parse(localStorage.getItem('restaurantId'));
 
     try {
       const response = await axios.post(`${url}/${resid}/offer/create`, formData, {

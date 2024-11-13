@@ -5,6 +5,7 @@ import axios from 'axios';
 import './Book.css';
 import book from './book.mp4';
 
+
 const BookTable = ({ url }) => {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState('');
@@ -13,11 +14,12 @@ const BookTable = ({ url }) => {
   const [confirmAction, setConfirmAction] = useState(null);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [searchDate, setSearchDate] = useState(null);
-  const restaurantId = '67309331287f4addfc376298';
+
 
   const fetchBookings = async (date) => {
     try {
       const token = JSON.parse(localStorage.getItem('token'));
+      const restaurantId =  JSON.parse(localStorage.getItem('restaurantId'));
       const response = await axios.get(`${url}/booking/${restaurantId}/all`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { date },
@@ -28,6 +30,7 @@ const BookTable = ({ url }) => {
         setError('');
       } else {
         setBookings(response.data.data);
+        console.log(response.data.data);
       }
     } catch (err) {
       setBookings([]);
@@ -146,14 +149,14 @@ const BookTable = ({ url }) => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {bookings.reverse().map((booking) => (
               <tr key={booking._id}>
                 <td>{booking.bookingToken}</td>
                 <td>{booking.name}</td>
                 <td>{new Date(booking.reservationDate).toLocaleDateString()}</td>
                 <td
                   style={{
-                    color: booking.status === 'Confirmed' ? 'green' : 'yellow',
+                    color: booking.status === 'Confirmed' ? 'green' : booking.status === 'Pending' ? 'yellow' : 'red',
                     fontWeight: 'bold',
                   }}
                 >
@@ -176,6 +179,7 @@ const BookTable = ({ url }) => {
                     </button>
                   )}
                   {booking.status === 'Confirmed' && <span className="confirmed glass">Confirmed</span>}
+                  {booking.status === 'Cancelled' && <span className="confirmed glas">Canceled</span>}          
                 </td>
               </tr>
             ))}
