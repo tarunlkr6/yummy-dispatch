@@ -5,8 +5,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import add from './add.mp4';
 
+
 const Add = ({ url }) => {
-  const resid = '67309331287f4addfc376298';
+
   const [image, setImage] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false); // Add buttonClicked state here
   const [data, setData] = useState({
@@ -42,6 +43,7 @@ const Add = ({ url }) => {
 
     try {
       const token = JSON.parse(localStorage.getItem('token'));
+      const resid =  JSON.parse(localStorage.getItem('restaurantId'));
       const response = await axios.post(`${url}/${resid}/menu/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
