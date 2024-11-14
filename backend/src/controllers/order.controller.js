@@ -195,7 +195,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     // Save the updated order
     const updatedOrder = await order.save({validateBeforeSave: false});
-    console.log(updatedOrder)
 
     return res
         .status(200)

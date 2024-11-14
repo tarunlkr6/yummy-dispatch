@@ -99,21 +99,17 @@ function RestaurantCard({
       {/* Restaurant Card */}
 
       <Card
-        onClick={(event) => isOpen && onClickHandler(_id, event)}
-        className={`w-full max-w-sm mx-auto rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
-          isOpen
-            ? "bg-white hover:shadow-xl cursor-pointer"
-            : "bg-gray-900 cursor-not-allowed opacity-70"
-        }`}
+        onClick={(event) =>{event.stopPropagation(), onClickHandler(_id, event)}}
+        className={`w-full max-w-sm mx-auto rounded-lg shadow-lg overflow-hidden transition-all duration-300 `}
         role="button"
-        aria-disabled={!isOpen} // Accessibility attribute
+        
       >
         <CardHeader floated={false} className="h-48 m-0 rounded-none">
           <img
             src={avatar}
             alt={name}
             className={`w-full h-full object-cover object-center transition-transform duration-300 ${
-              isOpen ? "hover:scale-105" : ""
+              isOpen ? "hover:scale-105" : "grayscale"
             }`}
           />
         </CardHeader>
@@ -122,7 +118,7 @@ function RestaurantCard({
             <Typography
               variant="h4"
               color="blue-gray"
-              className={`font-semibold ${!isOpen && "text-gray-400"}`}
+              className={`font-semibold ${!isOpen && "text-gray-700"}`}
             >
               {name}
             </Typography>
@@ -186,14 +182,13 @@ function RestaurantCard({
             <Button
               fullWidth
               onClick={(event) => {
-                event.stopPropagation()
-                if (!isOpen) event.preventDefault(); // Prevent navigation if closed
+               event.stopPropagation()
+               //event.preventDefault(); // Prevent navigation if closed
               }}
-              disabled={!isOpen}
               className={`w-full h-full font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-300 ${
                 isOpen
                   ? "bg-green-500 hover:bg-green-600"
-                  : "bg-gray-700 cursor-not-allowed"
+                  : "bg-blue-700"
               }`}
             >
               Book Table

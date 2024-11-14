@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
@@ -36,7 +36,7 @@ const Payment = () => {
   async function onApprove(data, actions) {
     try {
       const details = await actions.order.capture();
-      await payOrder({ orderId, details });
+     const res = await payOrder({ orderId, details });
       toast.success("Order paid successfully!");
     } catch (error) {
       toast.error(error?.data?.message || error.message || "An error occurred during payment");
@@ -74,6 +74,11 @@ const Payment = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <Link to="/vieworders">
+        <Button size='sm' variant="outlined" className="mb-2" color='black'>
+          Go back
+        </Button>
+      </Link>
       <Card className="mb-8 overflow-hidden">
         <CardBody>
           <Typography variant="h4" className="mb-6 text-center">Order Details</Typography>
@@ -92,7 +97,8 @@ const Payment = () => {
       </Card>
 
       <Card className="overflow-hidden">
-        <CardBody>
+        {!order.isPaid && <CardBody 
+        >
           <Typography variant="h4" className="mb-6 text-center">Order Summary</Typography>
           <div className="space-y-4">
             <SummaryItem label="Service Charge" value={order?.serviceCharge.toFixed(2)} />
@@ -142,6 +148,8 @@ const Payment = () => {
             </div>
           )}
         </CardBody>
+        }
+        
       </Card>
     </div>
   );

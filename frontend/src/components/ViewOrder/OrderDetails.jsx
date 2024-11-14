@@ -13,11 +13,9 @@ const OrderDetails = () => {
   const { data: ordersData, isLoading, error } = useGetMyOrdersQuery();
 
   if (isLoading)
-    return <Spinner className="h-16 w-16 text-gray-900/50 items-center" />;
-  if (error)
     return (
-      <div className="w-full p-4 bg-red-500">
-        <p className="w-full p-4 bg-red-400">Error loading orders.</p>
+      <div className="flex items-center justify-center">
+        <Spinner className="h-16 w-16 text-gray-900/50 items-center" />;
       </div>
     );
 
@@ -36,6 +34,9 @@ const OrderDetails = () => {
         </Button>
       </Link>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+        {error && (
+          <p className="w-full p-4 bg-red-400">Error loading orders.</p>
+        )}
         <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <div className="mx-auto max-w-5xl">
             <div className="gap-4 sm:flex sm:items-center sm:justify-between">
@@ -105,12 +106,15 @@ const OrderDetails = () => {
                         Payment:
                       </dt>
                       <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                        <Link to={`/order/${order._id}`}>
+                        <Link to={`/order/${order._id}`}
+                        
+                        >
                           <Button
                             variant="outlined"
                             size="sm"
                             color="black"
                             className="rounded-full"
+                            disabled={ order.isPaid === true }
                           >
                             Pay
                           </Button>

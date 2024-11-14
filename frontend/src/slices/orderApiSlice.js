@@ -15,11 +15,10 @@ export const orderApiSlice = apiSlice.injectEndpoints({
       query: ({ orderId, items }) => ({
         url: `${ORDER_URL}/order/${orderId}/add-item`,
         method: "PUT",
-        body: { ...items },
+        body: { items },
         credentials: "include",
       }),
     }),
-
     getMyOrders: builder.query({
       query: () => ({
         url: `${ORDER_URL}/orders`,

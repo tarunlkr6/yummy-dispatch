@@ -7,8 +7,8 @@ import { Button } from "@material-tailwind/react";
 
 function Partner() {
   const navigate = useNavigate();
-  const url ='https://scan-dine-backend-bnj2.onrender.com/api/v1';
-  //const url = 'http://localhost:8080/api/v1/user'
+  //const url ='https://scan-dine-backend-bnj2.onrender.com/api/v1';
+  const url = 'http://localhost:8080/api/v1/user'
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -40,20 +40,21 @@ function Partner() {
     }
     try {
       const res = await axios.post(`${url}/register`, data);
-      if (res.success) {
+      if (res.data.success) {
         toast.success("Registration successful");
+        // Redirect to a specific page after successful registration
+        window.location.href = "https://scan-dine-admin.onrender.com/register";
+        setData({
+          fullName: "",
+          email: "",
+          password: "",
+          isAdmin: true,
+        });
+        setConfirmPassword("");
       }
-      navigate("/");
-      setData({
-        fullName: "",
-        email: "",
-        password: "",
-        isAdmin: true,
-      });
-      setConfirmPassword("");
     } catch (error) {
       toast.error(
-        error?.data?.message || error.message || "Registration failed"
+        error?.response?.data?.message || error.message || "Registration failed"
       );
     }
   };

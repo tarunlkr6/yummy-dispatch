@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import { useForgetPasswordMutation } from "../../slices/usersApiSlice";
 import { toast } from "react-toastify";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from "@material-tailwind/react";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+  const naviagte = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
-
     try {
-      const response = await forgetPassword({email}).unwrap();
+      const response = await forgetPassword({ email }).unwrap();
       console.log(response);
+      if(response.message)
       toast.success("Reset link sent, check your email.");
+      setEmail('');
+      // Redirect to the reset password page
+    //window.location.href= `http://localhost:8080/api/v1/user/reset-password/${response.token}`;
     } catch (error) {
-      toast.error("Failed to send reset link. Please try again.");
+      toast.error(error.data?.message || "Failed to send reset link. Please try again.");
     }
   };
 

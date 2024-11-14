@@ -202,7 +202,7 @@ const LoginPage = ({ setShowLogin }) => {
                 </div> */}
 
                 {currState === "Login" ? (
-                  <Link to='/forgetpassword'>
+                  <Link to='/reset-password'>
                     <p onClick={forgotHandler} className="text-sm underline whitespace-nowrap underline-offset-2 cursor-pointer">
                       Forgot Password?
                     </p>

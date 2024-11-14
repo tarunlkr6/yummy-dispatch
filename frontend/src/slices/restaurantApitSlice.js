@@ -5,8 +5,9 @@ import { apiSlice } from "./apiSlice";
 const restaurantApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getRestaurant: builder.query({
-            query: () => ({
+            query: (keyword) => ({
                 url: `${RESTAURANT_URL}/all`, // get all restaurant
+                params: { keyword },
             }),
             keepUnusedDataFor: 5, // Keep the data in cache for 5 seconds
         }),

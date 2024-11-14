@@ -1,8 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateOrderMutation, useAddMoreItemOrderMutation } from "../../slices/orderApiSlice";
+import {
+  useCreateOrderMutation,
+  useAddMoreItemOrderMutation,
+} from "../../slices/orderApiSlice";
 import { useGetMenuByRestaurantIdQuery } from "../../slices/menuApiSlice";
-import { addToCart, clearAllCartItems, decrementQty, incrementQty } from "../../slices/cartSlice";
+import {
+  addToCart,
+  clearAllCartItems,
+  decrementQty,
+  incrementQty,
+} from "../../slices/cartSlice";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import {
@@ -23,14 +31,17 @@ export default function PlaceOrder() {
   const { cartItems } = cart;
   const [menuData, setMenuData] = useState([]);
   const [createOrder, { isLoading: orderLoading }] = useCreateOrderMutation();
-  const [addMoreItemOrder, { isLoading: addMoreItemLoading }] = useAddMoreItemOrderMutation();
-  const { data, isLoading: menuLoading } = useGetMenuByRestaurantIdQuery(cart.restaurantId);
+  const [addMoreItemOrder, { isLoading: addMoreItemLoading }] =
+    useAddMoreItemOrderMutation();
+  const { data, isLoading: menuLoading } = useGetMenuByRestaurantIdQuery(
+    cart.restaurantId
+  );
   const [showAddItemsButton, setShowAddItemsButton] = useState(false);
   const [newOrderItems, setNewOrderItems] = useState([]);
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
   const [showAddItemsPopover, setShowAddItemsPopover] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
- 
+
   const [orderData, setOrderData] = useState({
     name: "",
     tableNumber: "",
@@ -75,7 +86,7 @@ export default function PlaceOrder() {
   }, [cartItems, cart]);
 
   useEffect(() => {
-    const savedOrderPlaced = localStorage.getItem('orderPlaced');
+    const savedOrderPlaced = localStorage.getItem("orderPlaced");
     if (savedOrderPlaced) {
       setOrderPlaced(JSON.parse(savedOrderPlaced));
       setShowAddItemsButton(true);
@@ -90,22 +101,27 @@ export default function PlaceOrder() {
     }));
   };
 
-  const addToCartHandler = useCallback((item) => {
-    dispatch(addToCart({ item, qty: 1, resId: cart.restaurantId }));
-    setNewOrderItems((prevItems) => {
-      const existingItem = prevItems.find(i => i.id === item.id);
-      if (existingItem) {
-        return prevItems.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
-      } else {
-        return [...prevItems, { ...item, quantity: 1 }];
-      }
-    });
-  }, [dispatch, cart.restaurantId]);
+  const addToCartHandler = useCallback(
+    (item) => {
+      dispatch(addToCart({ item, qty: 1, resId: cart.restaurantId }));
+      setNewOrderItems((prevItems) => {
+        const existingItem = prevItems.find((i) => i.id === item.id);
+        if (existingItem) {
+          return prevItems.map((i) =>
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          );
+        } else {
+          return [...prevItems, { ...item, quantity: 1 }];
+        }
+      });
+    },
+    [dispatch, cart.restaurantId]
+  );
 
   const incrementQuantityHandler = (item) => {
     dispatch(incrementQty({ id: item.id }));
-    setNewOrderItems((prevItems) => 
-      prevItems.map((i) => 
+    setNewOrderItems((prevItems) =>
+      prevItems.map((i) =>
         i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
       )
     );
@@ -113,10 +129,12 @@ export default function PlaceOrder() {
 
   const decrementQuantityHandler = (item) => {
     dispatch(decrementQty({ id: item.id }));
-    setNewOrderItems((prevItems) => 
-      prevItems.map((i) => 
-        i.id === item.id ? { ...i, quantity: Math.max(0, i.quantity - 1) } : i
-      ).filter((i) => i.quantity > 0)
+    setNewOrderItems((prevItems) =>
+      prevItems
+        .map((i) =>
+          i.id === item.id ? { ...i, quantity: Math.max(0, i.quantity - 1) } : i
+        )
+        .filter((i) => i.quantity > 0)
     );
   };
 
@@ -125,7 +143,7 @@ export default function PlaceOrder() {
     try {
       const orderPayload = {
         ...orderData,
-        items: cartItems.map(item => ({
+        items: cartItems.map((item) => ({
           name: item.item.name,
           price: item.item.price,
           quantity: item.qty,
@@ -133,35 +151,38 @@ export default function PlaceOrder() {
         })),
       };
       const res = await createOrder(orderPayload).unwrap();
-
       setOrderId(res.data.placedOrder._id);
       toast.success(`Order placed successfully!`);
       setOrderPlaced(true);
+      console.log('show add button',showAddItemsButton)
       setShowAddItemsButton(true);
-      localStorage.setItem('orderPlaced', JSON.stringify(true));
+      localStorage.setItem("orderPlaced", JSON.stringify(true));
     } catch (err) {
       console.error("Error placing order: ", err);
-      toast.error(err.data?.message || "Failed to place order. Please try again.");
+      toast.error(
+        err.data?.message || "Failed to place order. Please try again."
+      );
     }
   };
 
   const reOrderHandler = async (e) => {
     e.preventDefault();
-    console.log("Order ID:", orderId); // should be a valid ObjectId string
-console.log("Items:", newOrderItems);       // should be an array of item objects
-
-    console.log(orderId);
     try {
-      await addMoreItemOrder({ orderId: String(orderId), items: newOrderItems }).unwrap();
+      await addMoreItemOrder({
+        orderId: String(orderId),
+        items: newOrderItems,
+      }).unwrap();
       toast.success("Additional items ordered successfully!");
       dispatch(clearAllCartItems());
       setNewOrderItems([]);
       setShowAddItemsPopover(false);
     } catch (err) {
       console.error("Error adding more items to order: ", err);
-      toast.error(err.data?.message || "Failed to add more items. Please try again.");
+      toast.error(
+        err.data?.message || "Failed to add more items. Please try again."
+      );
     }
-  };   
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -181,12 +202,20 @@ console.log("Items:", newOrderItems);       // should be an array of item object
                 <thead>
                   <tr>
                     <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal leading-none opacity-70"
+                      >
                         Item Name
                       </Typography>
                     </th>
                     <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                      <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal leading-none opacity-70"
+                      >
                         Quantity
                       </Typography>
                     </th>
@@ -194,14 +223,25 @@ console.log("Items:", newOrderItems);       // should be an array of item object
                 </thead>
                 <tbody>
                   {cartItems.map((food, index) => (
-                    <tr key={food.item.id || index} className="even:bg-blue-gray-50/50">
+                    <tr
+                      key={food.item.id || index}
+                      className="even:bg-blue-gray-50/50"
+                    >
                       <td className="p-4">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
                           {food.item.name}
                         </Typography>
                       </td>
                       <td className="p-4">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
                           {food.qty}
                         </Typography>
                       </td>
@@ -243,16 +283,20 @@ console.log("Items:", newOrderItems);       // should be an array of item object
               </div>
               <hr className="my-2" />
               <div className="flex justify-between">
-                <Typography color="blue-gray" className="font-bold">Total</Typography>
-                <Typography color="blue-gray" className="font-bold">${cart.totalPrice}</Typography>
+                <Typography color="blue-gray" className="font-bold">
+                  Total
+                </Typography>
+                <Typography color="blue-gray" className="font-bold">
+                  ${cart.totalPrice}
+                </Typography>
               </div>
             </div>
             <div className="mt-4 space-y-4">
-              {orderPlaced && (
+              {cartItems && (
                 <Button
                   onClick={submitHandler}
                   className="w-full"
-                  disabled={orderLoading}
+                  disabled={orderLoading || cartItems.length === 0}
                 >
                   {orderLoading ? "Placing Order..." : "Place Order"}
                 </Button>
@@ -261,12 +305,20 @@ console.log("Items:", newOrderItems);       // should be an array of item object
                 <>
                   <Popover placement="bottom">
                     <PopoverHandler>
-                      <Button color="blue" className="w-full">
+                      <Button
+                        color="blue"
+                        className="w-full"
+                        disabled={cartItems.length === 0}
+                      >
                         Add More Items
                       </Button>
                     </PopoverHandler>
                     <PopoverContent className="w-96">
-                      <Typography variant="h6" color="blue-gray" className="mb-4">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="mb-4"
+                      >
                         Add More Items
                       </Typography>
                       {menuLoading ? (
@@ -276,26 +328,71 @@ console.log("Items:", newOrderItems);       // should be an array of item object
                       ) : menuData.length > 0 ? (
                         <div className="space-y-4 max-h-60 overflow-y-auto">
                           {menuData.map((menuItem) => (
-                            <div key={menuItem.id} className="flex justify-between items-center">
-                              <Typography variant="small">{menuItem.name}</Typography>
+                            <div
+                              key={menuItem.id}
+                              className="flex justify-between items-center"
+                            >
+                              <Typography variant="small">
+                                {menuItem.name}
+                              </Typography>
                               <div className="flex items-center space-x-2">
-                              <Button size="sm" color="blue-gray" className="px-2 py-1 min-w-[36px]" onClick={() => addToCartHandler(menuItem)}>Add</Button>
-                                <Button size="sm" color="blue-gray" className="px-2 py-1 min-w-[36px]" onClick={() => decrementQuantityHandler(menuItem)}>-</Button>
-                                <Typography variant="small">{newOrderItems.find(item => item.id === menuItem.id)?.quantity || 0}</Typography>
-                                <Button size="sm" color="blue-gray" className="px-2 py-1 min-w-[36px]" onClick={() => incrementQuantityHandler(menuItem)}>+</Button>
+                                <Button
+                                  size="sm"
+                                  color="blue-gray"
+                                  className="px-2 py-1 min-w-[36px]"
+                                  onClick={() => addToCartHandler(menuItem)}
+                                >
+                                  Add
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  color="blue-gray"
+                                  className="px-2 py-1 min-w-[36px]"
+                                  onClick={() =>
+                                    decrementQuantityHandler(menuItem)
+                                  }
+                                >
+                                  -
+                                </Button>
+                                <Typography variant="small">
+                                  {newOrderItems.find(
+                                    (item) => item.id === menuItem.id
+                                  )?.quantity || 0}
+                                </Typography>
+                                <Button
+                                  size="sm"
+                                  color="blue-gray"
+                                  className="px-2 py-1 min-w-[36px]"
+                                  onClick={() =>
+                                    incrementQuantityHandler(menuItem)
+                                  }
+                                >
+                                  +
+                                </Button>
                               </div>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <Typography color="red">No menu items available.</Typography>
+                        <Typography color="red">
+                          No menu items available.
+                        </Typography>
                       )}
-                      <Button color="blue" className="mt-4 w-full" onClick={() => setShowAddItemsPopover(false)}>
+                      <Button
+                        color="blue"
+                        className="mt-4 w-full"
+                        onClick={() => setShowAddItemsPopover(false)}
+                      >
                         Done
                       </Button>
                     </PopoverContent>
                   </Popover>
-                  <Button onClick={reOrderHandler} color="green" className="w-full" disabled={addMoreItemLoading || newOrderItems.length === 0}>
+                  <Button
+                    onClick={reOrderHandler}
+                    color="green"
+                    className="w-full"
+                    disabled={addMoreItemLoading || newOrderItems.length === 0}
+                  >
                     {addMoreItemLoading ? "Ordering..." : "Reorder"}
                   </Button>
                 </>

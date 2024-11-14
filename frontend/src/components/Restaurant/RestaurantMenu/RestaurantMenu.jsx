@@ -67,6 +67,7 @@ const RestaurantMenu = () => {
             <div className="menu-details">
               <div className="menu-header">
                 <h3>{item.name}</h3>
+
                 <p
                   className={`menu-category ${item.isVeg ? "veg" : "non-veg"}`}
                 >
@@ -90,7 +91,12 @@ const RestaurantMenu = () => {
             <div className="menu-footer">
               <button
                 onClick={() => addToCartHandler(item)}
-                className="add-to-cart-btn"
+                className={`add-to-cart-btn ${
+                  !item.isAvailable
+                    ? "bg-gray-400 cursor-not-allowed hover:bg-gray-400"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+                disabled={!item.isAvailable}
               >
                 Add to Cart
               </button>

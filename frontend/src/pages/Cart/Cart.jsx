@@ -79,7 +79,7 @@ const Cart = () => {
                   onClick={() => removeFromCartHandler(food.item)}
                   className="cross "
                 >
-                  <box-icon name="trash-alt" type="solid"></box-icon>
+                  <i className="fa-solid fa-trash fa-lg"></i>
                 </p>
                 <hr />
               </div>

@@ -103,7 +103,8 @@ const Profile = () => {
           <Button
             size="lg"
             color="blue-gray"
-            className="flex items-center gap-3 px-6 py-3 bg-blue-gray-800 hover:bg-blue-gray-900 transition-all duration-300"
+            disabled
+            className="flex items-center gap-3 px-6 py-3 bg-blue-gray-800 hover:bg-blue-gray-900 transition-all duration-300 hover:cursor-not-allowed"
           >
             <PencilIcon strokeWidth={2} className="h-5 w-5" /> Edit Profile
           </Button>

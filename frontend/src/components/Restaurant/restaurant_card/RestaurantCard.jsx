@@ -1,11 +1,11 @@
+// src/components/Restaurant/restaurant_card/RestaurantCard.jsx
 import React from "react";
 import Card from "./Card";
 import { useGetRestaurantQuery } from "../../../slices/restaurantApitSlice";
 import { Spinner, Alert } from "@material-tailwind/react";
 
-function RestaurantCard() {
-  const { data: Restaurant, isLoading, error } = useGetRestaurantQuery();
-
+function RestaurantCard({ keyword }) {
+  const { data: Restaurant, isLoading, error } = useGetRestaurantQuery(keyword);
 
   // Check if Restaurant and Restaurant.data.restaurants exist and are arrays
   const isValidData = Restaurant && Array.isArray(Restaurant.data?.restaurants);
