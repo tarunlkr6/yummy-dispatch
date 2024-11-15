@@ -4,12 +4,14 @@ import { assets } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import add from './add.mp4';
+import { useNavigate } from 'react-router-dom';
 
 
 const Add = ({ url }) => {
 
   const [image, setImage] = useState([]);
-  const [buttonClicked, setButtonClicked] = useState(false); // Add buttonClicked state here
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const navigate = useNavigate(); // Add buttonClicked state here
   const [data, setData] = useState({
     name: '',
     description: '',
@@ -60,6 +62,7 @@ const Add = ({ url }) => {
         });
         setImage([]);
         toast.success(response.data.message);
+        navigate(`/dashboard/restaurant/${resid}/menu`);
       } else {
         toast.error(response.data.message);
       }

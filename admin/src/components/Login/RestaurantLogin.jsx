@@ -4,8 +4,8 @@ import axios from "axios";
 import './login.css';
 
 function RestaurantLogin() {
-  // const url = 'http://localhost:8080/api/v1/user';
-  const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1/user'
+  const url = 'http://localhost:8080/api/v1/user';
+  // const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1/user'
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

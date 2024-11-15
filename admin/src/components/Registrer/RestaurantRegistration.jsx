@@ -9,8 +9,8 @@ const RestaurantRegistration = () => {
 
  const [image, setImage] = useState(false);
  const navigate = useNavigate();
-  // const url = 'http://localhost:8080/api/v1/restaurant'
-  const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1/restaurant'
+  const url = 'http://localhost:8080/api/v1/restaurant'
+  // const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1/restaurant'
   const [data, setData] = useState({
     name: "",
     description: "",

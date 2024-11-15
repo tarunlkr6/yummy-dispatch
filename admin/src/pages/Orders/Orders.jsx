@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Orders.css';
 import { toast } from 'react-toastify';
 import order from './order.mp4';
+import jsPDF from 'jspdf';
 
 const Orders = ({ url }) => {
   const [orders, setOrders] = useState([]);
@@ -144,6 +145,85 @@ const Orders = ({ url }) => {
     }
   };
 
+
+  const downloadInvoiceAsPDF = () => {
+    if (selectedOrder) {
+      const doc = new jsPDF();
+  
+      // Set title and style
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.text('Order Invoice', 20, 20);
+  
+      // Add order number
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Order Number: #${selectedOrder.orderNo}`, 20, 30);
+      
+      // Order Details
+      doc.text(`User: ${selectedOrder.user}`, 20, 40);
+      doc.text(`Status: ${selectedOrder.orderStatus}`, 20, 50);
+      doc.text(`Restaurant ID: ${selectedOrder.restaurantId}`, 20, 60);
+      doc.text(`Order Date: ${new Date(selectedOrder.createdAt).toLocaleDateString()}`, 20, 70);
+      
+      // Draw a line for separation
+      doc.setLineWidth(0.5);
+      doc.line(20, 80, 190, 80);
+  
+      // Create table for items
+      doc.text('Item Details', 20, 90);
+      
+      let startY = 100;
+      const columnWidths = [100, 30, 40]; // Adjust widths for item name, quantity, price
+      const itemHeaderY = startY;
+  
+      // Item headers
+      doc.setFont('helvetica', 'bold');
+      doc.text('Item Name', 20, itemHeaderY);
+      doc.text('Quantity', 120, itemHeaderY);
+      doc.text('Price', 160, itemHeaderY);
+  
+      // Adjust the Y-coordinate for the first row of data
+      const rowStartY = itemHeaderY + 10;  // Move the first row down by 10 units
+  
+      doc.setFont('helvetica', 'normal');
+      let totalAmount = 0;
+  
+      // Loop through items and add them to table
+      selectedOrder.items.forEach((item, index) => {
+        const rowY = rowStartY + (index * 10);  // Start at rowStartY and add 10 units per item
+        doc.text(item.name, 20, rowY);
+        doc.text(`${item.quantity}`, 120, rowY);
+        const itemPrice = (parseFloat(item.price) * parseInt(item.quantity)).toFixed(2);
+        doc.text(`$${itemPrice}`, 160, rowY);
+        totalAmount += parseFloat(itemPrice);
+      });
+  
+      // Draw lines below item list
+      doc.line(20, rowStartY + selectedOrder.items.length * 10, 190, rowStartY + selectedOrder.items.length * 10);
+  
+      // Add summary details below the item list
+      const summaryY = rowStartY + selectedOrder.items.length * 10 + 10;
+  
+      doc.text(`Tax: $${selectedOrder.taxPrice.toFixed(2)}`, 120, summaryY);
+      doc.text(`Service Charge: $${selectedOrder.serviceCharge.toFixed(2)}`, 120, summaryY + 10);
+      doc.text(`Total: $${calculateTotalBill(selectedOrder).toFixed(2)}`, 120, summaryY + 20);
+  
+      // Draw footer with company info (optional)
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'italic');
+      doc.text('Thank you for your purchase!', 20, doc.internal.pageSize.height - 20);
+      doc.text('For questions, contact us at support@restaurant.com', 20, doc.internal.pageSize.height - 10);
+      
+      // Save PDF
+      doc.save(`Order_Invoice_${selectedOrder.orderNo}.pdf`);
+    }
+  };
+  
+  
+
+
+
   return (
     <div className="orders-container relative">
       <video autoPlay loop muted src={order} className="background-video absolute inset-0 w-full h-full object-cover z-[-1]">
@@ -238,6 +318,15 @@ const Orders = ({ url }) => {
               </div>
             )}
 
+            {selectedOrder.orderStatus === 'Served' && (
+            <button
+
+            onClick={downloadInvoiceAsPDF}
+            
+            className="back-btn1 bg-blue-500 text-white rounded hover:bg-blue-600 "
+            >Download Invoice as PDF</button>
+            )}
+
             <h2 className="text-2xl">Order Invoice</h2>
 
             <div className="order-invoice">
@@ -262,9 +351,10 @@ const Orders = ({ url }) => {
                 <p><strong>Tax:</strong> ${selectedOrder.taxPrice}</p>
                 <p><strong>Service Charge:</strong> ${selectedOrder.serviceCharge}</p>
                 
-                <div className="total-price mt-4">
+                <div className="total-price mt-2">
                   <p><strong>Total:</strong> ${calculateTotalBill(selectedOrder).toFixed(2)}</p>
                 </div>
+
               </div>
             </div>
           </div>
