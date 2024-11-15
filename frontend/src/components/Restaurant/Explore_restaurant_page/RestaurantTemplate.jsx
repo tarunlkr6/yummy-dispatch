@@ -620,7 +620,7 @@ export default function RestaurantTemplate() {
           </Section>
 
           {/* Feedback Section */}
-          {feedbackLoading && <Spinner className="h-16 w-16 text-gray-900/50" />}
+          {reviewLoader && <Spinner className="h-16 w-16 text-gray-900/50" />}
           <section id="feedback" className="py-12  dark:bg-gray-900">
             <div className="container mx-auto px-4 max-w-6xl">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">

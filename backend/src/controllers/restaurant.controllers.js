@@ -31,7 +31,7 @@ const getRestaurant = asyncHandler(async (req, res) => {
 // Fetch the restaurant by Id
 const getRestaurantById = asyncHandler(async (req, res) => {
 
-    const restaurant = await Restaurant.findById(req.params.id)
+    const restaurant = await Restaurant.findById(req.params.resid)
 
     if (!restaurant) {
         throw new ApiError(500, "Error:Unable to find the restaurant.")
