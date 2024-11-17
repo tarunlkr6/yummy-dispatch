@@ -10,6 +10,7 @@ const List = ({ url }) => {
   const [isVegFilter, setIsVegFilter] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
   const [editItem, setEditItem] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const itemsPerPage = 4;
 
@@ -17,10 +18,10 @@ const List = ({ url }) => {
     try {
       const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const response = await axios.get(`${url}/${restaurantId}/menu`);
+      console.log(response)
       if (response.data.success) {
         setList(response.data.data);
-        console.log(response.data.data);
-        setFilteredItems(response.data.data);
+        setFilteredItems(response.data.data); // Initialize with full list
       } else {
         toast.error('Error fetching list');
       }
@@ -40,6 +41,10 @@ const List = ({ url }) => {
       const token = JSON.parse(localStorage.getItem('token'));
       const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const updatedData = { isAvailable: !list.find(item => item._id === foodId).isAvailable };
+      console.log(updatedData)
+      console.log(token)
+      console.log(restaurantId)
+      console.log(url)
 
       await axios.patch(`${url}/${restaurantId}/menu/${foodId}`, updatedData, {
         headers: {
@@ -76,17 +81,33 @@ const List = ({ url }) => {
 
   const handleVegFilterChange = (value) => {
     setIsVegFilter(value);
-    filterItems(value);
+    filterItems(value, searchTerm); // Apply filters when changing veg option
   };
 
-  const filterItems = (vegFilter) => {
-    const updatedFilteredItems = list.filter((item) =>
-      vegFilter === null || item.isVeg === vegFilter
-    );
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    filterItems(isVegFilter, e.target.value); // Re-filter based on search term
+  }; 
+
+
+  const filterItems = (vegFilter, keyword) => {
+    let updatedFilteredItems = list;
+
+    if (vegFilter !== null) {
+      updatedFilteredItems = updatedFilteredItems.filter(item => item.isVeg === vegFilter);
+    }
+
+    if (keyword) {
+      updatedFilteredItems = updatedFilteredItems.filter(item =>
+        item.itemName.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+
     setFilteredItems(updatedFilteredItems);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page after applying filters
   };
-
+  
   const filterByKeyword = (keyword) => {
     setFilteredItems(
       list.filter((item) =>
@@ -175,8 +196,21 @@ const List = ({ url }) => {
           >
             {keyword}
           </button>
+
         ))}
       </div>
+
+
+      <div className="search-bar glass">
+        <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by item name..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+      
 
       <div className="list-grid">
         {currentItems.map((item) => (

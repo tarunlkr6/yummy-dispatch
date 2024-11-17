@@ -31,7 +31,9 @@ const getRestaurant = asyncHandler(async (req, res) => {
 // Fetch the restaurant by Id
 const getRestaurantById = asyncHandler(async (req, res) => {
 
-    const restaurant = await Restaurant.findById(req.params.id)
+
+    const restaurant = await Restaurant.findById(req.params.resid)
+
 
     if (!restaurant) {
         throw new ApiError(500, "Error:Unable to find the restaurant.")
@@ -164,10 +166,43 @@ const getRestaurantReview = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, restaurant.restaurantReviews, "Review fetched successfully"))
 })
+
+
+const updateCloseOpen = asyncHandler(async (req, res) => {
+    const { resid} = req.params;
+    let { isOpen } = req.body;
+    console.log(resid); // Extract isAvailable from request body
+
+    // Convert isAvailable to boolean if it comes as a string
+    if (typeof isOpen === 'string') {
+        isOpen = isOpen === 'true'; // Convert to boolean
+    }
+
+    console.log("isAvailable after parsing:", isOpen); // Should be true or false
+
+    // Find the item by restaurant ID and item ID
+    const item = await Restaurant.findById( resid );
+    console.log(item)
+    if (!item) {
+        throw new ApiError(404, "Not found");
+    }
+
+    // Update the menu item with the new availability status
+    const menuItem = await Restaurant.findByIdAndUpdate(
+        { _id: resid},
+        { $set: { isOpen } },
+        { new: true }
+    );
+
+    return res.status(200).json(new ApiResponse(200, menuItem, "Item updated successfully."));
+});
+
+
 export {
     registerRestaurant,
     getRestaurant,
     getRestaurantById,
     addRestaurantReview,
     getRestaurantReview,
+    updateCloseOpen,
 }

@@ -604,3 +604,158 @@ input:checked + .slider:before {
     font-weight: bold;
     color: #333;
   }
+
+  /* Dashboard Layout */
+/* Restaurant Header */
+.restaurant-header {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(15px);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.restaurant-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.restaurant-info {
+  flex: 1;
+}
+
+.restaurant-name {
+  font-size: 1.8em;
+  margin: 0;
+  display: flex;
+  color: yellow;
+  margin-left: 10px;
+  margin-top: 65px;
+
+}
+.revenue-orders {
+  display: flex;
+  margin-top: 10px;
+  margin-left: 280px;
+}
+
+
+.revenue-card{
+  text-align: center;
+  padding: 5px;
+  margin-left: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 150px;
+  transition: transform 0.3s ease;
+
+}
+
+
+.order-count-card {
+  text-align: center;
+  padding: 5px;
+  margin-left: 10px;
+  margin-right: 0px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: 150px;
+  transition: transform 0.3s ease;
+}
+
+.revenue-card:hover,
+.order-count-card:hover {
+  transform: scale(1.05);
+}
+
+.revenue-card h2,
+.order-count-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #ffdf00;
+}
+
+.revenue-card p,
+.order-count-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: #ff6961;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Reviews Section */
+.reviews-section {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  backdrop-filter: blur(15px);
+}
+
+.reviews-section p {
+  background: rgba(255, 255, 255, 0.15);
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  backdrop-filter: blur(15px);
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.review-rating {
+  display: flex;
+}
+
+.star {
+  color: #ddd;
+  font-size: 1.2rem;
+}
+
+.star.filled {
+  color: #ffd700;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pagination-button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.page-number {
+  font-size: 1rem;
+  color: #fff;
+}
