@@ -37,8 +37,8 @@ import {
 
 } from "chart.js";
 
-const url = "http://localhost:8080/api/v1";
-// const url = '/api/v1';
+//const url = "http://localhost:8080/api/v1";
+const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1';
 
 
 ChartJS.register(

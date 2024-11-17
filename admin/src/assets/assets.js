@@ -14,4 +14,4 @@ export const assets ={
     parcel_icon
 }
 
-export const url = 'http://localhost:8080'
+export const url = 'https://scan-dine-backend-5qms.onrender.com'
