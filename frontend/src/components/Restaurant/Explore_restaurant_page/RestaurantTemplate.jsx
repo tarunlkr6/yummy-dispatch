@@ -18,9 +18,12 @@ import {
   ThemeProvider,
   Carousel,
   Textarea,
-  Option
+  Option,
 } from "@material-tailwind/react";
-import { useCreateReviewMutation, useGetRestaurantDetailsQuery } from "../../../slices/restaurantApitSlice";
+import {
+  useCreateReviewMutation,
+  useGetRestaurantDetailsQuery,
+} from "../../../slices/restaurantApitSlice";
 import { addToCart } from "../../../slices/cartSlice";
 import {
   ChefHat,
@@ -79,10 +82,13 @@ export default function RestaurantTemplate() {
   const dispatch = useDispatch();
   const { data, isLoading, error } = useGetRestaurantDetailsQuery(id);
   const { data: offers } = useGetOfferByRestaurantIdQuery(id);
-  const { data: feedback, refetch, isLoading: feedbackLoading } = useGetFeedbackByRestaurantIdQuery(id);
-  console.log(feedback)
-  const [createReview, { isLoading: reviewLoader}] = useCreateReviewMutation();
-  const { userInfo } = useSelector((state) => state?.auth)
+  const {
+    data: feedback,
+    refetch,
+    isLoading: feedbackLoading,
+  } = useGetFeedbackByRestaurantIdQuery(id);
+  const [createReview, { isLoading: reviewLoader }] = useCreateReviewMutation();
+  const { userInfo } = useSelector((state) => state?.auth);
 
   const {
     data: menu,
@@ -92,30 +98,31 @@ export default function RestaurantTemplate() {
 
   // State for restaurant data
   const [restaurantData, setRestaurantData] = useState(null);
-  const [rating, setRating ] = useState(0);
-  const [comment, setComment] = useState(''); 
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     try {
       setReviewLoading(true);
+      const review = comment;
       await createReview({
         restaurantId,
-        data: { rating, comment } // Pass data as an object containing rating and comment
+        data: { rating, review }, // Pass data as an object containing rating and comment
       }).unwrap();
       refetch();
-      toast.success("Review submitted successfully!");
-      setReviewLoading(false);
+      toast({
+        title: "Review submitted",
+        description: "Your review has been submitted successfully.",
+      });
       setRating(0); // Reset rating to 0 instead of an empty string
-      setComment('');
+      setComment("");
     } catch (error) {
-      toast.error(error?.message || 'Something went wrong');
+      toast.error(error?.message || "Something went wrong");
       setReviewLoading(false);
     }
   };
-  
-  
 
   // States for UI interaction
   const [activeSection, setActiveSection] = useState("home");
@@ -348,7 +355,7 @@ export default function RestaurantTemplate() {
         <main className="container mx-auto">
           <Link to="/">
             <Button
-            size="medium"
+              size="medium"
               variant="outlined"
               color={isDarkMode ? "white" : "black"}
               className="mx-auto mt-4"
@@ -613,91 +620,137 @@ export default function RestaurantTemplate() {
           </Section>
 
           {/* Feedback Section */}
-          <section id="feedback" className="py-12 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Customer Feedback</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            {restaurantData.feedbacks && restaurantData.feedbacks.length > 0 ? (
-              restaurantData.feedbacks.map((feedback) => (
-                <Card
-                  key={feedback._id}
-                  className={`${
-                    isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-                  } border border-gray-200 shadow-xl transition-shadow hover:shadow-2xl`}
-                >
-                  <CardBody>
-                    <Typography variant="h5" className="mb-2">{feedback.user}</Typography>
-                    <div className="flex mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-5 h-5 ${
-                            i < feedback.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <Typography className="text-gray-600 dark:text-gray-300">{feedback.comment}</Typography>
-                    <Typography className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      {new Date(feedback.createdAt).toLocaleDateString()}
+          {reviewLoader && <Spinner className="h-16 w-16 text-gray-900/50" />}
+          <section id="feedback" className="py-12  dark:bg-gray-900">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">
+                Customer Feedback
+              </h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Review Cards Section with Fixed Height and Scroll */}
+                <div className="space-y-6 max-h-[500px] overflow-y-scroll px-4">
+                  {restaurantData.feedbacks &&
+                  restaurantData.feedbacks.length > 0 ? (
+                    restaurantData.feedbacks.map((feedback) => (
+                      <Card
+                        key={feedback.id}
+                        className={`${
+                          isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                        } border border-gray-300 shadow-lg p-4 rounded-lg transition-shadow hover:shadow-xl`}
+                      >
+                        <CardBody>
+                          {/* User Info */}
+                          <Typography
+                            variant="h6"
+                            className="font-semibold mb-2"
+                          >
+                            {feedback.name || "Anonymous User"}
+                          </Typography>
+
+                          {/* Rating Stars */}
+                          <div className="flex mb-2">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-5 h-5 ${
+                                  i < feedback.rating
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+
+                          {/* Review Text */}
+                          <Typography className="text-gray-600 dark:text-gray-300">
+                            {feedback.comment || "No review provided"}
+                          </Typography>
+
+                          {/* Date */}
+                          <Typography className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                            {new Date(feedback.createdAt).toLocaleDateString()}
+                          </Typography>
+                        </CardBody>
+                      </Card>
+                    ))
+                  ) : (
+                    <Typography className="text-center text-gray-500 dark:text-gray-400">
+                      No reviews yet. Be the first to leave a review!
                     </Typography>
-                  </CardBody>
-                </Card>
-              ))
-            ) : (
-              <Typography className="text-center text-gray-500 dark:text-gray-400">No reviews yet. Be the first to leave a review!</Typography>
-            )}
-          </div>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Write a Review</h3>
-            {reviewLoading && <Spinner className="mx-auto" />}
-            {userInfo ? (
-              <form onSubmit={handleSubmitReview} className="space-y-4">
-                <div>
-                  <label htmlFor="rating" className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Rating</label>
-                  <Select
-                    id="rating"
-                    value={rating}
-                    onChange={(value) => setRating(value)}
-                    label="Select a rating"
-                    color="blue"
-                  >
-                    {[1, 2, 3, 4, 5].map((value) => (
-                      <Option key={value} value={value.toString()}>
-                        {value} {value === 1 ? 'Star' : 'Stars'}
-                      </Option>
-                    ))}
-                  </Select>
+                  )}
                 </div>
-                <div>
-                  <label htmlFor="comment" className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Comment</label>
-                  <Textarea
-                    id="comment"
-                    placeholder="Share your experience..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    rows={4}
-                    color="blue"
-                  />
+
+                {/* Review Form with Fixed Height */}
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-[400px] flex flex-col justify-between">
+                  <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    Write a Review
+                  </h3>
+                  {reviewLoading && <Spinner className="h-16 w-16 text-gray-900/50 mx-auto"/>}
+                  {userInfo ? (
+                    <form
+                      onSubmit={handleSubmitReview}
+                      className="space-y-4 flex-grow"
+                    >
+                      <div>
+                        <label
+                          htmlFor="rating"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                        >
+                          Rating
+                        </label>
+                        <Select
+                          id="rating"
+                          value={rating}
+                          onChange={(value) => setRating(value)}
+                          label="Select a rating"
+                          color="blue"
+                        >
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <Option key={value} value={value.toString()}>
+                              {value} {value === 1 ? "Star" : "Stars"}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="comment"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                        >
+                          Comment
+                        </label>
+                        <Textarea
+                          id="comment"
+                          placeholder="Share your experience..."
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          rows={4}
+                          color="blue"
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        size="md"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                        disabled={reviewLoading || !rating || !comment}
+                      >
+                        Submit Review
+                      </Button>
+                    </form>
+                  ) : (
+                    <Typography className="text-center text-gray-600 dark:text-gray-300">
+                      Please{" "}
+                      <Link to="/" className="text-blue-500 hover:underline">
+                        log in
+                      </Link>{" "}
+                      to leave a review.
+                    </Typography>
+                  )}
                 </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white" 
-                  disabled={reviewLoading || !rating || !comment}
-                >
-                  Submit Review
-                </Button>
-              </form>
-            ) : (
-              <Typography className="text-center text-gray-600 dark:text-gray-300">
-                Please <Link to="/" className="text-blue-500 hover:underline">log in</Link> to leave a review.
-              </Typography>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
+              </div>
+            </div>
+          </section>
+
           {/* Location Section */}
           <Section id="location" title="Our Location">
             <Card

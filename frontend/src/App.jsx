@@ -22,6 +22,7 @@ import OrderDetails from './components/ViewOrder/OrderDetails';
 import Profile from './components/Profile/Profile';
 import TableBookingDetails from './components/Restaurant/BookingTable/TableBookingDetails';
 import Payment from './components/Payment/Payment';
+import ResetPassword from './components/ResetPassword/ResetPassword'
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -37,13 +38,14 @@ const App = () => {
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
           <Route path='/restaurant/:id/view' element={<RestaurantTemplate />} />
-          <Route path='/forgetpassword'setShowLogin={setShowLogin} element={<ForgetPassword />} />
+          <Route path='/reset-password'setShowLogin={setShowLogin} element={<ForgetPassword />} />
           
           <Route path='/vieworders' element={<OrderDetails/>}/>
           <Route path='/table/details' element={<TableBookingDetails/>}/>
 
           {/* User Routes */}
           <Route path='/user/change-password' element={<ChangePassword/>}/>
+          {/* <Route path='/user/reset-password/:token' element={<ResetPassword />} /> */}
           <Route path='/user/me' element={<Profile/>}/>
           {/* Private routes */}
           <Route path='' element={<PrivateRoute />}>

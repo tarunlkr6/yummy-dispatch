@@ -108,50 +108,57 @@ const registerRestaurant = asyncHandler(async (req, res) => {
 })
 
 const addRestaurantReview = asyncHandler(async (req, res) => {
-    const { resid } = req.params
-    const userId = req.user?._id
-    const { name, rating, review } = req.body
+    const { resid } = req.params;
+    const userId = req.user?._id;
+    const { rating, review } = req.body; // Remove 'name' from the destructured body
 
-    if (rating < 0 || rating > 5) {
-        throw new ApiError(400, "Rating must be between 1 and 5.")
+    if (rating < 1 || rating > 5) {
+        throw new ApiError(400, "Rating must be between 1 and 5.");
     }
 
-    const restaurant = await Restaurant.findById(resid)
+    // Find user by ID and check existence
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(401, "User not found.");
+    }
 
+    const restaurant = await Restaurant.findById(resid);
     if (!restaurant) {
-        throw new ApiError(404, "Restaurant not found")
+        throw new ApiError(404, "Restaurant not found");
     }
 
+    // Check if the user has already reviewed the restaurant
     const alreadyReviewed = restaurant.restaurantReviews?.find(
-        (review) => review.user && review.user._id.toString() === userId.toString()
+        (rev) => rev.user && rev.user.toString() === userId.toString()
     );
 
     if (alreadyReviewed) {
-        throw new ApiError(400, "You have already reviewed this item.")
+        throw new ApiError(400, "You have already reviewed this restaurant.");
     }
 
+    // Create the new review using the user's full name
     const newReview = {
         user: userId,
-        name,
+        name: user.fullName, // Use user's full name directly
         rating: Number(rating),
         review,
-    }
+    };
 
-    restaurant.restaurantReviews.push(newReview)
+    // Push the new review to restaurant's reviews array
+    restaurant.restaurantReviews.push(newReview);
 
-    let avg = 0
-    restaurant.restaurantReviews.forEach((rev) => {
-        avg += rev.rating
-    })
+    // Calculate and update the average rating
+    const totalRatings = restaurant.restaurantReviews.reduce((acc, rev) => acc + rev.rating, 0);
+    restaurant.rating = totalRatings / restaurant.restaurantReviews.length;
 
-    restaurant.rating = avg / restaurant.restaurantReviews.length
-
+    // Save the restaurant with the new review
     await restaurant.save({ validateBeforeSave: false });
 
-    return res
-        .status(200)
-        .json(new ApiResponse(200, {}, "Review added successfully"))
-})
+    // Send a response with the user's name
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Review added successfully")
+    );
+});
 
 const getRestaurantReview = asyncHandler(async (req, res) => {
     const { resid } = req.params

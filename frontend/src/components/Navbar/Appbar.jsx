@@ -119,6 +119,7 @@ function Appbar({ setShowLogin }) {
   const { userInfo } = useSelector((state) => state.auth);
   const [logoutApiCall] = useLogoutMutation();
   const [isScannerActive, setIsScannerActive] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleLogout = async () => {
     try {
@@ -128,6 +129,14 @@ function Appbar({ setShowLogin }) {
     } catch (error) {
       console.error("Logout error:", error);
     }
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    // Navigate to the home page with the search keyword as a parameter
+    navigate(`/?keyword=${value}`);
   };
 
   useEffect(() => {
@@ -163,12 +172,12 @@ function Appbar({ setShowLogin }) {
 
   return (
     <div className="w-full">
-      <Navbar className="w-full p-2 rounded-none shadow-none max-w-none">
-        <div className="flex items-center justify-between w-full px-4">
+      <Navbar className="w-full p-1 rounded-none shadow-none max-w-none">
+        <div className="flex items-center justify-between w-full">
           {/* Logo */}
           <Link to="/">
             <Typography as="div" variant="h5">
-              <img src={assets.app} alt="Scan&Dine" className="h-15 md:h-[190px]" />
+              <img src={assets.app} alt="Scan&Dine" className="h-15 md:h-[190px] hover:scale-110" />
             </Typography>
           </Link>
 
@@ -178,18 +187,20 @@ function Appbar({ setShowLogin }) {
               <Input
                 type="search"
                 color="red"
-                label="Search..."
+                value={searchTerm}
+                onChange={handleSearch}
+                label="Search for a restaurant..."
                 className="pr-20 py-4"
                 containerProps={{
                   className: "min-w-[288px]",
                 }}
               />
-              <Button
+              {/* <Button
                 size="sm"
                 className="!absolute right-1 top-1 rounded bg-[#ff6347]"
               >
                 Search
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -202,7 +213,7 @@ function Appbar({ setShowLogin }) {
               className="md:hidden"
               onClick={() => setIsSearchVisible(!isSearchVisible)}
             >
-              <MagnifyingGlassIcon className="h-5 w-5" />
+              <MagnifyingGlassIcon className="h-7 w-7" />
             </IconButton>
             <IconButton
               size="sm"
@@ -259,7 +270,9 @@ function Appbar({ setShowLogin }) {
               <Input
                 type="search"
                 color="red"
-                label="Search..."
+                value={searchTerm}
+                onChange={handleSearch}
+                label="Search for a restaurant..."
                 containerProps={{
                   className: "min-w-full",
                 }}

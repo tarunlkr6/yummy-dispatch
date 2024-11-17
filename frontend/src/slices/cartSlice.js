@@ -105,9 +105,9 @@ const cartSlice = createSlice({
       state.serviceCharge = 0;
       state.taxPrice = 0;
       state.totalPrice = 0;
-      state.restaurantId = ''; // Reset restaurantId
-      state.errorMessage = ''; // Reset error message
-      state.successMessage = ''; // Reset success message
+      state.restaurantId = ''; 
+      state.errorMessage = '';
+      state.successMessage = ''; 
       localStorage.removeItem("cart");
     },
 
@@ -150,6 +150,7 @@ const cartSlice = createSlice({
     savePaymentMethod: (state, action) => {
       state.paymentMethod = action.payload;
       localStorage.setItem("cart", JSON.stringify(state));
+      state.successMessage = '';
     }
   },
 });

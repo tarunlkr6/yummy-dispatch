@@ -1,8 +1,8 @@
 export const materialTheme = {
   button: {
     defaultProps: {
-      color: "blue",
-      size: "lg",
+      color: "black",
+      size: "sm",
       ripple: true,
     },
     styles: {
@@ -15,8 +15,8 @@ export const materialTheme = {
   },
   iconButton: {
     defaultProps: {
-      color: "blue",
-      size: "lg",
+      color: "black",
+      size: "sm",
       ripple: true,
     },
     styles: {
