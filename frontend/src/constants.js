@@ -1,6 +1,6 @@
 // constants.js
-//export const BASE_URL = '' 
-export const BASE_URL = 'http://localhost:8080'
+export const BASE_URL = 'https://scan-dine-backend-5qms.onrender.com' 
+//export const BASE_URL = 'http://localhost:8080'
 export const USER_URL = '/api/v1/user'
 export const RESTAURANT_URL = '/api/v1/restaurant'
 export const ORDER_URL = '/api/v1'

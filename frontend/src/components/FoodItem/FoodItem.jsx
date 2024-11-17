@@ -4,8 +4,8 @@ import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 
 const FoodItem = ({ id, name, price, description, image }) => {
-//const url ='' 
-const url ='http://localhost:8080'
+const url ='https://scan-dine-backend-5qms.onrender.com' 
+//const url ='http://localhost:8080'
 
   // Placeholder functions to avoid errors
   const addToCart = (id) => {
