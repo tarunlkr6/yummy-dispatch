@@ -147,20 +147,24 @@ const addItem = asyncHandler(async (req, res) => {
 const updateOrderStatus = asyncHandler(async (req, res) => {
     const { orderid } = req.params
     const { status } = req.body
+    console.log(orderid);
+    console.log(status);
 
     const order = await Order.findById(orderid)
+    // console.log(order);
 
 
     if (!order) {
         throw new ApiError(404, "Order not found")
     }
 
-    if (order.status === status) {
+    if (order.orderStatus === status) {
         throw new ApiError(402, `Order is already in${order.status}`)
     }
 
-    order.status = status
+    order.orderStatus = status
     await order.save({ validateBeforeSave: false })
+
 
     return res
         .status(200)
