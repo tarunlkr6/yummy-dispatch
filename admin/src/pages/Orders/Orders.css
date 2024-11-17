@@ -517,3 +517,23 @@
     width: 80%; /* Ensure buttons take up more space */
   }
 }
+
+
+.order-summary {
+  margin-top: 10px;
+  
+}
+
+
+.total-price {
+  margin-bottom: 20px; /* Create space below the total price */
+}
+
+.download-pdf-btn {
+ /* Add space between the total price and the button */
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 450px;
+}

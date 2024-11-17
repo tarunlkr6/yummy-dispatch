@@ -105,33 +105,12 @@ const updateMenuItem = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Not found")
     }
 
-    let imageLocalPath = []
-    imageLocalPath = req.files?.image
-    //console.log(imageLocalPath)
-
-
-
-    if (!imageLocalPath) {
-        throw new ApiError(401, "Image is required")
-    }
-
-    let imageArray = []
-    for (let i = 0; i < imageLocalPath.length; i++) {
-        let imageLinks = imageLocalPath[i]?.path;
-        const result = await uploadOnCloudinary(imageLinks)
-        imageArray.push({
-            publicId: result.public_id,
-            url: result.url
-        })
-    }
-
     const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
         $set: {
             itemName,
             price,
             description,
             category,
-            image: imageArray,
             isAvailable,
             isVeg,
         },
@@ -147,6 +126,7 @@ const updateMenuItem = asyncHandler(async (req, res) => {
 
 const updateItemToVeg = asyncHandler(async (req, res) => {
     const { resid, itemid } = req.params;
+    console.log(req.params)
     let { isAvailable } = req.body; // Extract isAvailable from request body
 
     // Convert isAvailable to boolean if it comes as a string
