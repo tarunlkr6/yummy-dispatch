@@ -38,7 +38,7 @@ import {
 } from "chart.js";
 
 //const url = "http://localhost:8080/api/v1";
-const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1';
+ const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1';
 
 
 ChartJS.register(
@@ -84,7 +84,7 @@ const Dashboard = () => {
         localStorage.setItem('resname', JSON.stringify(response.data.data.name));
         localStorage.setItem('resphno' , JSON.stringify(response.data.data.phoneNumber ));
         localStorage.setItem('resmailid' , JSON.stringify(response.data.data.ownerEmail ));
-        localStorage.setItem('resadd' , JSON.stringify(response.data.data.address ));
+        localStorage.setItem('resadd' , JSON.stringify(response.data.data.address));
 
       } catch (err) {
         setError("Error fetching restaurant details");
@@ -283,7 +283,11 @@ const DashboardHome = ({ restaurant }) => {
         </div>
         <div className="detail-block">
           <strong>Rating:</strong> 
-          <p>{restaurant.rating}</p>
+          <div className="review-rating">
+                Rating:  {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} className={i < restaurant.rating ? "star filled" : "star"}> ★</span>
+                ))}
+              </div>
         </div>
         <div className="toggle-container">
           <label className="toggle-switch">

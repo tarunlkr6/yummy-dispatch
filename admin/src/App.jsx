@@ -4,6 +4,7 @@ import Home from './pages/Home/Home'
 import RestaurantRegistration from "./components/Registrer/RestaurantRegistration";
 import RestaurantLogin from "./components/Login/RestaurantLogin";
 import Dashboard from "./components/Sidebar/Dashboard";
+import LandingPage from "./pages/Home/LandingPage";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -14,7 +15,7 @@ const App = () => {
   return (
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RestaurantRegistration />} />
         <Route path="/login" element={<RestaurantLogin onLogin={handleLogin} />} />
 
