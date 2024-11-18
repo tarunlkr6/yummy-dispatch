@@ -43,7 +43,7 @@ function Partner() {
       if (res.data.success) {
         toast.success("Registration successful");
         // Redirect to a specific page after successful registration
-        window.location.href = "https://scan-dine-admin.onrender.com/register";
+        window.location.href = "https://scan-dine-admin.onrender.com";
         setData({
           fullName: "",
           email: "",

@@ -49,7 +49,7 @@ const menuSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['starters', 'Rice', 'breads', 'drinks', 'desserts', 'mainCourse'],
+        enum: ['Starters', 'Rice', 'Breads', 'Drinks', 'Desserts', 'MainCourse','Pasta','Pizza','Burger','Momo','Cake','Juice','Noodles','Sandwich','Rolls', 'Ice cream'],
         required: true,
     },
     reviews: [menuItemReviewSchema],
