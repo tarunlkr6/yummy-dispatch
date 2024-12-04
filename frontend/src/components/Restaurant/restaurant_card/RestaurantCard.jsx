@@ -18,7 +18,9 @@ function RestaurantCard({ keyword }) {
 
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <Spinner className="h-16 w-16 text-gray-900/50" />
+          <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>
         </div>
       ) : error ? (
         <Alert color="red" className="my-4">

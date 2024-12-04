@@ -39,7 +39,9 @@ const TableBookingDetails = () => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spinner className="h-12 w-12" />
+        <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>
       </div>
     );
 
@@ -91,7 +93,9 @@ const TableBookingDetails = () => {
 
   return (
     <div>
-      {isLoading && <Spinner className="h-12 w-12"/>}
+      {isLoading && <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>}
       {error && <Typography color="black" className="text-center mt-4">
         <p className="w-full p-4 bg-red-400 text-start">{"Failed to fetch data... ^_^" ||error.message}</p>
        </Typography>
