@@ -20,7 +20,9 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spinner className="h-12 w-12" />
+        <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>
       </div>
     );
   }

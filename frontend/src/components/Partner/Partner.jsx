@@ -7,7 +7,7 @@ import { Button } from "@material-tailwind/react";
 
 function Partner() {
   const navigate = useNavigate();
-  const url ='https://scan-dine-backend-5qms.onrender.com/api/v1';
+  const url ='https://scan-dine-backend-5qms.onrender.com/api/v1/user';
   //const url = 'http://localhost:8080/api/v1/user'
 
   const [confirmPassword, setConfirmPassword] = useState("");

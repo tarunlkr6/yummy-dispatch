@@ -286,7 +286,9 @@ export default function RestaurantTemplate() {
   if (isLoading || !restaurantData) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spinner className="h-16 w-16 text-gray-900/50" />
+        <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>
       </div>
     );
   }
@@ -401,7 +403,9 @@ export default function RestaurantTemplate() {
             </div>
           </Section>
 
-          {menuLoading && <Spinner className="h-16 w-16 text-gray-900/50" />}
+          {menuLoading && <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>}
           {menuError && toast.error(`Something went wrong`)}
           <Section id="menu" title="Our Menu">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -620,7 +624,9 @@ export default function RestaurantTemplate() {
           </Section>
 
           {/* Feedback Section */}
-          {reviewLoader && <Spinner className="h-16 w-16 text-gray-900/50" />}
+          {reviewLoader && <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>}
           <section id="feedback" className="py-12  dark:bg-gray-900">
             <div className="container mx-auto px-4 max-w-6xl">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">
@@ -685,7 +691,9 @@ export default function RestaurantTemplate() {
                   <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
                     Write a Review
                   </h3>
-                  {reviewLoading && <Spinner className="h-16 w-16 text-gray-900/50 mx-auto"/>}
+                  {reviewLoading && <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>}
                   {userInfo ? (
                     <form
                       onSubmit={handleSubmitReview}

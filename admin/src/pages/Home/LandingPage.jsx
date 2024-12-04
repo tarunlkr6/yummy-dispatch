@@ -23,7 +23,7 @@ const LandingPage = () => {
     {
       name: "Tarun Kumar",
       status: "Developer",
-      image: `${assets.dev1}`,
+      image: `${assets.dev3}`,
       github: "https://github.com/SoumyaT007",
       linkedin: "#",
       twitter: "#",
@@ -31,7 +31,7 @@ const LandingPage = () => {
     {
       name: "Soumya pramanik",
       status: "Developer",
-      image: `${assets.dev3}`,
+      image: `${assets.dev1}`,
       github: "https://github.com/tarunlkr6",
       linkedin: "#",
       twitter: "#",

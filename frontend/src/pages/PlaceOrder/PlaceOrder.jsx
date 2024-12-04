@@ -154,7 +154,7 @@ export default function PlaceOrder() {
       setOrderId(res.data.placedOrder._id);
       toast.success(`Order placed successfully!`);
       setOrderPlaced(true);
-      console.log('show add button',showAddItemsButton)
+      console.log("show add button", showAddItemsButton);
       setShowAddItemsButton(true);
       localStorage.setItem("orderPlaced", JSON.stringify(true));
     } catch (err) {
@@ -323,7 +323,9 @@ export default function PlaceOrder() {
                       </Typography>
                       {menuLoading ? (
                         <div className="flex justify-center">
-                          <Spinner className="h-12 w-12" />
+                          <div className="flex justify-center items-center h-screen">
+                            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+                          </div>
                         </div>
                       ) : menuData.length > 0 ? (
                         <div className="space-y-4 max-h-60 overflow-y-auto">

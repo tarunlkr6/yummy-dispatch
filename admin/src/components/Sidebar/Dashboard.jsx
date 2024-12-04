@@ -36,9 +36,10 @@ import {
   ArcElement,
 
 } from "chart.js";
+import AdminProfile from "../profile/AdminProfile";
 
 //const url = "http://localhost:8080/api/v1";
- const url = 'https://scan-dine-backend-bnj2.onrender.com/api/v1';
+const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1';
 
 
 ChartJS.register(
@@ -116,6 +117,7 @@ const Dashboard = () => {
           <Route path="orders/:resid" element={<Orders url={url} />} />
           <Route path=":resid/all" element={<BookTable url={url} />} />
           <Route path=":resid/offers" element={<Offer url={url} />} />
+          <Route path="profile" element={<AdminProfile />} />
         </Routes>
       </div>
     </div>

@@ -39,8 +39,13 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink to={`/dashboard/${restaurantId}/offers`} className="sidebar-option">
-          <i className="fa-solid fa-hand-holding-heart"></i>
+        <i className="fa-solid fa-gift"></i>
           <p>Offers</p>
+        </NavLink>
+
+        <NavLink to={`/dashboard/profile`} className="sidebar-option">
+        <i className="fa-solid fa-user"></i>
+          <p>Profile</p>
         </NavLink>
       </div>
     </div>

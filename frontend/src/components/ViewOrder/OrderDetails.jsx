@@ -136,9 +136,9 @@ const OrderDetails = () => {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center">
-        <Spinner className="h-16 w-16 text-gray-900/50 items-center" />
-      </div>
+      <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+    </div>
     );
 
   const totalPages = ordersData?.data ? Math.ceil(ordersData.data.length / ITEMS_PER_PAGE) : 0;

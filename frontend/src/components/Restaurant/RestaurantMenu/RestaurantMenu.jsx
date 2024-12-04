@@ -53,7 +53,11 @@ const RestaurantMenu = () => {
       <div className="flex items-center justify-center">
         {menuError &&
           toast.error(`Error: ${menuError?.data?.message || menuError.error}`)}
-        {menuLoading && <Spinner className="h-16 w-16 text-gray-900/50" />}
+        {menuLoading && (
+          <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#ff6347]"></div>
+          </div>
+        )}
       </div>
       <Link to="/">
         <Button size="medium" variant="outlined" className="mx-auto">

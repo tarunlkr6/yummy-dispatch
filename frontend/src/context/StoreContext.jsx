@@ -9,7 +9,7 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
 
     const [cartItems,setCartItems] = useState({});
-    const url = process.env.BACKEND_LOCAL_URL
+    const url = 'http://localhost:8080'
 //const url = ''
 
     const contextValue = {

@@ -16,13 +16,11 @@ const Navbar = () => {
       </div>
 
       <div className="right-navbar-section">
-        <Link to="/profile" className="profile-container">
           <img
             className="profile"
             src={assets.profile_image}
             alt="Profile"
           />
-        </Link>
       </div>
     </div>
   );
