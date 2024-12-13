@@ -122,7 +122,7 @@ const InvoicePDF = ({ order = {} }) => {
 
 const OrderDetails = () => {
   const { data: ordersData, isLoading, error } = useGetMyOrdersQuery();
-  console.log(ordersData)
+  // console.log(ordersData)
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedOrders, setPaginatedOrders] = useState([]);
 

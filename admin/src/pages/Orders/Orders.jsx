@@ -30,7 +30,7 @@ const Orders = ({ url }) => {
         if (response.data.success) {
           setOrders(response.data.data);
           setFilteredOrders(response.data.data); // Set both orders and filteredOrders
-          console.log(response.data.data);
+          //console.log(response.data.data);
         } else {
           toast.error('Error fetching orders');
         }
@@ -99,7 +99,7 @@ const Orders = ({ url }) => {
   
       if (response.data.success) {
         toast.success(`Order status updated to ${status}`);
-        console.log("Response:", response);
+        //console.log("Response:", response);
   
         // Update the local state for the order status
         setOrders((prevOrders) =>

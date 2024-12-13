@@ -34,13 +34,13 @@ const RestaurantRegistration = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    console.log(formData);
+    //console.log(formData);
     Object.entries(data).forEach(([key, value]) => formData.append(key, value));
     formData.append("avatar", image);
 
     try {
       const response = await axios.post(`${url}/register`, formData);
-      console.log(response);
+      //console.log(response);
       if (response.data.success) {
         setData({
           name: "",

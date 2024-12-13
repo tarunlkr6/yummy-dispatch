@@ -32,7 +32,7 @@ const TableBookingDetails = () => {
   const navigate = useNavigate()
 
   const { data, isLoading, error } = useGetTableBookingDetailsQuery(id);
-  console.log(data)
+  // console.log(data)
   const [ cancelBooking, {isLoading:cancelLoading } ] = useCancelBookingMutation()
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -65,7 +65,7 @@ const TableBookingDetails = () => {
 
   const handleCancel = async(bookingId, restaurant) => {
     try {
-        console.log(`Cancelling booking ${bookingId}`);
+        // console.log(`Cancelling booking ${bookingId}`);
         const resid = restaurant._id
         const bookingid = bookingId._id;
         await cancelBooking({resid,bookingid}).unwrap();
