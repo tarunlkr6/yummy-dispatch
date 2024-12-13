@@ -13,7 +13,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     try {
       const response = await forgetPassword({ email }).unwrap();
-      console.log(response);
+      //console.log(response);
       if(response.message)
       toast.success("Reset link sent, check your email.");
       setEmail('');

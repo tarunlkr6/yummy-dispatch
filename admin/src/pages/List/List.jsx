@@ -18,7 +18,7 @@ const List = ({ url }) => {
     try {
       const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const response = await axios.get(`${url}/${restaurantId}/menu`);
-      console.log(response)
+      //console.log(response)
       if (response.data.success) {
         setList(response.data.data);
         setFilteredItems(response.data.data); // Initialize with full list
@@ -36,15 +36,15 @@ const List = ({ url }) => {
   }, []);
 
   const toggleAvailability = async (foodId) => {
-    console.log(foodId)
+    //console.log(foodId)
     try {
       const token = JSON.parse(localStorage.getItem('token'));
       const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const updatedData = { isAvailable: !list.find(item => item._id === foodId).isAvailable };
-      console.log(updatedData)
-      console.log(token)
-      console.log(restaurantId)
-      console.log(url)
+      // console.log(updatedData)
+      // console.log(token)
+      // console.log(restaurantId)
+      // console.log(url)
 
       await axios.patch(`${url}/${restaurantId}/menu/${foodId}`, updatedData, {
         headers: {
@@ -141,16 +141,15 @@ const List = ({ url }) => {
   };
 
   const handleEditChange = (e) => {
-    console.log(e);
     setEditItem({ ...editItem, [e.target.name]: e.target.value });
   };
 
   const saveEdit = async (foodId) => {
-    console.log(foodId)
+    //console.log(foodId)
     try {
       const restaurantId = JSON.parse(localStorage.getItem('restaurantId'));
       const token = JSON.parse(localStorage.getItem('token'));
-      console.log(editItem);
+      //console.log(editItem);
       const updatedData = editItem;
       // const updatedData = editItem ;
       await axios.put(`${url}/${restaurantId}/menu/${foodId}`, updatedData , {
