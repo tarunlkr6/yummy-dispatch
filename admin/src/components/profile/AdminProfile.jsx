@@ -15,8 +15,8 @@ const AdminProfile = () => {
       }
 
       const response = await axios.get('/me', {
+        //baseURL: 'http://localhost:8080/api/v1/user',
         baseURL: 'https://scan-dine-backend-5qms.onrender.com/api/v1/user',
-        //baseURL: 'http://localhost:8080/api/v1/user', // Update for production
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
