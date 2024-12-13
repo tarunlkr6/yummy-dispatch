@@ -42,7 +42,7 @@ const ChangePassword = () => {
         oldPassword,
         newPassword
       }).unwrap();
-      console.log(res);
+      //console.log(res);
       toast.success('Password changed successfully');
       navigate('/')
       setOldPassword('');

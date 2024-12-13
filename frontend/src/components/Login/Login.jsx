@@ -21,7 +21,6 @@ const Login = ({ formData, handleInputChange, handleSubmit }) => {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData);
         setFormData({
           userName: "",
           password: ""

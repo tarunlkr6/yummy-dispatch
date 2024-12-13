@@ -154,7 +154,6 @@ export default function PlaceOrder() {
       setOrderId(res.data.placedOrder._id);
       toast.success(`Order placed successfully!`);
       setOrderPlaced(true);
-      console.log("show add button", showAddItemsButton);
       setShowAddItemsButton(true);
       localStorage.setItem("orderPlaced", JSON.stringify(true));
     } catch (err) {

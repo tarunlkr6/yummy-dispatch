@@ -15,7 +15,7 @@ function RestaurantLogin() {
 
     try {
       const response = await axios.post(`${url}/login`, { email, password });
-      console.log(response.data.data);
+      //console.log(response.data.data);
 
       if (response.data.success) {
         console.log(response);
@@ -24,8 +24,8 @@ function RestaurantLogin() {
         localStorage.setItem('owname', JSON.stringify(response.data.data.user.fullName));
         const token = JSON.parse(localStorage.getItem("token"));
         const resid = JSON.parse(localStorage.getItem("restaurantId"));
-        console.log(resid)
-        console.log(token)
+        //console.log(resid)
+        //console.log(token)
       
         setEmail('');
         setPassword('');

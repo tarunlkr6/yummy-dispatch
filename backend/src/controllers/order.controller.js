@@ -100,10 +100,9 @@ const getOrderById = asyncHandler(async (req, res) => {
 
 // Get All Orders           @ADMIN only
 const getOrders = asyncHandler(async (req, res) => {
-    console.log(req.user);
-    console.log("Restaurant ID:", req.user?.restaurantId); // Log restaurantId
+
     const orders = await Order.find({ restaurantId: req.user?.restaurantId })
-    console.log("Orders: ", orders)
+
 
     if (!orders && orders.length === 0) {
         throw new ApiError(404, "Order not found")

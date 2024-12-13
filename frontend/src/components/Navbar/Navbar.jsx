@@ -15,7 +15,7 @@ const Navbar = ({ setShowLogin }) => {
   const handleLogout = async () => {
     try {
       const res = await logoutApiCall().unwrap();
-      console.log(res); // Check the response status and data
+      //console.log(res); // Check the response status and data
       dispatch(logout());
       setShowLogin(false);
       navigate('/');
