@@ -22,18 +22,18 @@ const generateOrderToken = async () => {
         }
         return token
     } catch (err) {
-        console.log("booking no generation err", err)
-        throw new ApiError(500, "Something went wrong while generating booking number")
+        //console.log("booking no generation err", err)
+        return next(new ApiError(500, "Something went wrong while generating booking number"))
     }
 }
 
 // Place order controller   @CUSTOMER
-const placeOrder = asyncHandler(async (req, res) => {
+const placeOrder = asyncHandler(async (req, res, next) => {
     const { resid } = req.params
     const { items, taxPrice, totalPrice, serviceCharge } = req.body
 
     if (items && items.length === 0) {
-        throw new ApiError(400, "No items in order")
+        return next(new ApiError(400, "No items in order"))
     }
 
     const orderNo = await generateOrderToken()
@@ -59,11 +59,11 @@ const placeOrder = asyncHandler(async (req, res) => {
     const placedOrder = await Order.findById(order._id)
 
     if (!placedOrder) {
-        throw new ApiError(500, "Something went wrong while placing order")
+        return next(new ApiError(500, "Something went wrong while placing order"))
     }
 
     if (!updatedRestaurant) {
-        throw new ApiError(500, "Failed to associate order with the restaurant");
+        return next(new ApiError(500, "Failed to associate order with the restaurant"));
       }
     return res
         .status(200)
@@ -72,11 +72,11 @@ const placeOrder = asyncHandler(async (req, res) => {
 })
 
 // Get Order           @USER only
-const getMyOrders = asyncHandler(async (req, res) => {
+const getMyOrders = asyncHandler(async (req, res, next) => {
     const orders = await Order.find({ user: req.user?._id })
 
     if (!orders) {
-        throw new ApiError(400, "No orders found")
+        return next(new ApiError(400, "No orders found"))
     }
 
     return res
@@ -85,12 +85,12 @@ const getMyOrders = asyncHandler(async (req, res) => {
 })
 
 // Get Order by ID           @USER only
-const getOrderById = asyncHandler(async (req, res) => {
+const getOrderById = asyncHandler(async (req, res, next) => {
     const { orderid } = req.params
     const order = await Order.findById(orderid)
 
     if (!order) {
-        throw new ApiError(404, "Order not found")
+        return next(new ApiError(404, "Order not found"))
     }
 
     return res
@@ -99,13 +99,13 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 // Get All Orders           @ADMIN only
-const getOrders = asyncHandler(async (req, res) => {
+const getOrders = asyncHandler(async (req, res, next) => {
 
     const orders = await Order.find({ restaurantId: req.user?.restaurantId })
 
 
     if (!orders && orders.length === 0) {
-        throw new ApiError(404, "Order not found")
+        return next(new ApiError(404, "Order not found"))
     }
 
     return res
@@ -114,14 +114,14 @@ const getOrders = asyncHandler(async (req, res) => {
 })
 
 // Add additional item           @USER Only
-const addItem = asyncHandler(async (req, res) => {
+const addItem = asyncHandler(async (req, res, next) => {
     const { orderid } = req.params
     const { items } = req.body
 
     const order = await Order.findById(orderid)
 
     if (!order) {
-        throw new ApiError(404, "Order not found")
+        return next(new ApiError(404, "Order not found"))
     }
 
     order.items.push(...items.map((item) => ({
@@ -143,7 +143,7 @@ const addItem = asyncHandler(async (req, res) => {
 })
 
 // Update Order status           @ADMIN only
-const updateOrderStatus = asyncHandler(async (req, res) => {
+const updateOrderStatus = asyncHandler(async (req, res, next) => {
     const { orderid } = req.params
     const { status } = req.body
     console.log(orderid);
@@ -154,11 +154,11 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 
 
     if (!order) {
-        throw new ApiError(404, "Order not found")
+        return next(new ApiError(404, "Order not found"))
     }
 
     if (order.orderStatus === status) {
-        throw new ApiError(402, `Order is already in${order.status}`)
+        return next(new ApiError(402, `Order is already in${order.status}`))
     }
 
     order.orderStatus = status
@@ -170,7 +170,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, order, "Status updated successfully."))
 })
 
-const updateOrderToPaid = asyncHandler(async (req, res) => {
+const updateOrderToPaid = asyncHandler(async (req, res, next) => {
     const { orderid } = req.params;
 
 
@@ -178,7 +178,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     const order = await Order.findById(orderid);
 
     if (!order) {
-        throw new ApiError(404, "Order not found");
+        return next(new ApiError(404, "Order not found"));
     }
 
     // Set order properties to reflect payment

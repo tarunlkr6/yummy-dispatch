@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 const RestaurantRegistration = () => {
 
- const [image, setImage] = useState(false);
- const navigate = useNavigate();
-  //const url = 'http://localhost:8080/api/v1/restaurant'
-  const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1/restaurant'
+  const [image, setImage] = useState(false);
+  const navigate = useNavigate();
+  const url = 'http://13.127.209.255:8080/api/v1/restaurant'
+  //const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1/restaurant'
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -76,7 +76,7 @@ const RestaurantRegistration = () => {
         <h2 className="text-3xl font-bold text-center text-white mb-6">
           Restaurant Registration
         </h2>
-        
+
         {/* Scrollable form container */}
         <div className="h-full overflow-y-scroll scrollbar-hide p-2">
           <form onSubmit={onSubmitHandler} className="space-y-4">
@@ -104,7 +104,7 @@ const RestaurantRegistration = () => {
                 />
               </div>
             ))}
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-white">City</label>
@@ -127,12 +127,12 @@ const RestaurantRegistration = () => {
                 >
                   <option value="">Select State</option>
                   {[
-                  "Andra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttaranchal", "Uttar Pradesh", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadar and Nagar Haveli", "Daman and Diu", "Delhi", "Lakshadeep", "Pondicherry"
-                ].map((state) => (
-                  <option key={state} value={state} className="text-gray-800">
-                    {state}
-                  </option>
-                ))}
+                    "Andra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttaranchal", "Uttar Pradesh", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", "Dadar and Nagar Haveli", "Daman and Diu", "Delhi", "Lakshadeep", "Pondicherry"
+                  ].map((state) => (
+                    <option key={state} value={state} className="text-gray-800">
+                      {state}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

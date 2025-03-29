@@ -1,12 +1,12 @@
 import { Restaurant } from "../models/restaurant.models.js"
-import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiFeatures } from "../utils/ApiFeatures.js"
 import { User } from "../models/user.models.js"
+import { ApiError } from "../utils/ApiError.js"
 
-const getRestaurant = asyncHandler(async (req, res) => {
+const getRestaurant = asyncHandler(async (req, res, next) => {
     const resultPerPage = 5
 
     const apiFeatures = new ApiFeatures(Restaurant.find(), req.query)
@@ -15,28 +15,29 @@ const getRestaurant = asyncHandler(async (req, res) => {
         .filterByOpenStatus()
         .pagination(resultPerPage)
 
-    const restaurants = await apiFeatures.query
+    const restaurants = await apiFeatures.query || []
 
     const restaurantCount = restaurants.length
 
-    if (!restaurants || restaurantCount === 0) {
-        throw new ApiError(404, "No restaurants found")
+    if (restaurantCount === 0) {
+        return next(new ApiError(404, "No restaurants found"))
     }
 
     return res
         .status(200)
         .json(new ApiResponse(200, { restaurants, restaurantCount, resultPerPage }, "Restaurant fetched successfully."))
+
 })
 
 // Fetch the restaurant by Id
-const getRestaurantById = asyncHandler(async (req, res) => {
+const getRestaurantById = asyncHandler(async (req, res, next) => {
 
 
     const restaurant = await Restaurant.findById(req.params.resid)
 
 
     if (!restaurant) {
-        throw new ApiError(500, "Error:Unable to find the restaurant.")
+        return next(new ApiError(404, "Restaurant not found"))
     }
 
     return res
@@ -45,35 +46,37 @@ const getRestaurantById = asyncHandler(async (req, res) => {
 })
 
 // Register restaurant
-const registerRestaurant = asyncHandler(async (req, res) => {
+const registerRestaurant = asyncHandler(async (req, res, next) => {
 
     console.log(req.body)
 
     const user = await User.findOne({ email: req.body.ownerEmail })
     if (!user) {
-        throw new ApiError(404, "User not found, Kindly enter your existing email")
+        return next(new ApiError(404, "User not found, Kindly enter your existing emial"));
     }
 
     if (!user.isAdmin) {
-        throw new ApiError(409, "Not authorized")
+       return next(new ApiError(409, "Unauthorized"))
     }
 
     const { ownerName, name, ownerEmail, description, phoneNumber, openingTime, closingTime, address, city, state, zipCode } = req.body
 
     if (
         [ownerName, name, ownerEmail, phoneNumber, openingTime, closingTime, address, city, state, zipCode].some((field) => field?.trim() === "")
-    ) { throw new ApiError(400, "All fields are required") }
+    ) {
+        return next(new ApiError(400, "All fields are required"))
+    }
 
     const existedRestaurant = await Restaurant.findOne({ ownerEmail })
 
     if (existedRestaurant) {
-        throw new ApiError(409, "User restaurant already exists")
+        return next(new ApiError(409, "Restaurant already exists"))
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path
 
     if (!avatarLocalPath) {
-        throw new ApiError(401, "avatar is required")
+        return next(new ApiError(401, "Avatar required"))
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
@@ -96,7 +99,7 @@ const registerRestaurant = asyncHandler(async (req, res) => {
     const createdRestaurant = await Restaurant.findById(restaurant._id)
 
     if (!createdRestaurant) {
-        throw new ApiError(500, "Something went wrong while registering restaurant")
+        return next(new ApiError(500, "Something went wrong while registrering restaurant"))
     }
 
     user.restaurantId = restaurant._id
@@ -107,24 +110,24 @@ const registerRestaurant = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, createdRestaurant, "Restaurant created Successfully"))
 })
 
-const addRestaurantReview = asyncHandler(async (req, res) => {
+const addRestaurantReview = asyncHandler(async (req, res, next) => {
     const { resid } = req.params;
     const userId = req.user?._id;
     const { rating, review } = req.body; // Remove 'name' from the destructured body
 
     if (rating < 1 || rating > 5) {
-        throw new ApiError(400, "Rating must be between 1 and 5.");
+        return next(new ApiError(400, "Rating must be between 1 and 5"))
     }
 
     // Find user by ID and check existence
     const user = await User.findById(userId);
     if (!user) {
-        throw new ApiError(401, "User not found.");
+       return next(new ApiError(404, "User not found"))
     }
 
     const restaurant = await Restaurant.findById(resid);
     if (!restaurant) {
-        throw new ApiError(404, "Restaurant not found");
+       return next(new ApiError(404, "Restaurant not found"));
     }
 
     // Check if the user has already reviewed the restaurant
@@ -133,7 +136,7 @@ const addRestaurantReview = asyncHandler(async (req, res) => {
     );
 
     if (alreadyReviewed) {
-        throw new ApiError(400, "You have already reviewed this restaurant.");
+        return next(new ApiError(400, "You have already reviewed this restaurant."));
     }
 
     // Create the new review using the user's full name
@@ -160,13 +163,13 @@ const addRestaurantReview = asyncHandler(async (req, res) => {
     );
 });
 
-const getRestaurantReview = asyncHandler(async (req, res) => {
+const getRestaurantReview = asyncHandler(async (req, res, next) => {
     const { resid } = req.params
 
     const restaurant = await Restaurant.findById(resid)
 
     if (!restaurant) {
-        throw new ApiError(404, "Restaurant not found")
+       return next(new ApiError(404, "Restaurant not found"))
     }
 
     return res
@@ -175,8 +178,8 @@ const getRestaurantReview = asyncHandler(async (req, res) => {
 })
 
 
-const updateCloseOpen = asyncHandler(async (req, res) => {
-    const { resid} = req.params;
+const updateCloseOpen = asyncHandler(async (req, res, next) => {
+    const { resid } = req.params;
     let { isOpen } = req.body;
     console.log(resid); // Extract isAvailable from request body
 
@@ -188,15 +191,15 @@ const updateCloseOpen = asyncHandler(async (req, res) => {
     console.log("isAvailable after parsing:", isOpen); // Should be true or false
 
     // Find the item by restaurant ID and item ID
-    const item = await Restaurant.findById( resid );
+    const item = await Restaurant.findById(resid);
     console.log(item)
     if (!item) {
-        throw new ApiError(404, "Not found");
+        next(new ApiError(404, "Not found"))
     }
 
     // Update the menu item with the new availability status
     const menuItem = await Restaurant.findByIdAndUpdate(
-        { _id: resid},
+        { _id: resid },
         { $set: { isOpen } },
         { new: true }
     );

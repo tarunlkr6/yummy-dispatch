@@ -41,7 +41,19 @@ const userSchema = new Schema({
     passwordResetTokenExpiry: {
         type: Date,
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verificationToken: {
+        type: String,
+    },
+    verificationTokenExpiry: {
+        type: Date,
+    },
 }, { timestamps: true })
+
+userSchema.index({ verificationTokenExpiry: 1, passwordResetTokenExpiry: 2 }, { expireAfterSeconds: 300 })
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {

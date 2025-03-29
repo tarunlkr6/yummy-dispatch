@@ -6,7 +6,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiFeatures } from "../utils/ApiFeatures.js"
 
 
-const getMenuItem = asyncHandler(async (req, res) => {
+const getMenuItem = asyncHandler(async (req, res, next) => {
     const { resid } = req.params
 
     const apiFeatures = new ApiFeatures(Menu.find({ restaurantId: resid }), req.query)
@@ -15,7 +15,7 @@ const getMenuItem = asyncHandler(async (req, res) => {
     const menu = await apiFeatures.query
 
     if (!menu || menu.length === 0) {
-        throw new ApiError(404, "Items not found")
+        return next(new ApiError(404, "Items not found"))
     }
 
 
@@ -25,17 +25,17 @@ const getMenuItem = asyncHandler(async (req, res) => {
 })
 
 // get menu by id
-const getMenuById = asyncHandler(async (req, res) => {
+const getMenuById = asyncHandler(async (req, res, next) => {
     const { resid, itemid } = req.params
 
     const menu = await Menu.findOne({ _id: itemid, restaurantId: resid })
 
     if (menu.restaurantId.toString() !== resid) {
-        throw new ApiError(401, "Not accessible")
+        return next(new ApiError(401, "Not accessible"))
     }
 
     if (!menu) {
-        throw new ApiError(404, "Item does not found")
+        return next(new ApiError(404, "Item does not found"))
     }
 
     return res
@@ -44,19 +44,19 @@ const getMenuById = asyncHandler(async (req, res) => {
 })
 
 // create menu
-const createMenuItem = asyncHandler(async (req, res) => {
+const createMenuItem = asyncHandler(async (req, res, next) => {
     const { itemName, price, description, category, isVeg, isAvailable } = req.body
 
     if (
         [itemName, price, description, category, isVeg].some((field) => field?.trim() === "")
-    ) { throw new ApiError(400, "All fields are required") }
+    ) { return next(new ApiError(400, "All fields are required")) }
 
     let imageLocalPath = []
     imageLocalPath = req.files.image
     //console.log(imageLocalPath)
 
     if (!imageLocalPath) {
-        throw new ApiError(401, "Image is required")
+        return next(new ApiError(401, "Image is required"))
     }
     let imageArray = []
     for (let i = 0; i < imageLocalPath.length; i++) {
@@ -81,7 +81,7 @@ const createMenuItem = asyncHandler(async (req, res) => {
     const createdMenuItem = await Menu.findById(menuItem._id)
 
     if (!createdMenuItem) {
-        throw new ApiError(500, "Something went wrong while adding menu")
+        return next(new ApiError(500, "Something went wrong while adding menu"))
     }
 
     return res
@@ -89,20 +89,20 @@ const createMenuItem = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, createdMenuItem, "Menu addedd successfully"))
 })
 
-const updateMenuItem = asyncHandler(async (req, res) => {
+const updateMenuItem = asyncHandler(async (req, res, next) => {
     const { resid, itemid } = req.params
     const { itemName, price, description, category, isAvailable, isVeg } = req.body
 
 
 
     if (!(price && description && itemName && category)) {
-        throw new ApiError(400, "All fields are required")
+        return next(new ApiError(400, "All fields are required"))
     }
 
     const item = await Menu.findOne({ _id: itemid, restaurantId: resid })
 
     if (!item) {
-        throw new ApiError(404, "Not found")
+        return next(new ApiError(404, "Not found"))
     }
 
     const menuItem = await Menu.findByIdAndUpdate({ restaurantId: resid, _id: itemid }, {
@@ -124,9 +124,9 @@ const updateMenuItem = asyncHandler(async (req, res) => {
 })
 
 
-const updateItemToVeg = asyncHandler(async (req, res) => {
+const updateItemToVeg = asyncHandler(async (req, res, next) => {
     const { resid, itemid } = req.params;
-    console.log(req.params)
+    //console.log(req.params)
     let { isAvailable } = req.body; // Extract isAvailable from request body
 
     // Convert isAvailable to boolean if it comes as a string
@@ -134,12 +134,12 @@ const updateItemToVeg = asyncHandler(async (req, res) => {
         isAvailable = isAvailable === 'true'; // Convert to boolean
     }
 
-    console.log("isAvailable after parsing:", isAvailable); // Should be true or false
+    //console.log("isAvailable after parsing:", isAvailable); // Should be true or false
 
     // Find the item by restaurant ID and item ID
     const item = await Menu.findOne({ _id: itemid, restaurantId: resid });
     if (!item) {
-        throw new ApiError(404, "Not found");
+        return next(new ApiError(404, "Not found"))
     }
 
     // Update the menu item with the new availability status

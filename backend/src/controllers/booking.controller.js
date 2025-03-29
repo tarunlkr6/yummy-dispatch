@@ -22,25 +22,25 @@ const generateBookingToken = async () => {
         }
         return token
     } catch (err) {
-        console.log("order no generation err", err)
-        throw new ApiError(500, "Something went wrong while generating order number")
+        //console.log("order no generation err", err)
+        return next(new ApiError(500, "Something went wrong while generating order number"))
     }
 }
 
 // Book table function -- User access 
-const bookTable = asyncHandler(async (req, res) => {
+const bookTable = asyncHandler(async (req, res, next) => {
     const { resid } = req.params
 
     const { name, reservationDate, reservationTime, numGuests, specialRequests, contactPhone, contactEmail } = req.body
 
     if (
         [name, reservationDate, reservationTime, contactPhone, contactEmail].some((field) => field?.trim() === "")
-    ) { throw new ApiError(400, "All fields are required") }
+    ) { return next(new ApiError(400, "All fields are required")) }
 
     const existedBooking = await Booking.findOne({ contactEmail, contactPhone })
 
     if (existedBooking) {
-        throw new ApiError(409, "You already have an existing booking")
+        return next(new ApiError(409, "You already have an existing booking"))
     }
 
     const bookingToken = await generateBookingToken()
@@ -61,7 +61,7 @@ const bookTable = asyncHandler(async (req, res) => {
     const createdBooking = await Booking.findById(booking._id)
 
     if (!createdBooking) {
-        throw new ApiError(500, "Something went wrong while booking table")
+        return next(new ApiError(500, "Something went wrong while booking table"))
     }
 
     // send booking confirmation mail
@@ -72,18 +72,18 @@ const bookTable = asyncHandler(async (req, res) => {
 })
 
 // User cancel boking(Table)   @User only
-const cancelBookTable = asyncHandler(async (req, res) => {
+const cancelBookTable = asyncHandler(async (req, res, next) => {
     const { resid, bookingid } = req.params
     const userId = req.user?._id
 
     const booking = await Booking.findOne({ _id: bookingid, user: userId, restaurantId: resid })
 
     if (!booking) {
-        throw new ApiError(404, "Booking not found")
+        return next(new ApiError(404, "Booking not found"))
     }
 
     if (booking.reservationDate < new Date()) {
-        throw new ApiError(400, "Past booking cannot be cancelled")
+        return next(new ApiError(400, "Past booking cannot be cancelled"))
     }
 
     booking.status = 'Cancelled'
@@ -97,17 +97,17 @@ const cancelBookTable = asyncHandler(async (req, res) => {
 })
 
 // restaurant owner access
-const cancelBooking = asyncHandler(async (req, res) => {
+const cancelBooking = asyncHandler(async (req, res, next) => {
     const { bookingid } = req.params
 
     const booking = await Booking.findById(bookingid)
 
     if (!booking) {
-        throw new ApiError(404, "Booking not found")
+        return next(new ApiError(404, "Booking not found"))
     }
 
     if (booking.reservationDate < new Date()) {
-        throw new ApiError(400, "Past booking cannot cancelled")
+        return next(new ApiError(400, "Past booking cannot cancelled"))
     }
 
     // if (booking.status === 'Confirmed') {
@@ -125,21 +125,21 @@ const cancelBooking = asyncHandler(async (req, res) => {
 })
 
 // update booking status
-const updateBookingStatus = asyncHandler(async (req, res) => {
+const updateBookingStatus = asyncHandler(async (req, res, next) => {
     const { bookingid } = req.params
 
     const booking = await Booking.findById(bookingid)
 
     if (!booking) {
-        throw new ApiError(404, "Booking not found")
+        return next(new ApiError(404, "Booking not found"))
     }
 
     if (booking.status === 'Confirmed') {
-        throw new ApiError(402, "Booking is already confirmed")
+        return next(new ApiError(402, "Booking is already confirmed"))
     }
 
     if (booking.status === 'Cancelled') {
-        throw new ApiError(400, "Cancelled booking cannot be confirmed")
+        return next(new ApiError(400, "Cancelled booking cannot be confirmed"))
     }
 
     if (booking.status === 'Pending') {
@@ -157,7 +157,7 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
 })
 
 // User access: Get all bookings with restaurant details
-const getBookingsByUserId = asyncHandler(async (req, res) => {
+const getBookingsByUserId = asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
 
     // Fetch bookings for the specified user and populate restaurant details
@@ -168,7 +168,7 @@ const getBookingsByUserId = asyncHandler(async (req, res) => {
         });
 
     if (!bookings || bookings.length === 0) {
-        throw new ApiError(404, [], "No bookings found for this user");
+        return next(new ApiError(404, "No bookings found for this user"));
     }
 
     // Send back the bookings with populated restaurant details
@@ -179,10 +179,10 @@ const getBookingsByUserId = asyncHandler(async (req, res) => {
 
 
 // Admin access   @Get all bookings
-const getAllBookings = asyncHandler(async (req, res) => {
+const getAllBookings = asyncHandler(async (req, res, next) => {
     const { resid } = req.params;
     const { date } = req.query;
-    console.log(`Fetching bookings for restaurant: ${resid}`);
+    //console.log(`Fetching bookings for restaurant: ${resid}`);
 
     const query = { restaurantId: resid };
 
@@ -196,6 +196,10 @@ const getAllBookings = asyncHandler(async (req, res) => {
     }
 
     const allBookings = await Booking.find(query);
+
+    if (allBookings.length === 0) {
+        return next(new ApiError(404, "No bookings found"))
+    }
 
     // Return an empty array instead of an error if no bookings are found
     return res
