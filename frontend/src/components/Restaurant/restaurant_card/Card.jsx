@@ -10,6 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { toast } from "react-toastify";
+import { QrCodeIcon } from "lucide-react";
 
 function RestaurantCard({
   _id,
@@ -164,17 +165,13 @@ function RestaurantCard({
                   }
                 }}
                 disabled={!isOpen}
-                className={`w-full h-full text-white font-medium rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 ${
+                className={`w-full h-full text-white font-medium place-items-center rounded-lg text-sm px-5 py-2.5 mb-2 transition-colors duration-300 ${
                   isOpen
                     ? "bg-gray-800 hover:bg-gray-900"
                     : "bg-gray-500 cursor-not-allowed"
                 }`}
               >
-                <box-icon
-                  name="qr-scan"
-                  animation="flashing"
-                  color="white"
-                ></box-icon>
+                <QrCodeIcon/>
               </button>
             )}
           </div>

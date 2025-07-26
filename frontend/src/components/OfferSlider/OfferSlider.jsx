@@ -1,145 +1,357 @@
-import React, { useState, useEffect } from 'react';
-import { IconButton } from "@material-tailwind/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { offer_list } from '../../assets/assets';
+import { useState, useEffect, useCallback } from "react"
+import { offer_list } from "../../assets/assets"
 
-// Simulating an API call to fetch offers, throwing an error for demonstration purposes
+// Simulating an API call to fetch offers
 const fetchOffers = async () => {
-  throw new Error('Failed to fetch offers');
-};
+  throw new Error("Failed to fetch offers")
+}
 
-export default function OfferSlider() {
-  // State hooks for managing the offers, the active slide index, loading state, and error state
-  const [offers, setOffers] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+const OfferSlider = () => {
+  const [offers, setOffers] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
 
+  // Load offers on component mount
   useEffect(() => {
-    // Function to load offers, attempting to fetch from API and falling back to local data on failure
     const loadOffers = async () => {
       try {
-        setIsLoading(true); // Set loading state to true before fetching
-        const fetchedOffers = await fetchOffers(); // Attempt API call
-        setOffers(fetchedOffers); // Set offers if API call is successful
+        setIsLoading(true)
+        const fetchedOffers = await fetchOffers()
+        setOffers(fetchedOffers)
       } catch (error) {
-        // Handle fetch failure by logging error and using local data as fallback
-        console.error('Failed to fetch from backend, using local data', error);
-        setError(error); // Set error state
+        console.error("Failed to fetch from backend, using local data", error)
+        setError(error)
 
-        // Convert `offer_list` entries to an array and filter out any undefined values
+        // Convert offer_list to array format
         const localOffers = Object.entries(offer_list)
           .filter(([key, value]) => value !== undefined)
           .map(([key, value]) => ({
             id: key,
             imageUrl: value,
-          }));
-        
-        setOffers(localOffers); // Set offers from local data
+            alt: `Special Offer ${key}`,
+          }))
+
+        setOffers(localOffers)
       } finally {
-        setIsLoading(false); // Reset loading state after attempt
+        setIsLoading(false)
       }
-    };
-    loadOffers(); // Call the function when component mounts
-  }, []);
+    }
 
-  // Variables for total number of slides and settings for how many slides to show/scroll at once
-  const totalSlides = offers.length;
-  const slidesToShow = Math.min(3, totalSlides); // Display up to 3 slides or fewer if less available
-  const slidesToScroll = 1;
+    loadOffers()
+  }, [])
 
-  // Function to move to the next slide
-  const nextSlide = () => {
-    setActiveIndex((current) => (current + slidesToScroll) % totalSlides);
-  };
+  // Get slides per view based on screen size and total offers
+  const getSlidesPerView = () => {
+    if (typeof window !== "undefined") {
+      const totalOffers = offers.length
+      if (window.innerWidth >= 1024) {
+        // Desktop: show 3 cards, but if we have fewer offers, show all
+        return Math.min(3, totalOffers)
+      }
+      if (window.innerWidth >= 768) {
+        // Tablet: show 2 cards, but if we have fewer offers, show all
+        return Math.min(2, totalOffers)
+      }
+      // Mobile: show 1 card
+      return 1
+    }
+    return Math.min(3, offers.length)
+  }
 
-  // Function to move to the previous slide
-  const prevSlide = () => {
-    setActiveIndex((current) => (current - slidesToScroll + totalSlides) % totalSlides);
-  };
+  const [slidesPerView, setSlidesPerView] = useState(getSlidesPerView())
 
-  // Auto-scroll effect that sets an interval to move to the next slide every 3 seconds
+  // Handle window resize
   useEffect(() => {
-    if (totalSlides > 0) {
-      const interval = setInterval(nextSlide, 3000);
-      return () => clearInterval(interval); // Clear interval on component unmount
+    const handleResize = () => {
+      setSlidesPerView(getSlidesPerView())
     }
-  }, [totalSlides]);
 
-  // Function to get the currently visible slides based on activeIndex and slidesToShow
-  const getVisibleSlides = () => {
-    let visibleSlides = [];
-    for (let i = 0; i < slidesToShow; i++) {
-      const index = (activeIndex + i) % totalSlides;
-      visibleSlides.push(offers[index]); // Add slides based on calculated index
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [offers.length])
+
+  // Update slidesPerView when offers change
+  useEffect(() => {
+    setSlidesPerView(getSlidesPerView())
+  }, [offers.length])
+
+  // Navigation functions with improved logic
+  const goToNext = useCallback(() => {
+    if (isTransitioning || offers.length === 0) return
+
+    setIsTransitioning(true)
+    setCurrentIndex((prevIndex) => {
+      // Calculate how many slides we can actually move
+      const maxIndex = Math.max(0, offers.length - slidesPerView)
+      if (prevIndex >= maxIndex) {
+        return 0 // Loop back to start
+      }
+      return prevIndex + 1
+    })
+
+    setTimeout(() => setIsTransitioning(false), 300)
+  }, [isTransitioning, offers.length, slidesPerView])
+
+  const goToPrev = useCallback(() => {
+    if (isTransitioning || offers.length === 0) return
+
+    setIsTransitioning(true)
+    setCurrentIndex((prevIndex) => {
+      const maxIndex = Math.max(0, offers.length - slidesPerView)
+      if (prevIndex <= 0) {
+        return maxIndex // Loop to end
+      }
+      return prevIndex - 1
+    })
+
+    setTimeout(() => setIsTransitioning(false), 300)
+  }, [isTransitioning, offers.length, slidesPerView])
+
+  const goToSlide = useCallback(
+    (index) => {
+      if (isTransitioning || index === currentIndex) return
+
+      setIsTransitioning(true)
+      setCurrentIndex(index)
+      setTimeout(() => setIsTransitioning(false), 300)
+    },
+    [isTransitioning, currentIndex],
+  )
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (offers.length <= slidesPerView) return
+
+    const interval = setInterval(goToNext, 4000)
+    return () => clearInterval(interval)
+  }, [offers.length, slidesPerView, goToNext])
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      goToNext()
+    } else if (isRightSwipe) {
+      goToPrev()
     }
-    return visibleSlides;
-  };
+  }
 
-  // Display loading message while data is being fetched
+  // Loading state
   if (isLoading) {
-    return <div>Loading offers...</div>;
+    return (
+      <div className="w-full h-48 flex items-center justify-center bg-gray-100 rounded-lg">
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 bg-orange-500 rounded-full animate-bounce"></div>
+          <div className="w-4 h-4 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+          <div className="w-4 h-4 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+          <span className="ml-2 text-gray-600">Loading offers...</span>
+        </div>
+      </div>
+    )
   }
 
-  // Display error message if an error occurred and there are no offers to show
+  // Error state
   if (error && offers.length === 0) {
-    return <div>Error loading offers. Please try again later.</div>;
+    return (
+      <div className="w-full h-48 flex flex-col items-center justify-center bg-red-50 rounded-lg border border-red-200">
+        <svg className="w-12 h-12 text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <p className="text-red-600 text-center">Error loading offers. Please try again later.</p>
+      </div>
+    )
   }
 
-  // Display a message if there are no offers available to show
+  // No offers state
   if (offers.length === 0) {
-    return <div>No offers available at the moment.</div>;
+    return (
+      <div className="w-full h-48 flex flex-col items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
+        <svg className="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2-2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+          />
+        </svg>
+        <p className="text-gray-500 text-center">No offers available at the moment.</p>
+      </div>
+    )
   }
 
-  // Main component rendering the offer slider with navigation buttons and slides
+  const maxIndex = Math.max(0, offers.length - slidesPerView)
+  const showNavigation = offers.length > slidesPerView
+
+  // Calculate the width percentage for each slide to fill the container properly
+  const slideWidth = 100 / slidesPerView
+
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Container for visible slides with smooth transition effect */}
-      <div className="flex transition-transform duration-500 ease-in-out">
-        {getVisibleSlides().map((offer) => (
-          <div 
-            key={offer.id} 
-            className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 p-2"
-          >
-            <div className="max-w-[420px] max-h-[200px] mx-auto">
-              {/* Image for each offer */}
-              <img
-                src={offer.imageUrl}
-                alt={`Offer ${offer.id}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
+    <div className="relative w-full mx-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Special Offers</h2>
+        {showNavigation && (
+          <div className="hidden md:flex items-center space-x-2">
+            <button
+              onClick={goToPrev}
+              disabled={isTransitioning}
+              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+            >
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={goToNext}
+              disabled={isTransitioning}
+              className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+            >
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
-        ))}
+        )}
       </div>
 
-      {/* Conditional rendering for navigation buttons if total slides exceed slidesToShow */}
-      {totalSlides > slidesToShow && (
-        <>
-          <div className="absolute inset-y-0 left-0 flex items-center">
-            <IconButton
-              variant="text"
-              color="white"
-              size="lg"
-              onClick={prevSlide}
-              className="rounded-full bg-white/20 text-white hover:bg-white/50 active:bg-white/20"
+      {/* Slider Container */}
+      <div className="relative overflow-hidden rounded-xl">
+        <div
+          className="flex transition-transform duration-300 ease-out"
+          style={{
+            transform: `translateX(-${currentIndex * slideWidth}%)`,
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {offers.map((offer, index) => (
+            <div key={offer.id} className="flex-shrink-0 px-2" style={{ width: `${slideWidth}%` }}>
+              <div className="relative group cursor-pointer h-full">
+                <div className="aspect-[16/9] overflow-hidden rounded-lg bg-gray-200 shadow-lg">
+                  <img
+                    src={offer.imageUrl || "/placeholder.svg?height=200&width=400&text=Special+Offer"}
+                    alt={offer.alt}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg"></div>
+                </div>
+
+                {/* Offer Badge */}
+                <div className="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  Special Offer
+                </div>
+
+                {/* Optional: Add offer title/description */}
+                <div className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <p className="text-sm font-semibold text-gray-800 truncate">Limited Time Offer</p>
+                  <p className="text-xs text-gray-600">Save up to 50% on selected items</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Navigation Buttons */}
+        {showNavigation && (
+          <>
+            <button
+              onClick={goToPrev}
+              disabled={isTransitioning}
+              className="absolute left-2 top-1/2 -translate-y-1/2 md:hidden p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
-              <ChevronLeftIcon strokeWidth={2} className="h-6 w-6" />
-            </IconButton>
-          </div>
-          <div className="absolute inset-y-0 right-0 flex items-center">
-            <IconButton
-              variant="text"
-              color="white"
-              size="lg"
-              onClick={nextSlide}
-              className="rounded-full bg-white/20 text-white hover:bg-white/50 active:bg-white/20"
+              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={goToNext}
+              disabled={isTransitioning}
+              className="absolute right-2 top-1/2 -translate-y-1/2 md:hidden p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
-              <ChevronRightIcon strokeWidth={2} className="h-6 w-6" />
-            </IconButton>
+              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Dots Indicator */}
+      {showNavigation && (
+        <div className="flex justify-center mt-6 space-x-2">
+          {Array.from({ length: maxIndex + 1 }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              disabled={isTransitioning}
+              className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                index === currentIndex ? "bg-orange-500 w-6" : "bg-gray-300 hover:bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Progress Bar */}
+      {/* {showNavigation && (
+        <div className="mt-4 w-full bg-gray-200 rounded-full h-1 overflow-hidden">
+          <div
+            className="h-full bg-orange-500 transition-all duration-300 ease-out"
+            style={{ width: `${((currentIndex + 1) / (maxIndex + 1)) * 100}%` }}
+          />
+        </div>
+      )} */}
+
+      {/* Show all offers in a grid if there are few offers */}
+      {offers.length <= 3 && (
+        <div className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {offers.map((offer) => (
+              <div key={`grid-${offer.id}`} className="relative group cursor-pointer">
+                <div className="aspect-[16/9] overflow-hidden rounded-lg bg-gray-200 shadow-lg">
+                  <img
+                    src={offer.imageUrl || "/placeholder.svg?height=200&width=400&text=Special+Offer"}
+                    alt={offer.alt}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg"></div>
+                </div>
+                <div className="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  Special Offer
+                </div>
+              </div>
+            ))}
           </div>
-        </>
+        </div>
       )}
     </div>
-  );
+  )
 }
+
+export default OfferSlider

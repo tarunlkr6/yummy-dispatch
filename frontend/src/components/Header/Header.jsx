@@ -3,6 +3,21 @@ import './Header.css';
 import {assets} from '../../assets/assets'; // Import your video
 
 const Header = () => {
+    const textContent = [
+    {
+      title: "Discover Your Favourite Restaurant",
+      subtitle: "Experience culinary excellence with every bite",
+    },
+    {
+      title: "Fresh Ingredients, Bold Flavors",
+      subtitle: "Crafted with passion by our master chefs",
+    },
+    {
+      title: "Unforgettable Dining Experience",
+      subtitle: "Where taste meets perfection",
+    },
+  ]
+  
   return (
     <div className='header'>
       {/* Uncomment and adjust content as needed */}
