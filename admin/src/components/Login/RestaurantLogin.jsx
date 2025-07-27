@@ -4,8 +4,8 @@ import axios from "axios";
 import './login.css';
 
 function RestaurantLogin() {
-  //const url = 'http://localhost:8080/api/v1/user';
-  const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1/user'
+  const url = 'http://localhost:8080/api/v1/user';
+  // const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1/user'
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ function RestaurantLogin() {
 
     try {
       const response = await axios.post(`${url}/login`, { email, password });
-      //console.log(response.data.data);
+      console.log(response.data.data);
 
       if (response.data.success) {
         console.log(response);
