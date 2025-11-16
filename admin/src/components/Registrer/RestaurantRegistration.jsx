@@ -9,8 +9,10 @@ const RestaurantRegistration = () => {
 
   const [image, setImage] = useState(false);
   const navigate = useNavigate();
-  const url = 'http://13.127.209.255:8080/api/v1/restaurant'
+  //const url = 'http://13.127.209.255:8080/api/v1/restaurant'
   //const url = 'https://scan-dine-backend-5qms.onrender.com/api/v1/restaurant'
+
+  const url = 'http://localhost:8080/api/v1/restaurant'
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -40,7 +42,7 @@ const RestaurantRegistration = () => {
 
     try {
       const response = await axios.post(`${url}/register`, formData);
-      //console.log(response);
+      console.log("res: ", response);
       if (response.data.success) {
         setData({
           name: "",
@@ -58,13 +60,14 @@ const RestaurantRegistration = () => {
         });
         setImage(null);
         toast.success(response.data.message);
+        navigate('/login');
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       toast.error("Failed to register. Please try again.");
     }
-    navigate('/login');
+    
   };
 
   return (

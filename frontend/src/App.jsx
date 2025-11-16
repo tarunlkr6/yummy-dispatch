@@ -1,7 +1,7 @@
 // App.jsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
+// import Navbar from './components/Navbar/Navbar';
 import Appbar from './components/Navbar/Appbar'
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
@@ -22,7 +22,9 @@ import OrderDetails from './components/ViewOrder/OrderDetails';
 import Profile from './components/Profile/Profile';
 import TableBookingDetails from './components/Restaurant/BookingTable/TableBookingDetails';
 import Payment from './components/Payment/Payment';
-import ResetPassword from './components/ResetPassword/ResetPassword'
+import ResetPassword from './components/ForgetPassword/ResetPassword'
+
+
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -38,8 +40,9 @@ const App = () => {
           <Route path='/' element={<Home />} exact />
           <Route path='/partner' element={<Partner />} />
           <Route path='/restaurant/:id/view' element={<RestaurantTemplate />} />
-          <Route path='/reset-password'setShowLogin={setShowLogin} element={<ForgetPassword />} />
-          
+          <Route path='/reset-password' setShowLogin={setShowLogin} element={<ForgetPassword />} />
+          <Route path='/user/reset-password/:token' element={<ResetPassword />} />
+
           <Route path='/vieworders' element={<OrderDetails/>}/>
           <Route path='/table/details' element={<TableBookingDetails/>}/>
 

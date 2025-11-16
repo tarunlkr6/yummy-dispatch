@@ -34,6 +34,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    verifyUserByOtp: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/verify`,
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+    }),
     forgetPassword: builder.mutation({
       query: (data) => ({
         url: `${USER_URL}/forgot-password`,
@@ -42,6 +50,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    resetPassword: builder.mutation({
+  query: ({ token, password, confirmPassword }) => ({
+    url: `${USER_URL}/reset-password/${token}`,
+    method: "POST",
+    body: { password, confirmPassword },
+    credentials: "include",
+  }),
+}),
+
     updatePassword: builder.mutation({
       query: (data) => ({
         url: `${USER_URL}/update-password`,
@@ -67,5 +84,7 @@ export const {
   useRegisterUserMutation,
   useForgetPasswordMutation,
   useUpdatePasswordMutation,
-  useGetCurrentUserQuery
+  useGetCurrentUserQuery,
+  useVerifyUserByOtpMutation,
+  useResetPasswordMutation
 } = usersApiSlice;
